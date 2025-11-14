@@ -262,7 +262,17 @@ export default function Orders() {
                   data-testid="order-notes-input"
                 />
               </div>
-              <DialogFooter>
+              <DialogFooter className={isEditing ? "flex justify-between" : ""}>
+                {isEditing && (
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    onClick={handleDelete}
+                    data-testid="order-delete-button"
+                  >
+                    Видалити
+                  </Button>
+                )}
                 <Button type="submit" data-testid="order-submit-button">
                   {isEditing ? 'Зберегти' : 'Створити'}
                 </Button>
