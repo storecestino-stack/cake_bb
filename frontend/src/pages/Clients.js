@@ -67,6 +67,22 @@ export default function Clients() {
     setDialogOpen(true);
   };
 
+  const handleDelete = async () => {
+    if (!editingId) return;
+    
+    if (!window.confirm('Ви впевнені, що хочете видалити цього клієнта?')) return;
+    
+    try {
+      await axios.delete(`/clients/${editingId}`);
+      toast.success('Клієнта видалено');
+      setDialogOpen(false);
+      resetForm();
+      fetchData();
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Помилка видалення');
+    }
+  };
+
   const resetForm = () => {
     setFormData({ name: '', email: '', phone: '' });
     setIsEditing(false);
