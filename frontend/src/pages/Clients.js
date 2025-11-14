@@ -151,7 +151,17 @@ export default function Clients() {
                   data-testid="client-phone-input"
                 />
               </div>
-              <DialogFooter>
+              <DialogFooter className={isEditing ? "flex justify-between" : ""}>
+                {isEditing && (
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    onClick={handleDelete}
+                    data-testid="client-delete-button"
+                  >
+                    Видалити
+                  </Button>
+                )}
                 <Button type="submit" data-testid="client-submit-button">
                   {isEditing ? 'Зберегти' : 'Створити'}
                 </Button>
