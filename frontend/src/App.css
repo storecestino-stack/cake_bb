@@ -152,6 +152,19 @@ h1, h2, h3, h4, h5, h6 {
   background: hsl(var(--muted-foreground));
 }
 
+/* Dark theme specific styles */
+:root[data-theme="dark"] .bg-background {
+  background-color: hsl(var(--background)) !important;
+}
+
+:root[data-theme="dark"] .bg-card {
+  background-color: hsl(var(--card)) !important;
+}
+
+:root[data-theme="dark"] .border-border {
+  border-color: hsl(var(--border)) !important;
+}
+
 /* Animations */
 @keyframes fadeIn {
   from {
