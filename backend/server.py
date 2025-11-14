@@ -239,6 +239,60 @@ async def update_me(user_data: UserUpdate, current_user: User = Depends(get_curr
     updated_user = await db.users.find_one({"id": current_user.id}, {"_id": 0})
     return User(**updated_user)
 
+@api_router.post("/auth/password-reset-request")
+async def password_reset_request(request_data: PasswordResetRequest):
+    # Check if user exists
+    user = await db.users.find_one({"email": request_data.email}, {"_id": 0})
+    if not user:
+        # Don't reveal if user exists for security
+        return {"message": "Якщо email існує, код відновлення буде надіслано"}
+    
+    # Generate 6-digit reset code
+    import random
+    reset_code = ''.join([str(random.randint(0, 9)) for _ in range(6)])
+    
+    # Store reset code with expiration (15 minutes)
+    await db.password_resets.insert_one({
+        "email": request_data.email,
+        "code": reset_code,
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "expires_at": (datetime.now(timezone.utc) + timedelta(minutes=15)).isoformat()
+    })
+    
+    # In production, send email here. For now, return code (remove in production!)
+    return {"message": "Якщо email існує, код відновлення буде надіслано", "reset_code": reset_code}
+
+@api_router.post("/auth/password-reset")
+async def password_reset(reset_data: PasswordReset):
+    # Find valid reset code
+    reset_record = await db.password_resets.find_one({
+        "email": reset_data.email,
+        "code": reset_data.reset_code
+    })
+    
+    if not reset_record:
+        raise HTTPException(status_code=400, detail="Невірний код відновлення")
+    
+    # Check if code is expired
+    expires_at = datetime.fromisoformat(reset_record["expires_at"])
+    if datetime.now(timezone.utc) > expires_at:
+        raise HTTPException(status_code=400, detail="Код відновлення прострочений")
+    
+    # Update user password
+    hashed_password = hash_password(reset_data.new_password)
+    result = await db.users.update_one(
+        {"email": reset_data.email},
+        {"$set": {"password": hashed_password}}
+    )
+    
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Користувача не знайдено")
+    
+    # Delete used reset code
+    await db.password_resets.delete_many({"email": reset_data.email})
+    
+    return {"message": "Пароль успішно змінено"}
+
 @api_router.post("/upload/avatar")
 async def upload_avatar(file: UploadFile = File(...), current_user: User = Depends(get_current_user)):
     # Save file
