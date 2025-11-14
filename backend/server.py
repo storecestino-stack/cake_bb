@@ -151,6 +151,14 @@ class OrderUpdate(BaseModel):
     total: Optional[float] = None
     notes: Optional[str] = None
 
+class PasswordResetRequest(BaseModel):
+    email: EmailStr
+
+class PasswordReset(BaseModel):
+    email: EmailStr
+    reset_code: str
+    new_password: str
+
 # Helper functions
 def hash_password(password: str) -> str:
     return pwd_context.hash(password)
