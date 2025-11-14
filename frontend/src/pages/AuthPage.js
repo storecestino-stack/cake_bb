@@ -46,6 +46,46 @@ export default function AuthPage({ onLogin }) {
     }
   };
 
+  const handleResetRequest = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    try {
+      const response = await axios.post('/auth/password-reset-request', { email: resetEmail });
+      toast.success('Код відновлення надіслано на email');
+      // In development, show the code
+      if (response.data.reset_code) {
+        toast.info(`Код для тестування: ${response.data.reset_code}`);
+      }
+      setResetStep(2);
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Помилка запиту');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handlePasswordReset = async (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    try {
+      await axios.post('/auth/password-reset', {
+        email: resetEmail,
+        reset_code: resetCode,
+        new_password: newPassword
+      });
+      toast.success('Пароль успішно змінено!');
+      setShowResetForm(false);
+      setResetStep(1);
+      setResetEmail('');
+      setResetCode('');
+      setNewPassword('');
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Помилка зміни пароля');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center p-4" style={{
       background: 'linear-gradient(135deg, hsl(var(--secondary)) 0%, hsl(var(--background)) 50%, hsl(var(--accent)) 100%)'
