@@ -60,6 +60,22 @@ export default function Ingredients() {
     setDialogOpen(true);
   };
 
+  const handleDelete = async () => {
+    if (!editingId) return;
+    
+    if (!window.confirm('Ви впевнені, що хочете видалити цей інгредієнт?')) return;
+    
+    try {
+      await axios.delete(`/ingredients/${editingId}`);
+      toast.success('Інгредієнт видалено');
+      setDialogOpen(false);
+      resetForm();
+      fetchIngredients();
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Помилка видалення');
+    }
+  };
+
   const resetForm = () => {
     setFormData({ name: '', unit: '', price: 0 });
     setIsEditing(false);
