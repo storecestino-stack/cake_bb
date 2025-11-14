@@ -131,6 +131,7 @@ export default function Settings() {
       <Tabs defaultValue="profile" className="w-full">
         <TabsList>
           <TabsTrigger value="profile" data-testid="profile-tab">Профіль</TabsTrigger>
+          <TabsTrigger value="security" data-testid="security-tab">Безпека</TabsTrigger>
           <TabsTrigger value="appearance" data-testid="appearance-tab">Вигляд</TabsTrigger>
         </TabsList>
 
