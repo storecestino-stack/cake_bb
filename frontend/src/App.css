@@ -71,21 +71,43 @@
   --muted-foreground: 280 15% 45%;
 }
 
+:root[data-theme="dark"] {
+  --primary: 210 100% 60%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 217 33% 17%;
+  --secondary-foreground: 210 40% 98%;
+  --accent: 217 33% 20%;
+  --accent-foreground: 210 40% 98%;
+  --background: 222 47% 11%;
+  --foreground: 213 31% 91%;
+  --card: 217 33% 15%;
+  --card-foreground: 213 31% 91%;
+  --border: 217 33% 25%;
+  --input: 217 33% 20%;
+  --ring: 210 100% 60%;
+  --muted: 217 33% 20%;
+  --muted-foreground: 215 20% 65%;
+}
+
 /* Theme-specific backgrounds */
 :root[data-theme="system"] body {
-  background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 50%, #f9f9f9 100%);
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 50%, #f1f3f5 100%);
 }
 
 :root[data-theme="minimal"] body {
-  background: linear-gradient(135deg, #f0f4f8 0%, #ffffff 50%, #e8f0f7 100%);
+  background: linear-gradient(135deg, #e3f2fd 0%, #f5f9fc 50%, #bbdefb 100%);
 }
 
 :root[data-theme="pastel"] body {
-  background: linear-gradient(135deg, #fff5f7 0%, #fffbf0 25%, #f0fff5 50%, #fff0fb 75%, #fef5ff 100%);
+  background: linear-gradient(135deg, #fce4ec 0%, #fff9c4 25%, #c8e6c9 50%, #f3e5f5 75%, #e1bee7 100%);
 }
 
 :root[data-theme="vibrant"] body {
-  background: linear-gradient(135deg, #faf5ff 0%, #fff5fb 25%, #fffbf0 50%, #f5fbff 75%, #fff5f9 100%);
+  background: linear-gradient(135deg, #e1bee7 0%, #f8bbd0 25%, #fff59d 50%, #b2ebf2 75%, #f48fb1 100%);
+}
+
+:root[data-theme="dark"] body {
+  background: linear-gradient(135deg, #0d1117 0%, #161b22 25%, #1a1f2e 50%, #1c2128 75%, #0d1117 100%);
 }
 
 * {
