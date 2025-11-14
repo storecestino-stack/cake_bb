@@ -70,6 +70,10 @@ class UserUpdate(BaseModel):
     name: Optional[str] = None
     theme: Optional[str] = None
 
+class PasswordChange(BaseModel):
+    current_password: str
+    new_password: str
+
 class Token(BaseModel):
     access_token: str
     token_type: str
