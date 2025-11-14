@@ -12,10 +12,11 @@ import { useTheme } from '../contexts/ThemeContext';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 const themeOptions = [
-  { value: 'system', label: 'На ваш розсуд', description: 'Класичний мінімалістичний вигляд' },
-  { value: 'pastel', label: 'М\'які пастельні', description: 'Ніжні відтінки для комфортної роботи' },
-  { value: 'vibrant', label: 'Яскраві енергійні', description: 'Насичені кольори для активності' },
-  { value: 'minimal', label: 'Мінімалістичні', description: 'Нейтральні тони для чистого інтерфейсу' }
+  { value: 'system', label: 'На ваш розсуд', description: 'Класичний світлий вигляд' },
+  { value: 'minimal', label: 'Мінімалістичні', description: 'Чисті блакитні тони' },
+  { value: 'pastel', label: 'М\'які пастельні', description: 'Ніжні рожево-зелено-фіолетові відтінки' },
+  { value: 'vibrant', label: 'Яскраві енергійні', description: 'Насичені фіолетово-рожеві кольори' },
+  { value: 'dark', label: 'Темна тема', description: 'Темний режим для роботи вночі' }
 ];
 
 export default function Settings() {
