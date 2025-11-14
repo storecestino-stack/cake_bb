@@ -98,8 +98,9 @@ body {
   font-family: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: hsl(var(--background));
+  background-attachment: fixed;
   color: hsl(var(--foreground));
+  min-height: 100vh;
 }
 
 .App {
