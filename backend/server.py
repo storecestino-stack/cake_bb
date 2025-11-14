@@ -249,7 +249,6 @@ async def password_reset_request(request_data: PasswordResetRequest):
         return {"message": "Якщо email існує, код відновлення буде надіслано"}
     
     # Generate 6-digit reset code
-    import random
     reset_code = ''.join([str(random.randint(0, 9)) for _ in range(6)])
     
     # Store reset code with expiration (15 minutes)
