@@ -25,7 +25,7 @@ export default function Settings() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  useState(() => {
+  useEffect(() => {
     fetchUser();
   }, []);
 
