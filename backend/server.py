@@ -244,6 +244,23 @@ async def update_me(user_data: UserUpdate, current_user: User = Depends(get_curr
     updated_user = await db.users.find_one({"id": current_user.id}, {"_id": 0})
     return User(**updated_user)
 
+@api_router.post("/auth/change-password")
+async def change_password(password_data: PasswordChange, current_user: User = Depends(get_current_user)):
+    # Get user with password
+    user = await db.users.find_one({"id": current_user.id}, {"_id": 0})
+    if not user:
+        raise HTTPException(status_code=404, detail="Користувача не знайдено")
+    
+    # Verify current password
+    if not verify_password(password_data.current_password, user["password"]):
+        raise HTTPException(status_code=400, detail="Неправильний поточний пароль")
+    
+    # Update password
+    hashed_password = hash_password(password_data.new_password)
+    await db.users.update_one({"id": current_user.id}, {"$set": {"password": hashed_password}})
+    
+    return {"message": "Пароль успішно змінено"}
+
 @api_router.post("/auth/password-reset-request")
 async def password_reset_request(request_data: PasswordResetRequest):
     # Check if user exists
