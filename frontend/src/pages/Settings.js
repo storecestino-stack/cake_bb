@@ -196,6 +196,61 @@ export default function Settings() {
           </Card>
         </TabsContent>
 
+        <TabsContent value="security" className="space-y-6">
+          <Card>
+            <CardHeader>
+              <CardTitle>Зміна пароля</CardTitle>
+              <CardDescription>Оновіть свій пароль для безпеки акаунту</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handlePasswordChange} className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="current-password">Поточний пароль</Label>
+                  <Input
+                    id="current-password"
+                    type="password"
+                    value={currentPassword}
+                    onChange={(e) => setCurrentPassword(e.target.value)}
+                    required
+                    data-testid="current-password-input"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="new-password">Новий пароль</Label>
+                  <Input
+                    id="new-password"
+                    type="password"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    required
+                    minLength={6}
+                    data-testid="new-password-input"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="confirm-password">Підтвердіть новий пароль</Label>
+                  <Input
+                    id="confirm-password"
+                    type="password"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    required
+                    minLength={6}
+                    data-testid="confirm-password-input"
+                  />
+                </div>
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  data-testid="change-password-button"
+                >
+                  {loading ? 'Зміна...' : 'Змінити пароль'}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
         <TabsContent value="appearance" className="space-y-6">
           <Card>
             <CardHeader>
