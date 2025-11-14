@@ -97,6 +97,23 @@ export default function Orders() {
     }
   };
 
+  const handleDelete = async () => {
+    if (!selectedOrder) return;
+    
+    if (!window.confirm('Ви впевнені, що хочете видалити це замовлення?')) return;
+    
+    try {
+      await axios.delete(`/orders/${selectedOrder.id}`);
+      toast.success('Замовлення видалено');
+      setDialogOpen(false);
+      setDetailsOpen(false);
+      resetForm();
+      fetchData();
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Помилка видалення');
+    }
+  };
+
   const handleRecipeSelect = async (recipeId) => {
     try {
       const response = await axios.get(`/recipes/${recipeId}/calculate`);
