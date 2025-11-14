@@ -1,6 +1,5 @@
 /* Theme Variables */
-:root[data-theme="system"],
-:root[data-theme="minimal"] {
+:root[data-theme="system"] {
   --primary: 20 14.3% 4.1%;
   --primary-foreground: 60 9.1% 97.8%;
   --secondary: 60 4.8% 95.9%;
@@ -18,40 +17,75 @@
   --muted-foreground: 25 5.3% 44.7%;
 }
 
-:root[data-theme="pastel"] {
-  --primary: 340 82% 52%;
-  --primary-foreground: 355.7 100% 97.3%;
-  --secondary: 163 94% 90%;
-  --secondary-foreground: 164 86% 20%;
-  --accent: 271 91% 90%;
-  --accent-foreground: 272 86% 20%;
-  --background: 20 14.3% 98%;
-  --foreground: 340 10% 15%;
+:root[data-theme="minimal"] {
+  --primary: 210 100% 45%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 210 20% 95%;
+  --secondary-foreground: 210 40% 20%;
+  --accent: 210 20% 92%;
+  --accent-foreground: 210 40% 20%;
+  --background: 0 0% 98%;
+  --foreground: 210 15% 20%;
   --card: 0 0% 100%;
-  --card-foreground: 340 10% 15%;
-  --border: 340 30% 92%;
-  --input: 340 30% 92%;
-  --ring: 340 82% 52%;
-  --muted: 163 60% 95%;
-  --muted-foreground: 340 8% 46%;
+  --card-foreground: 210 15% 20%;
+  --border: 210 20% 88%;
+  --input: 210 20% 92%;
+  --ring: 210 100% 45%;
+  --muted: 210 15% 95%;
+  --muted-foreground: 210 10% 45%;
+}
+
+:root[data-theme="pastel"] {
+  --primary: 340 75% 55%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 163 55% 85%;
+  --secondary-foreground: 164 60% 25%;
+  --accent: 271 65% 85%;
+  --accent-foreground: 272 70% 25%;
+  --background: 30 40% 96%;
+  --foreground: 340 15% 25%;
+  --card: 0 0% 100%;
+  --card-foreground: 340 15% 25%;
+  --border: 340 25% 90%;
+  --input: 340 25% 94%;
+  --ring: 340 75% 55%;
+  --muted: 163 40% 93%;
+  --muted-foreground: 340 10% 50%;
 }
 
 :root[data-theme="vibrant"] {
-  --primary: 280 100% 60%;
+  --primary: 280 85% 55%;
   --primary-foreground: 0 0% 100%;
-  --secondary: 340 100% 55%;
+  --secondary: 340 80% 60%;
   --secondary-foreground: 0 0% 100%;
-  --accent: 45 100% 55%;
+  --accent: 45 90% 60%;
   --accent-foreground: 0 0% 15%;
-  --background: 0 0% 100%;
-  --foreground: 280 10% 10%;
+  --background: 270 30% 97%;
+  --foreground: 280 20% 15%;
   --card: 0 0% 100%;
-  --card-foreground: 280 10% 10%;
-  --border: 280 30% 85%;
-  --input: 280 30% 90%;
-  --ring: 280 100% 60%;
-  --muted: 280 40% 95%;
-  --muted-foreground: 280 8% 40%;
+  --card-foreground: 280 20% 15%;
+  --border: 280 25% 88%;
+  --input: 280 20% 94%;
+  --ring: 280 85% 55%;
+  --muted: 280 30% 95%;
+  --muted-foreground: 280 15% 45%;
+}
+
+/* Theme-specific backgrounds */
+:root[data-theme="system"] body {
+  background: linear-gradient(135deg, #f5f5f5 0%, #ffffff 50%, #f9f9f9 100%);
+}
+
+:root[data-theme="minimal"] body {
+  background: linear-gradient(135deg, #f0f4f8 0%, #ffffff 50%, #e8f0f7 100%);
+}
+
+:root[data-theme="pastel"] body {
+  background: linear-gradient(135deg, #fff5f7 0%, #fffbf0 25%, #f0fff5 50%, #fff0fb 75%, #fef5ff 100%);
+}
+
+:root[data-theme="vibrant"] body {
+  background: linear-gradient(135deg, #faf5ff 0%, #fff5fb 25%, #fffbf0 50%, #f5fbff 75%, #fff5f9 100%);
 }
 
 * {
