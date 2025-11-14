@@ -128,39 +128,133 @@ export default function AuthPage({ onLogin }) {
               </TabsList>
               
               <TabsContent value="login">
-                <form onSubmit={handleLogin} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="login-email">Email</Label>
-                    <Input
-                      id="login-email"
-                      type="email"
-                      placeholder="example@email.com"
-                      value={loginData.email}
-                      onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
-                      required
-                      data-testid="login-email-input"
-                    />
+                {!showResetForm ? (
+                  <form onSubmit={handleLogin} className="space-y-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="login-email">Email</Label>
+                      <Input
+                        id="login-email"
+                        type="email"
+                        placeholder="example@email.com"
+                        value={loginData.email}
+                        onChange={(e) => setLoginData({ ...loginData, email: e.target.value })}
+                        required
+                        data-testid="login-email-input"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="login-password">Пароль</Label>
+                      <Input
+                        id="login-password"
+                        type="password"
+                        value={loginData.password}
+                        onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
+                        required
+                        data-testid="login-password-input"
+                      />
+                    </div>
+                    <Button
+                      type="button"
+                      variant="link"
+                      className="px-0 text-sm"
+                      onClick={() => setShowResetForm(true)}
+                      data-testid="forgot-password-link"
+                    >
+                      Забули пароль?
+                    </Button>
+                    <Button
+                      type="submit"
+                      className="w-full"
+                      disabled={isLoading}
+                      data-testid="login-submit-button"
+                    >
+                      {isLoading ? 'Вхід...' : 'Увійти'}
+                    </Button>
+                  </form>
+                ) : (
+                  <div className="space-y-4">
+                    {resetStep === 1 ? (
+                      <form onSubmit={handleResetRequest} className="space-y-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="reset-email">Email</Label>
+                          <Input
+                            id="reset-email"
+                            type="email"
+                            placeholder="example@email.com"
+                            value={resetEmail}
+                            onChange={(e) => setResetEmail(e.target.value)}
+                            required
+                            data-testid="reset-email-input"
+                          />
+                        </div>
+                        <Button
+                          type="submit"
+                          className="w-full"
+                          disabled={isLoading}
+                          data-testid="reset-request-button"
+                        >
+                          {isLoading ? 'Надсилання...' : 'Надіслати код'}
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          className="w-full"
+                          onClick={() => {
+                            setShowResetForm(false);
+                            setResetStep(1);
+                          }}
+                        >
+                          Повернутися до входу
+                        </Button>
+                      </form>
+                    ) : (
+                      <form onSubmit={handlePasswordReset} className="space-y-4">
+                        <div className="space-y-2">
+                          <Label htmlFor="reset-code">Код відновлення</Label>
+                          <Input
+                            id="reset-code"
+                            type="text"
+                            placeholder="123456"
+                            value={resetCode}
+                            onChange={(e) => setResetCode(e.target.value)}
+                            required
+                            data-testid="reset-code-input"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label htmlFor="new-password">Новий пароль</Label>
+                          <Input
+                            id="new-password"
+                            type="password"
+                            value={newPassword}
+                            onChange={(e) => setNewPassword(e.target.value)}
+                            required
+                            data-testid="new-password-input"
+                          />
+                        </div>
+                        <Button
+                          type="submit"
+                          className="w-full"
+                          disabled={isLoading}
+                          data-testid="reset-password-button"
+                        >
+                          {isLoading ? 'Зміна...' : 'Змінити пароль'}
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          className="w-full"
+                          onClick={() => {
+                            setShowResetForm(false);
+                            setResetStep(1);
+                          }}
+                        >
+                          Повернутися до входу
+                        </Button>
+                      </form>
+                    )}
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="login-password">Пароль</Label>
-                    <Input
-                      id="login-password"
-                      type="password"
-                      value={loginData.password}
-                      onChange={(e) => setLoginData({ ...loginData, password: e.target.value })}
-                      required
-                      data-testid="login-password-input"
-                    />
-                  </div>
-                  <Button
-                    type="submit"
-                    className="w-full"
-                    disabled={isLoading}
-                    data-testid="login-submit-button"
-                  >
-                    {isLoading ? 'Вхід...' : 'Увійти'}
-                  </Button>
-                </form>
+                )}
               </TabsContent>
               
               <TabsContent value="signup">
