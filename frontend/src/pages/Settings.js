@@ -87,6 +87,36 @@ export default function Settings() {
     }
   };
 
+  const handlePasswordChange = async (e) => {
+    e.preventDefault();
+    
+    if (newPassword !== confirmPassword) {
+      toast.error('Паролі не співпадають');
+      return;
+    }
+
+    if (newPassword.length < 6) {
+      toast.error('Пароль має містити мінімум 6 символів');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await axios.post('/auth/change-password', {
+        current_password: currentPassword,
+        new_password: newPassword
+      });
+      toast.success('Пароль успішно змінено');
+      setCurrentPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Помилка зміни пароля');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const avatarUrl = user?.avatar ? `${BACKEND_URL}${user.avatar}` : null;
 
   return (
