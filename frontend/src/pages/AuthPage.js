@@ -12,6 +12,11 @@ export default function AuthPage({ onLogin }) {
   const [isLoading, setIsLoading] = useState(false);
   const [loginData, setLoginData] = useState({ email: '', password: '' });
   const [signupData, setSignupData] = useState({ name: '', email: '', password: '' });
+  const [resetEmail, setResetEmail] = useState('');
+  const [resetCode, setResetCode] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [showResetForm, setShowResetForm] = useState(false);
+  const [resetStep, setResetStep] = useState(1); // 1: email, 2: code+password
 
   const handleLogin = async (e) => {
     e.preventDefault();
