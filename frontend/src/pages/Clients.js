@@ -133,16 +133,6 @@ export default function Clients() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  data-testid="client-email-input"
-                />
-              </div>
-              <div className="space-y-2">
                 <Label htmlFor="phone">Телефон</Label>
                 <Input
                   id="phone"
