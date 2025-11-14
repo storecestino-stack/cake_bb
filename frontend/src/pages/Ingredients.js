@@ -144,7 +144,17 @@ export default function Ingredients() {
                   data-testid="ingredient-price-input"
                 />
               </div>
-              <DialogFooter>
+              <DialogFooter className={isEditing ? "flex justify-between" : ""}>
+                {isEditing && (
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    onClick={handleDelete}
+                    data-testid="ingredient-delete-button"
+                  >
+                    Видалити
+                  </Button>
+                )}
                 <Button type="submit" data-testid="ingredient-submit-button">
                   {isEditing ? 'Зберегти' : 'Створити'}
                 </Button>
