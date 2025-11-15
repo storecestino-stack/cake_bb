@@ -271,29 +271,16 @@ export default function Recipes() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="laborCost">Вартість роботи (грн)</Label>
-                  <Input
-                    id="laborCost"
-                    type="number"
-                    step="0.01"
-                    value={formData.laborCost}
-                    onChange={(e) => setFormData({ ...formData, laborCost: e.target.value })}
-                    data-testid="recipe-labor-cost-input"
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="markup">Націнка (%)</Label>
-                  <Input
-                    id="markup"
-                    type="number"
-                    step="0.01"
-                    value={formData.markup}
-                    onChange={(e) => setFormData({ ...formData, markup: e.target.value })}
-                    data-testid="recipe-markup-input"
-                  />
-                </div>
+              <div className="space-y-2">
+                <Label htmlFor="laborCost">Вартість роботи (грн)</Label>
+                <Input
+                  id="laborCost"
+                  type="number"
+                  step="0.01"
+                  value={formData.laborCost}
+                  onChange={(e) => setFormData({ ...formData, laborCost: e.target.value })}
+                  data-testid="recipe-labor-cost-input"
+                />
               </div>
 
               {costs.finalPrice > 0 && (
