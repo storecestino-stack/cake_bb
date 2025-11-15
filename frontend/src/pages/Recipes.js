@@ -137,7 +137,7 @@ export default function Recipes() {
       name: recipe.name,
       description: recipe.description,
       laborCost: recipe.laborCost,
-      ingredients: recipe.ingredients || [],
+      components: recipe.components || [],
       imageFile: null
     });
     setEditingId(recipe.id);
