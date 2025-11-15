@@ -462,7 +462,7 @@ async def calculate_recipe_cost(recipe_id: str, current_user: User = Depends(get
     if not recipe:
         raise HTTPException(status_code=404, detail="Recipe not found")
     
-    # Calculate cost
+    # Calculate cost from old ingredients format (backward compatibility)
     total_cost = 0
     for recipe_ing in recipe.get("ingredients", []):
         ingredient = await db.ingredients.find_one(
@@ -471,6 +471,35 @@ async def calculate_recipe_cost(recipe_id: str, current_user: User = Depends(get
         )
         if ingredient:
             total_cost += ingredient["price"] * recipe_ing["quantity"]
+    
+    # Calculate cost from new components format
+    for component in recipe.get("components", []):
+        if component["type"] == "ingredient":
+            ingredient = await db.ingredients.find_one(
+                {"id": component["itemId"], "userId": current_user.id},
+                {"_id": 0}
+            )
+            if ingredient:
+                total_cost += ingredient["price"] * component["quantity"]
+        elif component["type"] == "semifinished":
+            # Calculate semifinished cost
+            semifinished = await db.semifinished.find_one(
+                {"id": component["itemId"], "userId": current_user.id},
+                {"_id": 0}
+            )
+            if semifinished:
+                # Calculate semifinished ingredients cost
+                sf_cost = 0
+                for sf_ing in semifinished.get("ingredients", []):
+                    ingredient = await db.ingredients.find_one(
+                        {"id": sf_ing["ingredientId"], "userId": current_user.id},
+                        {"_id": 0}
+                    )
+                    if ingredient:
+                        sf_cost += ingredient["price"] * sf_ing["quantity"]
+                
+                sf_total = sf_cost + semifinished.get("laborCost", 0)
+                total_cost += sf_total * component["quantity"]
     
     labor_cost = recipe.get("laborCost", 0)
     markup = recipe.get("markup", 0)
