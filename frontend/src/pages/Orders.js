@@ -178,7 +178,8 @@ export default function Orders() {
       item: order.item,
       dueDate: order.dueDate?.substring(0, 16),
       total: order.total,
-      notes: order.notes || ''
+      notes: order.notes || '',
+      orderRecipes: []
     });
     setIsEditing(true);
     setDetailsOpen(false);
