@@ -109,10 +109,11 @@ export default function Recipes() {
 
       const recipeData = {
         name: formData.name,
-        description: formData.description || `${formData.ingredients.length} інгредієнтів`,
+        description: formData.description || `${formData.components.length} компонентів`,
         laborCost: parseFloat(formData.laborCost) || 0,
         markup: 0,
-        ingredients: formData.ingredients
+        ingredients: [],
+        components: formData.components
       };
 
       if (isEditing) {
