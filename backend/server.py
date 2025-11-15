@@ -110,6 +110,11 @@ class RecipeIngredient(BaseModel):
     ingredientId: str
     quantity: float
 
+class RecipeComponent(BaseModel):
+    type: str  # 'ingredient' or 'semifinished'
+    itemId: str
+    quantity: float
+
 class Recipe(BaseModel):
     model_config = ConfigDict(extra="ignore")
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
@@ -120,6 +125,7 @@ class Recipe(BaseModel):
     laborCost: float = 0
     markup: float = 0
     ingredients: List[RecipeIngredient] = []
+    components: List[RecipeComponent] = []
 
 class RecipeCreate(BaseModel):
     name: str
@@ -127,6 +133,7 @@ class RecipeCreate(BaseModel):
     laborCost: float = 0
     markup: float = 0
     ingredients: List[RecipeIngredient] = []
+    components: List[RecipeComponent] = []
 
 class Semifinished(BaseModel):
     model_config = ConfigDict(extra="ignore")
