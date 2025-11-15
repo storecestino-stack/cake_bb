@@ -273,7 +273,7 @@ export default function Orders() {
                         onClick={() => removeRecipeFromOrder(index)}
                         data-testid={`remove-order-recipe-${index}`}
                       >
-                        <Plus className="h-4 w-4 rotate-45" />
+                        <X className="h-4 w-4" />
                       </Button>
                     </div>
                   ))}
