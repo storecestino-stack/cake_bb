@@ -290,7 +290,17 @@ export default function Recipes() {
                 </div>
               )}
 
-              <DialogFooter>
+              <DialogFooter className={isEditing ? "flex justify-between" : ""}>
+                {isEditing && (
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    onClick={handleDelete}
+                    data-testid="recipe-delete-button"
+                  >
+                    Видалити
+                  </Button>
+                )}
                 <Button type="submit" data-testid="recipe-submit-button">
                   {isEditing ? 'Зберегти' : 'Створити'}
                 </Button>
