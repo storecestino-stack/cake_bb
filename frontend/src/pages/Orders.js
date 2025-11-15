@@ -159,7 +159,8 @@ export default function Orders() {
       item: '',
       dueDate: '',
       total: 0,
-      notes: ''
+      notes: '',
+      orderRecipes: []
     });
     setIsEditing(false);
     setSelectedOrder(null);
