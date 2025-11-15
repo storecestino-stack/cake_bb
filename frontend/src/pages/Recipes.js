@@ -116,13 +116,28 @@ export default function Recipes() {
       name: recipe.name,
       description: recipe.description,
       laborCost: recipe.laborCost,
-      markup: recipe.markup,
       ingredients: recipe.ingredients || [],
       imageFile: null
     });
     setEditingId(recipe.id);
     setIsEditing(true);
     setDialogOpen(true);
+  };
+
+  const handleDelete = async () => {
+    if (!editingId) return;
+    
+    if (!window.confirm('Ви впевнені, що хочете видалити цей рецепт?')) return;
+    
+    try {
+      await axios.delete(`/recipes/${editingId}`);
+      toast.success('Рецепт видалено');
+      setDialogOpen(false);
+      resetForm();
+      fetchData();
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Помилка видалення');
+    }
   };
 
   const addIngredient = () => {
