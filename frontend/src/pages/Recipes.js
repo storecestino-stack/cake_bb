@@ -179,22 +179,26 @@ export default function Recipes() {
     }
   };
 
-  const addIngredient = () => {
+  const addComponent = () => {
     setFormData({
       ...formData,
-      ingredients: [...formData.ingredients, { ingredientId: '', quantity: 0 }]
+      components: [...formData.components, { type: 'ingredient', itemId: '', quantity: 0 }]
     });
   };
 
-  const removeIngredient = (index) => {
-    const newIngredients = formData.ingredients.filter((_, i) => i !== index);
-    setFormData({ ...formData, ingredients: newIngredients });
+  const removeComponent = (index) => {
+    const newComponents = formData.components.filter((_, i) => i !== index);
+    setFormData({ ...formData, components: newComponents });
   };
 
-  const updateIngredient = (index, field, value) => {
-    const newIngredients = [...formData.ingredients];
-    newIngredients[index][field] = field === 'quantity' ? parseFloat(value) : value;
-    setFormData({ ...formData, ingredients: newIngredients });
+  const updateComponent = (index, field, value) => {
+    const newComponents = [...formData.components];
+    if (field === 'quantity') {
+      newComponents[index][field] = parseFloat(value);
+    } else {
+      newComponents[index][field] = value;
+    }
+    setFormData({ ...formData, components: newComponents });
   };
 
   const resetForm = () => {
@@ -202,7 +206,7 @@ export default function Recipes() {
       name: '',
       description: '',
       laborCost: 0,
-      ingredients: [],
+      components: [],
       imageFile: null
     });
     setIsEditing(false);
