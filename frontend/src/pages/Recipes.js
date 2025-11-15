@@ -33,19 +33,21 @@ export default function Recipes() {
   }, []);
 
   useEffect(() => {
-    if (formData.ingredients.length > 0) {
+    if (formData.components && formData.components.length > 0) {
       calculateCost();
     }
-  }, [formData.ingredients, formData.laborCost]);
+  }, [formData.components, formData.laborCost]);
 
   const fetchData = async () => {
     try {
-      const [recipesRes, ingredientsRes] = await Promise.all([
+      const [recipesRes, ingredientsRes, semifinishedRes] = await Promise.all([
         axios.get('/recipes'),
-        axios.get('/ingredients')
+        axios.get('/ingredients'),
+        axios.get('/semifinished')
       ]);
       setRecipes(recipesRes.data);
       setIngredients(ingredientsRes.data);
+      setSemifinished(semifinishedRes.data);
     } catch (error) {
       toast.error('Помилка завантаження даних');
     } finally {
