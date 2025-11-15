@@ -140,6 +140,24 @@ export default function Recipes() {
     }
   };
 
+  const handleCopy = async (recipe) => {
+    try {
+      const recipeData = {
+        name: `${recipe.name} (копія)`,
+        description: recipe.description,
+        laborCost: recipe.laborCost,
+        markup: 0,
+        ingredients: recipe.ingredients || []
+      };
+      
+      await axios.post('/recipes', recipeData);
+      toast.success('Рецепт скопійовано');
+      fetchData();
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Помилка копіювання');
+    }
+  };
+
   const addIngredient = () => {
     setFormData({
       ...formData,
