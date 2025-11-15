@@ -478,6 +478,63 @@ async def calculate_recipe_cost(recipe_id: str, current_user: User = Depends(get
         "finalPrice": final_price
     }
 
+# Semifinished routes
+@api_router.get("/semifinished", response_model=List[Semifinished])
+async def get_semifinished(current_user: User = Depends(get_current_user)):
+    items = await db.semifinished.find({"userId": current_user.id}, {"_id": 0}).to_list(1000)
+    return items
+
+@api_router.post("/semifinished", response_model=Semifinished)
+async def create_semifinished(semifinished_data: SemifinishedCreate, current_user: User = Depends(get_current_user)):
+    semifinished = Semifinished(userId=current_user.id, **semifinished_data.model_dump())
+    await db.semifinished.insert_one(semifinished.model_dump())
+    return semifinished
+
+@api_router.put("/semifinished/{semifinished_id}", response_model=Semifinished)
+async def update_semifinished(semifinished_id: str, semifinished_data: SemifinishedCreate, current_user: User = Depends(get_current_user)):
+    result = await db.semifinished.update_one(
+        {"id": semifinished_id, "userId": current_user.id},
+        {"$set": semifinished_data.model_dump()}
+    )
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Semifinished not found")
+    
+    updated = await db.semifinished.find_one({"id": semifinished_id}, {"_id": 0})
+    return Semifinished(**updated)
+
+@api_router.delete("/semifinished/{semifinished_id}")
+async def delete_semifinished(semifinished_id: str, current_user: User = Depends(get_current_user)):
+    result = await db.semifinished.delete_one({"id": semifinished_id, "userId": current_user.id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Semifinished not found")
+    return {"message": "Semifinished deleted"}
+
+@api_router.get("/semifinished/{semifinished_id}/calculate")
+async def calculate_semifinished_cost(semifinished_id: str, current_user: User = Depends(get_current_user)):
+    item = await db.semifinished.find_one({"id": semifinished_id, "userId": current_user.id}, {"_id": 0})
+    if not item:
+        raise HTTPException(status_code=404, detail="Semifinished not found")
+    
+    # Calculate cost
+    total_cost = 0
+    for ing in item.get("ingredients", []):
+        ingredient = await db.ingredients.find_one(
+            {"id": ing["ingredientId"], "userId": current_user.id},
+            {"_id": 0}
+        )
+        if ingredient:
+            total_cost += ingredient["price"] * ing["quantity"]
+    
+    labor_cost = item.get("laborCost", 0)
+    final_price = total_cost + labor_cost
+    
+    return {
+        "ingredientsCost": total_cost,
+        "laborCost": labor_cost,
+        "totalCost": total_cost + labor_cost,
+        "finalPrice": final_price
+    }
+
 # Orders routes
 @api_router.get("/orders", response_model=List[Order])
 async def get_orders(current_user: User = Depends(get_current_user)):
