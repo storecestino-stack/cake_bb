@@ -128,6 +128,21 @@ class RecipeCreate(BaseModel):
     markup: float = 0
     ingredients: List[RecipeIngredient] = []
 
+class Semifinished(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    userId: str
+    name: str
+    unit: str
+    laborCost: float = 0
+    ingredients: List[RecipeIngredient] = []
+
+class SemifinishedCreate(BaseModel):
+    name: str
+    unit: str
+    laborCost: float = 0
+    ingredients: List[RecipeIngredient] = []
+
 class Order(BaseModel):
     model_config = ConfigDict(extra="ignore")
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
