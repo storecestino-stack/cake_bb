@@ -356,15 +356,24 @@ export default function Recipes() {
                   </p>
                 </div>
               </CardContent>
-              <CardFooter>
+              <CardFooter className="flex gap-2">
                 <Button
                   variant="outline"
-                  className="w-full"
+                  className="flex-1"
                   onClick={() => handleEdit(recipe)}
                   data-testid={`edit-recipe-${recipe.id}`}
                 >
                   <Pencil className="h-4 w-4 mr-2" />
                   Редагувати
+                </Button>
+                <Button
+                  variant="outline"
+                  className="flex-1"
+                  onClick={() => handleCopy(recipe)}
+                  data-testid={`copy-recipe-${recipe.id}`}
+                >
+                  <Copy className="h-4 w-4 mr-2" />
+                  Копіювати
                 </Button>
               </CardFooter>
             </Card>
