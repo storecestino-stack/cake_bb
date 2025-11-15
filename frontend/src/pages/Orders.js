@@ -234,24 +234,58 @@ export default function Orders() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label>Рецепт (опціонально)</Label>
-                <Select onValueChange={handleRecipeSelect}>
-                  <SelectTrigger data-testid="order-recipe-select">
-                    <SelectValue placeholder="Оберіть рецепт" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {recipes.map((recipe) => (
-                      <SelectItem key={recipe.id} value={recipe.id}>{recipe.name}</SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+                <div className="flex items-center justify-between">
+                  <Label>Рецепти</Label>
+                  <Button type="button" size="sm" onClick={addRecipeToOrder} data-testid="add-recipe-to-order-button">
+                    <Plus className="h-4 w-4 mr-1" />
+                    Додати рецепт
+                  </Button>
+                </div>
+                <div className="space-y-2">
+                  {formData.orderRecipes.map((orderRecipe, index) => (
+                    <div key={index} className="flex gap-2 items-center p-3 border border-border rounded-lg">
+                      <Select
+                        value={orderRecipe.recipeId}
+                        onValueChange={(value) => updateOrderRecipe(index, 'recipeId', value)}
+                      >
+                        <SelectTrigger className="flex-1" data-testid={`order-recipe-select-${index}`}>
+                          <SelectValue placeholder="Оберіть рецепт" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {recipes.map((recipe) => (
+                            <SelectItem key={recipe.id} value={recipe.id}>{recipe.name}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <Input
+                        type="number"
+                        min="1"
+                        placeholder="Кількість"
+                        value={orderRecipe.quantity}
+                        onChange={(e) => updateOrderRecipe(index, 'quantity', e.target.value)}
+                        className="w-24"
+                        data-testid={`order-recipe-quantity-${index}`}
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => removeRecipeFromOrder(index)}
+                        data-testid={`remove-order-recipe-${index}`}
+                      >
+                        <Plus className="h-4 w-4 rotate-45" />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="item">Виріб</Label>
+                <Label htmlFor="item">Назва замовлення</Label>
                 <Input
                   id="item"
                   value={formData.item}
                   onChange={(e) => setFormData({ ...formData, item: e.target.value })}
+                  placeholder="Наприклад: Весільний торт"
                   required
                   data-testid="order-item-input"
                 />
