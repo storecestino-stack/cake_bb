@@ -43,7 +43,8 @@ export default function Orders() {
     item: '',
     dueDate: '',
     total: 0,
-    notes: ''
+    notes: '',
+    orderRecipes: [] // [{recipeId, quantity}]
   });
   const [isEditing, setIsEditing] = useState(false);
 
