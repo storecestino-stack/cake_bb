@@ -127,6 +127,18 @@ function App() {
             }
           />
           <Route
+            path="/semifinished"
+            element={
+              user ? (
+                <DashboardLayout user={user} onLogout={handleLogout}>
+                  <Semifinished />
+                </DashboardLayout>
+              ) : (
+                <Navigate to="/auth" />
+              )
+            }
+          />
+          <Route
             path="/ingredients"
             element={
               user ? (
