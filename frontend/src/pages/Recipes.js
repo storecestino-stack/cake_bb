@@ -14,13 +14,14 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 export default function Recipes() {
   const [recipes, setRecipes] = useState([]);
   const [ingredients, setIngredients] = useState([]);
+  const [semifinished, setSemifinished] = useState([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
     laborCost: 0,
-    ingredients: [],
+    components: [], // {type: 'ingredient'|'semifinished', itemId, quantity}
     imageFile: null
   });
   const [isEditing, setIsEditing] = useState(false);
