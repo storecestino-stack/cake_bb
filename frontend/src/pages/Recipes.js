@@ -393,12 +393,36 @@ export default function Recipes() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-1">
-                  <p className="text-sm text-muted-foreground">Інгредієнтів: {recipe.ingredients?.length || 0}</p>
+                  <p className="text-sm text-muted-foreground">
+                    Компонентів: {(recipe.components?.length || 0) + (recipe.ingredients?.length || 0)}
+                  </p>
                   <p className="text-lg font-bold text-primary">
-                    Ціна: {((recipe.ingredients?.reduce((sum, ing) => {
-                      const ingredient = ingredients.find(i => i.id === ing.ingredientId);
-                      return sum + (ingredient ? ingredient.price * ing.quantity : 0);
-                    }, 0) || 0) + recipe.laborCost).toFixed(2)} грн
+                    Ціна: {(() => {
+                      let cost = 0;
+                      // Old format ingredients
+                      (recipe.ingredients || []).forEach(ing => {
+                        const ingredient = ingredients.find(i => i.id === ing.ingredientId);
+                        if (ingredient) cost += ingredient.price * ing.quantity;
+                      });
+                      // New format components
+                      (recipe.components || []).forEach(comp => {
+                        if (comp.type === 'ingredient') {
+                          const ingredient = ingredients.find(i => i.id === comp.itemId);
+                          if (ingredient) cost += ingredient.price * comp.quantity;
+                        } else if (comp.type === 'semifinished') {
+                          const sf = semifinished.find(s => s.id === comp.itemId);
+                          if (sf) {
+                            let sfCost = 0;
+                            (sf.ingredients || []).forEach(ing => {
+                              const ingredient = ingredients.find(i => i.id === ing.ingredientId);
+                              if (ingredient) sfCost += ingredient.price * ing.quantity;
+                            });
+                            cost += (sfCost + sf.laborCost) * comp.quantity;
+                          }
+                        }
+                      });
+                      return (cost + recipe.laborCost).toFixed(2);
+                    })()} грн
                   </p>
                 </div>
               </CardContent>
