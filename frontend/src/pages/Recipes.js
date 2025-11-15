@@ -20,7 +20,6 @@ export default function Recipes() {
     name: '',
     description: '',
     laborCost: 0,
-    markup: 0,
     ingredients: [],
     imageFile: null
   });
