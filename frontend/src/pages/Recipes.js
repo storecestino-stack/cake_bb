@@ -55,14 +55,31 @@ export default function Recipes() {
     }
   };
 
-  const calculateCost = () => {
+  const calculateCost = async () => {
     let totalCost = 0;
-    formData.ingredients.forEach(recipeIng => {
-      const ingredient = ingredients.find(i => i.id === recipeIng.ingredientId);
-      if (ingredient) {
-        totalCost += ingredient.price * recipeIng.quantity;
+    
+    for (const component of formData.components) {
+      if (component.type === 'ingredient') {
+        const ingredient = ingredients.find(i => i.id === component.itemId);
+        if (ingredient) {
+          totalCost += ingredient.price * component.quantity;
+        }
+      } else if (component.type === 'semifinished') {
+        const sf = semifinished.find(s => s.id === component.itemId);
+        if (sf) {
+          // Calculate semifinished cost
+          let sfCost = 0;
+          (sf.ingredients || []).forEach(ing => {
+            const ingredient = ingredients.find(i => i.id === ing.ingredientId);
+            if (ingredient) {
+              sfCost += ingredient.price * ing.quantity;
+            }
+          });
+          const sfTotal = sfCost + (sf.laborCost || 0);
+          totalCost += sfTotal * component.quantity;
+        }
       }
-    });
+    }
     
     const laborCost = parseFloat(formData.laborCost) || 0;
     const finalPrice = totalCost + laborCost;
