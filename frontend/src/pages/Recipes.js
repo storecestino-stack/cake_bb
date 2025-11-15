@@ -91,7 +91,7 @@ export default function Recipes() {
         name: formData.name,
         description: formData.description || `${formData.ingredients.length} інгредієнтів`,
         laborCost: parseFloat(formData.laborCost) || 0,
-        markup: parseFloat(formData.markup) || 0,
+        markup: 0,
         ingredients: formData.ingredients
       };
 
