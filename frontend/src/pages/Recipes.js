@@ -168,7 +168,8 @@ export default function Recipes() {
         description: recipe.description,
         laborCost: recipe.laborCost,
         markup: 0,
-        ingredients: recipe.ingredients || []
+        ingredients: [],
+        components: recipe.components || []
       };
       
       await axios.post('/recipes', recipeData);
