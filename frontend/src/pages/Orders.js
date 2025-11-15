@@ -115,18 +115,42 @@ export default function Orders() {
     }
   };
 
-  const handleRecipeSelect = async (recipeId) => {
-    try {
-      const response = await axios.get(`/recipes/${recipeId}/calculate`);
-      const recipe = recipes.find(r => r.id === recipeId);
-      setFormData({
-        ...formData,
-        item: recipe?.name || '',
-        total: response.data.finalPrice
-      });
-    } catch (error) {
-      toast.error('Помилка розрахунку ціни');
+  const addRecipeToOrder = () => {
+    setFormData({
+      ...formData,
+      orderRecipes: [...formData.orderRecipes, { recipeId: '', quantity: 1 }]
+    });
+  };
+
+  const removeRecipeFromOrder = (index) => {
+    const newRecipes = formData.orderRecipes.filter((_, i) => i !== index);
+    setFormData({ ...formData, orderRecipes: newRecipes });
+    calculateOrderTotal(newRecipes);
+  };
+
+  const updateOrderRecipe = async (index, field, value) => {
+    const newRecipes = [...formData.orderRecipes];
+    newRecipes[index][field] = field === 'quantity' ? parseInt(value) : value;
+    setFormData({ ...formData, orderRecipes: newRecipes });
+    
+    if (field === 'recipeId' || field === 'quantity') {
+      await calculateOrderTotal(newRecipes);
     }
+  };
+
+  const calculateOrderTotal = async (orderRecipes) => {
+    let total = 0;
+    for (const orderRecipe of orderRecipes) {
+      if (orderRecipe.recipeId && orderRecipe.quantity > 0) {
+        try {
+          const response = await axios.get(`/recipes/${orderRecipe.recipeId}/calculate`);
+          total += response.data.finalPrice * orderRecipe.quantity;
+        } catch (error) {
+          console.error('Error calculating recipe price:', error);
+        }
+      }
+    }
+    setFormData(prev => ({ ...prev, total: total }));
   };
 
   const resetForm = () => {
