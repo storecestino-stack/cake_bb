@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard";
 import Orders from "./pages/Orders";
 import Clients from "./pages/Clients";
 import Recipes from "./pages/Recipes";
+import Semifinished from "./pages/Semifinished";
 import Ingredients from "./pages/Ingredients";
 import CalendarPage from "./pages/CalendarPage";
 import Settings from "./pages/Settings";
