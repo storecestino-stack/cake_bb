@@ -267,45 +267,65 @@ export default function Recipes() {
 
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label>Інгредієнти</Label>
-                  <Button type="button" size="sm" onClick={addIngredient} data-testid="add-ingredient-button">
+                  <Label>Компоненти (Інгредієнти + Напівфабрикати)</Label>
+                  <Button type="button" size="sm" onClick={addComponent} data-testid="add-component-button">
                     <Plus className="h-4 w-4 mr-1" />
                     Додати
                   </Button>
                 </div>
                 <div className="space-y-2">
-                  {formData.ingredients.map((ing, index) => (
-                    <div key={index} className="flex gap-2 items-center">
+                  {formData.components.map((component, index) => (
+                    <div key={index} className="flex gap-2 items-center p-3 border border-border rounded-lg">
                       <Select
-                        value={ing.ingredientId}
-                        onValueChange={(value) => updateIngredient(index, 'ingredientId', value)}
+                        value={component.type}
+                        onValueChange={(value) => updateComponent(index, 'type', value)}
                       >
-                        <SelectTrigger className="flex-1" data-testid={`ingredient-select-${index}`}>
-                          <SelectValue placeholder="Оберіть інгредієнт" />
+                        <SelectTrigger className="w-40" data-testid={`component-type-${index}`}>
+                          <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          {ingredients.map((ingredient) => (
-                            <SelectItem key={ingredient.id} value={ingredient.id}>
-                              {ingredient.name} ({ingredient.unit})
-                            </SelectItem>
-                          ))}
+                          <SelectItem value="ingredient">Інгредієнт</SelectItem>
+                          <SelectItem value="semifinished">Напівфабрикат</SelectItem>
+                        </SelectContent>
+                      </Select>
+                      <Select
+                        value={component.itemId}
+                        onValueChange={(value) => updateComponent(index, 'itemId', value)}
+                      >
+                        <SelectTrigger className="flex-1" data-testid={`component-item-${index}`}>
+                          <SelectValue placeholder={component.type === 'ingredient' ? 'Оберіть інгредієнт' : 'Оберіть напівфабрикат'} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {component.type === 'ingredient' ? (
+                            ingredients.map((item) => (
+                              <SelectItem key={item.id} value={item.id}>
+                                {item.name} ({item.unit})
+                              </SelectItem>
+                            ))
+                          ) : (
+                            semifinished.map((item) => (
+                              <SelectItem key={item.id} value={item.id}>
+                                {item.name} ({item.unit})
+                              </SelectItem>
+                            ))
+                          )}
                         </SelectContent>
                       </Select>
                       <Input
                         type="number"
                         step="0.01"
                         placeholder="Кількість"
-                        value={ing.quantity}
-                        onChange={(e) => updateIngredient(index, 'quantity', e.target.value)}
+                        value={component.quantity}
+                        onChange={(e) => updateComponent(index, 'quantity', e.target.value)}
                         className="w-32"
-                        data-testid={`ingredient-quantity-${index}`}
+                        data-testid={`component-quantity-${index}`}
                       />
                       <Button
                         type="button"
                         variant="ghost"
                         size="icon"
-                        onClick={() => removeIngredient(index)}
-                        data-testid={`remove-ingredient-${index}`}
+                        onClick={() => removeComponent(index)}
+                        data-testid={`remove-component-${index}`}
                       >
                         <X className="h-4 w-4" />
                       </Button>
