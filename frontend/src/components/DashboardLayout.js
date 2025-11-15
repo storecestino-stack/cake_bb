@@ -11,7 +11,8 @@ import {
   Settings,
   LogOut,
   Menu,
-  X
+  X,
+  Factory
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
