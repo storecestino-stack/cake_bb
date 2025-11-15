@@ -334,7 +334,7 @@ export default function Recipes() {
                     Ціна: {((recipe.ingredients?.reduce((sum, ing) => {
                       const ingredient = ingredients.find(i => i.id === ing.ingredientId);
                       return sum + (ingredient ? ingredient.price * ing.quantity : 0);
-                    }, 0) || 0) + recipe.laborCost) * (1 + recipe.markup / 100)}.00 грн
+                    }, 0) || 0) + recipe.laborCost).toFixed(2)} грн
                   </p>
                 </div>
               </CardContent>
