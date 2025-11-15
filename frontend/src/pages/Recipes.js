@@ -35,7 +35,7 @@ export default function Recipes() {
     if (formData.ingredients.length > 0) {
       calculateCost();
     }
-  }, [formData.ingredients, formData.laborCost, formData.markup]);
+  }, [formData.ingredients, formData.laborCost]);
 
   const fetchData = async () => {
     try {
@@ -62,14 +62,12 @@ export default function Recipes() {
     });
     
     const laborCost = parseFloat(formData.laborCost) || 0;
-    const markup = parseFloat(formData.markup) || 0;
-    const finalPrice = (totalCost + laborCost) * (1 + markup / 100);
+    const finalPrice = totalCost + laborCost;
     
     setCosts({
       recipeCost: totalCost,
       laborCost: laborCost,
       totalCost: totalCost + laborCost,
-      markup: markup,
       finalPrice: finalPrice
     });
   };
