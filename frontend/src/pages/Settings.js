@@ -115,24 +115,22 @@ export default function Settings() {
     setCustomColors(newColors);
     
     try {
-      await axios.put('/auth/me', { customColors: newColors });
+      await axios.put('/auth/me', { customColors: newColors, theme: 'custom' });
       
-      // Apply custom colors to CSS variables
-      if (theme === 'custom') {
-        applyCustomColors(newColors);
+      // Update user state to trigger ThemeContext
+      if (user) {
+        setUser({ ...user, customColors: newColors, theme: 'custom' });
       }
+      
+      // If theme is not already custom, update it
+      if (theme !== 'custom') {
+        updateTheme('custom');
+      }
+      
+      toast.success('Колір збережено');
     } catch (error) {
       toast.error('Помилка збереження кольорів');
     }
-  };
-
-  const applyCustomColors = (colors) => {
-    const root = document.documentElement;
-    // Convert hex to HSL for CSS variables
-    root.style.setProperty('--custom-background', colors.background);
-    root.style.setProperty('--custom-foreground', colors.foreground);
-    root.style.setProperty('--custom-border', colors.border);
-    root.style.setProperty('--custom-primary', colors.primary);
   };
 
   const handlePasswordChange = async (e) => {
