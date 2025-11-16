@@ -65,11 +65,11 @@ export default function Ingredients() {
   const handleDelete = async () => {
     if (!editingId) return;
     
-    if (!window.confirm('Ви впевнені, що хочете видалити цей інгредієнт?')) return;
+    if (!window.confirm(t('ingredients.deleteConfirm'))) return;
     
     try {
       await axios.delete(`/ingredients/${editingId}`);
-      toast.success('Інгредієнт видалено');
+      toast.success(t('ingredients.deleted'));
       setDialogOpen(false);
       resetForm();
       fetchIngredients();
