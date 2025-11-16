@@ -334,15 +334,18 @@ test_plan:
 
   - task: "Recipes Page CRUD Operations"
     implemented: true
-    working: "NA"
+    working: false
     file: "/app/frontend/src/pages/Recipes.js"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         - working: "NA"
           agent: "testing"
           comment: "Need to test Recipes page (/recipes) CRUD operations: Navigate to page, verify UI elements, test Create (form with Назва, Опис, Вартість роботи, Компоненти with type switching ingredient/semifinished), test Edit, test Copy (creates recipe with '(копія)' suffix), test Delete, verify cost calculations (Собівартість, Вартість роботи, Загальна вартість), check for console errors."
+        - working: false
+          agent: "testing"
+          comment: "TESTED: ❌ CRITICAL UI BUG FOUND - Recipes page loads successfully and shows empty state 'Ще немає виробів' but the 'Новий виріб' (New Recipe) button is MISSING from the UI. Same structural issue as other CRUD pages - nested Dialog components and improper DialogTrigger structure preventing create button from rendering. Backend API working fine. Cannot test CRUD operations without create button."
 
 agent_communication:
     - agent: "testing"
