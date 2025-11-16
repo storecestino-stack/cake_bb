@@ -186,17 +186,17 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
 
       <Tabs defaultValue="profile" className="w-full">
         <TabsList>
-          <TabsTrigger value="profile" data-testid="profile-tab">Профіль</TabsTrigger>
-          <TabsTrigger value="security" data-testid="security-tab">Безпека</TabsTrigger>
-          <TabsTrigger value="appearance" data-testid="appearance-tab">Вигляд</TabsTrigger>
+          <TabsTrigger value="profile" data-testid="profile-tab">{t('settings.tabs.profile')}</TabsTrigger>
+          <TabsTrigger value="security" data-testid="security-tab">{t('settings.tabs.security')}</TabsTrigger>
+          <TabsTrigger value="appearance" data-testid="appearance-tab">{t('settings.tabs.appearance')}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="profile" className="space-y-6">
           {/* Avatar */}
           <Card>
             <CardHeader>
-              <CardTitle>Фото профілю</CardTitle>
-              <CardDescription>Завантажте або змініть своє фото</CardDescription>
+              <CardTitle>{t('settings.profile.photo')}</CardTitle>
+              <CardDescription>{t('settings.profile.photoDescription')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="flex items-center gap-6">
@@ -218,7 +218,7 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
                     disabled={!avatarFile || loading}
                     data-testid="avatar-submit-button"
                   >
-                    {loading ? 'Завантаження...' : 'Завантажити фото'}
+                    {loading ? t('settings.profile.uploading') : t('settings.profile.uploadPhoto')}
                   </Button>
                 </form>
               </div>
