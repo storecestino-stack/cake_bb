@@ -103,7 +103,7 @@ export default function DashboardLayout({ children, user, onLogout }) {
               data-testid="logout-button"
             >
               <LogOut className="h-4 w-4" />
-              Вийти
+              {t('nav.logout')}
             </Button>
           </div>
         </div>
