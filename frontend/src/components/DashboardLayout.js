@@ -52,8 +52,8 @@ export default function DashboardLayout({ children, user, onLogout }) {
               <ChefHat className="h-6 w-6 text-primary" />
             </div>
             <div>
-              <h1 className="text-lg font-bold text-foreground">Кондитерський</h1>
-              <p className="text-xs text-muted-foreground">Помічник</p>
+              <h1 className="text-lg font-bold text-foreground">{t('auth.appTitle').split(' ')[0]}</h1>
+              <p className="text-xs text-muted-foreground">{t('auth.appTitle').split(' ')[1]}</p>
             </div>
           </div>
 
