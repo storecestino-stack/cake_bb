@@ -49,8 +49,16 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
   });
 
   useEffect(() => {
-    fetchUser();
-  }, []);
+    if (initialUser) {
+      setUser(initialUser);
+      setName(initialUser.name);
+      if (initialUser.customColors) {
+        setCustomColors(initialUser.customColors);
+      }
+    } else {
+      fetchUser();
+    }
+  }, [initialUser]);
 
   const fetchUser = async () => {
     try {
