@@ -148,11 +148,11 @@ export default function Recipes() {
   const handleDelete = async () => {
     if (!editingId) return;
     
-    if (!window.confirm('Ви впевнені, що хочете видалити цей рецепт?')) return;
+    if (!window.confirm('Ви впевнені, що хочете видалити цей виріб?')) return;
     
     try {
       await axios.delete(`/recipes/${editingId}`);
-      toast.success('Рецепт видалено');
+      toast.success('Виріб видалено');
       setDialogOpen(false);
       resetForm();
       fetchData();
