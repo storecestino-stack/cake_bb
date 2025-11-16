@@ -55,6 +55,7 @@ class User(BaseModel):
     email: EmailStr
     avatar: Optional[str] = None
     theme: str = "system"
+    customColors: Optional[dict] = None
     createdAt: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
 class UserCreate(BaseModel):
@@ -69,6 +70,7 @@ class UserLogin(BaseModel):
 class UserUpdate(BaseModel):
     name: Optional[str] = None
     theme: Optional[str] = None
+    customColors: Optional[dict] = None
 
 class PasswordChange(BaseModel):
     current_password: str
