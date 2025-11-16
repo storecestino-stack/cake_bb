@@ -79,41 +79,13 @@ export default function Ingredients() {
     setEditingId(null);
   };
 
-  // UI Components (shadcn)
-  const Dialog = ({ open, onOpenChange, children }) => {
-    if (!open) return null;
+  if (loading) {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center">
-        <div className="absolute inset-0 bg-black/50" onClick={() => onOpenChange(false)}></div>
-        <div className="relative bg-white rounded-lg shadow-lg z-10">{children}</div>
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
       </div>
     );
-  };
-
-  const DialogTrigger = ({ children }) => <>{children}</>;
-  const DialogContent = ({ children }) => <div className="p-6">{children}</div>;
-  const DialogHeader = ({ children }) => <div className="mb-4">{children}</div>;
-  const DialogTitle = ({ children }) => <h2 className="text-xl font-bold">{children}</h2>;
-  const Button = ({ children, onClick, variant, size, type }) => (
-    <button
-      type={type || 'button'}
-      onClick={onClick}
-      className={`px-4 py-2 rounded ${variant === 'destructive' ? 'bg-red-600 text-white' : variant === 'outline' ? 'border border-gray-300' : 'bg-blue-600 text-white'} ${size === 'sm' ? 'text-sm' : ''}`}
-    >
-      {children}
-    </button>
-  );
-  const Input = ({ ...props }) => <input {...props} className="border rounded p-2 w-full" />;
-  const Label = ({ children, htmlFor }) => <label htmlFor={htmlFor} className="block font-medium mb-1">{children}</label>;
-  const Select = ({ value, onValueChange, children }) => (
-    <select value={value} onChange={(e) => onValueChange(e.target.value)} className="border rounded p-2 w-full">
-      {children}
-    </select>
-  );
-  const SelectTrigger = ({ children }) => <>{children}</>;
-  const SelectValue = ({ placeholder }) => <option value="">{placeholder}</option>;
-  const SelectContent = ({ children }) => <>{children}</>;
-  const SelectItem = ({ value, children }) => <option value={value}>{children}</option>;
+  }
 
   return (
     <div className="space-y-4">
