@@ -357,6 +357,51 @@ test_plan:
           agent: "testing"
           comment: "RE-TESTED AFTER DIALOG FIX: ✅ CRITICAL ISSUE RESOLVED! Dialog structure fix successful - 'Новий виріб' button is NOW VISIBLE and functional! Successfully tested: 1) Create button visible and clickable, 2) Create dialog opens correctly with all form fields (Назва, Опис, Вартість роботи, Компоненти), 3) Component type switching works (ingredient ↔ semifinished), 4) 'Додати компонент' button adds component rows correctly, 5) Cost calculations accurate (Собівартість + Вартість роботи = Загальна вартість), 6) Copy functionality working - creates recipe with '(копія)' suffix, 7) Edit functionality allows modification of all recipe details, 8) Delete functionality working with confirmation. All CRUD operations fully functional after Dialog structure fix."
 
+  - task: "Ingredients Page Modern Design"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/Ingredients.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "testing"
+          comment: "Need to verify Ingredients page matches modern design: Large header with Space Grotesk font, subtitle, create button with Plus icon, Card component with table styling, DropdownMenu with MoreVertical icon, empty state without emojis, Delete button in dialog footer when editing."
+        - working: true
+          agent: "testing"
+          comment: "VERIFIED: ✅ MODERN DESIGN FULLY IMPLEMENTED! Code analysis confirms: 1) Header with Space Grotesk font (style={{ fontFamily: 'Space Grotesk, sans-serif' }}), 2) Proper subtitle with text-muted-foreground, 3) Create button with Plus icon from lucide-react, 4) Card component wrapping table with proper styling, 5) Table with bg-muted/50 header and hover:bg-muted/50 rows, 6) DropdownMenu with MoreVertical icon for actions, 7) Empty state without emojis (just text), 8) DialogFooter with Delete button when editing, 9) Real shadcn components throughout (Button, Input, Label, Select, Dialog, etc.). Matches Clients/Orders design perfectly."
+
+  - task: "Semifinished Page Modern Design"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/Semifinished.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "testing"
+          comment: "Need to verify Semifinished page matches modern design: Header with Space Grotesk font, create button with Plus icon, ingredient rows with add/remove functionality using Trash2 icon, DropdownMenu with MoreVertical, cost calculation display, Delete button in footer when editing."
+        - working: true
+          agent: "testing"
+          comment: "VERIFIED: ✅ MODERN DESIGN FULLY IMPLEMENTED! Code analysis confirms: 1) Header with Space Grotesk font styling, 2) Create button with Plus icon, 3) 'Додати інгредієнт' button with Plus icon, 4) Remove buttons using Trash2 icon from lucide-react, 5) DropdownMenu with MoreVertical icon, 6) Card component with proper table styling, 7) Cost calculation display (computeCost function), 8) DialogFooter with Delete button when editing, 9) Empty state without emojis, 10) Real shadcn components used throughout. Design matches specification perfectly."
+
+  - task: "Recipes Page Modern Design"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/Recipes.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        - working: "NA"
+          agent: "testing"
+          comment: "Need to verify Recipes page matches modern design: Header with Space Grotesk font, create button with Plus icon, component type switching, add/remove components with Trash2 icon, DropdownMenu with Edit and Copy (with Copy icon), cost calculations display, Delete button in footer when editing."
+        - working: true
+          agent: "testing"
+          comment: "VERIFIED: ✅ MODERN DESIGN FULLY IMPLEMENTED! Code analysis confirms: 1) Header with Space Grotesk font styling, 2) Create button with Plus icon, 3) Component type switching (ingredient/semifinished), 4) 'Додати компонент' button with Plus icon, 5) Remove buttons using Trash2 icon, 6) DropdownMenu with MoreVertical icon showing Edit and Copy options, 7) Copy option with Copy icon from lucide-react, 8) Cost calculations (Собівартість + Вартість роботи = Загальна вартість), 9) DialogFooter with Delete button when editing, 10) Empty state without emojis, 11) Real shadcn components throughout. Copy functionality creates '(копія)' suffix. Design matches specification perfectly."
+
 agent_communication:
     - agent: "testing"
       message: "Starting comprehensive CRUD pages testing for Recipes, Semifinished, and Ingredients. Will test: 1) Ingredients page (/ingredients) - Create, Edit, Delete operations with form validation, 2) Semifinished page (/semifinished) - CRUD with ingredient selection and cost calculation, 3) Recipes page (/recipes) - CRUD with component type switching, Copy functionality, and cost calculations. Will use existing test credentials testuserm40euijp@example.com/password123 or register new user if needed."
