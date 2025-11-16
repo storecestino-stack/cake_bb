@@ -197,27 +197,27 @@ export default function Orders() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
-            Замовлення
+            {t('orders.title')}
           </h1>
-          <p className="text-muted-foreground">Керуйте всіма замовленнями</p>
+          <p className="text-muted-foreground">{t('orders.subtitle')}</p>
         </div>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
             <Button onClick={openCreateDialog} data-testid="create-order-button">
               <Plus className="mr-2 h-4 w-4" />
-              Нове замовлення
+              {t('orders.newOrder')}
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-md max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>{isEditing ? 'Редагувати замовлення' : 'Нове замовлення'}</DialogTitle>
+              <DialogTitle>{isEditing ? t('orders.editOrder') : t('orders.newOrder')}</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="clientId">Клієнт</Label>
+                <Label htmlFor="clientId">{t('orders.client')}</Label>
                 <Select value={formData.clientId} onValueChange={(value) => setFormData({ ...formData, clientId: value })} required>
                   <SelectTrigger data-testid="order-client-select">
-                    <SelectValue placeholder="Оберіть клієнта" />
+                    <SelectValue placeholder={t('orders.selectClient')} />
                   </SelectTrigger>
                   <SelectContent>
                     {clients.map((client) => (
@@ -228,10 +228,10 @@ export default function Orders() {
               </div>
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label>Вироби</Label>
+                  <Label>{t('orders.products')}</Label>
                   <Button type="button" size="sm" onClick={addRecipeToOrder} data-testid="add-recipe-to-order-button">
                     <Plus className="h-4 w-4 mr-1" />
-                    Додати виріб
+                    {t('orders.addProduct')}
                   </Button>
                 </div>
                 <div className="space-y-2">
