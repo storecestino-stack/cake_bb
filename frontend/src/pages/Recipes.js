@@ -452,11 +452,6 @@ export default function Recipes() {
       ) : (
         <Card>
           <CardContent className="text-center py-12">
-            <img
-              src="https://images.pexels.com/photos/205961/pexels-photo-205961.jpeg"
-              alt="No recipes"
-              className="w-48 h-48 mx-auto mb-4 rounded-lg opacity-50 object-cover"
-            />
             <p className="text-muted-foreground mb-4">Ще немає рецептів</p>
             <Button onClick={() => setDialogOpen(true)}>
               <Plus className="mr-2 h-4 w-4" />
