@@ -302,17 +302,17 @@ function Semifinished() {
         <table className="min-w-full border">
           <thead>
             <tr className="bg-gray-100">
-              <th className="border p-2 text-left">Назва</th>
-              <th className="border p-2 text-left">Одиниця</th>
-              <th className="border p-2 text-left">Собівартість</th>
-              <th className="border p-2 text-left">Дії</th>
+              <th className="border p-2 text-left">{t('semifinished.name')}</th>
+              <th className="border p-2 text-left">{t('semifinished.unit')}</th>
+              <th className="border p-2 text-left">{t('recipes.costPrice')}</th>
+              <th className="border p-2 text-left">{t('common.actions')}</th>
             </tr>
           </thead>
           <tbody>
             {semiProducts.length === 0 ? (
               <tr>
                 <td colSpan={4} className="border p-4 text-center text-gray-500">
-                  Немає напівфабрикатів
+                  {t('semifinished.noSemifinished')}
                 </td>
               </tr>
             ) : (
@@ -323,10 +323,10 @@ function Semifinished() {
                   <td className="border p-2">{computeCost(sp.ingredients)} грн</td>
                   <td className="border p-2 space-x-2">
                     <Button size="sm" onClick={() => openEditDialog(sp)}>
-                      Редагувати
+                      {t('common.edit')}
                     </Button>
                     <Button size="sm" variant="destructive" onClick={() => handleDelete(sp._id)}>
-                      Видалити
+                      {t('common.delete')}
                     </Button>
                   </td>
                 </tr>
