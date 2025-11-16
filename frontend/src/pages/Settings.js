@@ -57,6 +57,9 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
       const response = await axios.get('/auth/me');
       setUser(response.data);
       setName(response.data.name);
+      if (setGlobalUser) {
+        setGlobalUser(response.data);
+      }
       if (response.data.customColors) {
         setCustomColors(response.data.customColors);
       }
