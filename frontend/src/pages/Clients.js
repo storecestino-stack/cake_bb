@@ -34,7 +34,7 @@ export default function Clients() {
       setClients(clientsRes.data);
       setOrders(ordersRes.data);
     } catch (error) {
-      toast.error('Помилка завантаження даних');
+      toast.error(t('clients.errorLoad'));
     } finally {
       setLoading(false);
     }
@@ -45,16 +45,16 @@ export default function Clients() {
     try {
       if (isEditing) {
         await axios.put(`/clients/${editingId}`, formData);
-        toast.success('Клієнта оновлено');
+        toast.success(t('clients.updated'));
       } else {
         await axios.post('/clients', formData);
-        toast.success('Клієнта створено');
+        toast.success(t('clients.created'));
       }
       setDialogOpen(false);
       resetForm();
       fetchData();
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Помилка');
+      toast.error(error.response?.data?.detail || t('clients.error'));
     }
   };
 
@@ -72,16 +72,16 @@ export default function Clients() {
   const handleDelete = async () => {
     if (!editingId) return;
     
-    if (!window.confirm('Ви впевнені, що хочете видалити цього клієнта?')) return;
+    if (!window.confirm(t('clients.deleteConfirm'))) return;
     
     try {
       await axios.delete(`/clients/${editingId}`);
-      toast.success('Клієнта видалено');
+      toast.success(t('clients.deleted'));
       setDialogOpen(false);
       resetForm();
       fetchData();
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Помилка видалення');
+      toast.error(error.response?.data?.detail || t('clients.error'));
     }
   };
 
