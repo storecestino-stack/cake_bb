@@ -179,9 +179,9 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
     <div className="space-y-6 animate-fade-in max-w-4xl">
       <div>
         <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
-          Налаштування
+          {t('settings.title')}
         </h1>
-        <p className="text-muted-foreground">Керуйте своїм профілем та налаштуваннями</p>
+        <p className="text-muted-foreground">{t('settings.subtitle')}</p>
       </div>
 
       <Tabs defaultValue="profile" className="w-full">
