@@ -271,12 +271,18 @@ export default function CalendarPage() {
   };
 
   const renderMonthView = () => {
+    const handleMonthDateSelect = (date) => {
+      setSelectedDate(date);
+      setCurrentDate(date);
+      setViewMode('day'); // Switch to day view when date is clicked
+    };
+    
     return (
       <div className="flex justify-center">
         <Calendar
           mode="single"
           selected={selectedDate}
-          onSelect={handleDateSelect}
+          onSelect={handleMonthDateSelect}
           month={currentDate}
           onMonthChange={setCurrentDate}
           locale={uk}
