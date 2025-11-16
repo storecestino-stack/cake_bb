@@ -404,10 +404,10 @@ export default function Orders() {
             </div>
           ) : (
             <div className="text-center py-12">
-              <p className="text-muted-foreground mb-4">Ще немає замовлень</p>
+              <p className="text-muted-foreground mb-4">{t('orders.noOrders')}</p>
               <Button onClick={openCreateDialog}>
                 <Plus className="mr-2 h-4 w-4" />
-                Створити перше замовлення
+                {t('orders.createFirstOrder')}
               </Button>
             </div>
           )}
