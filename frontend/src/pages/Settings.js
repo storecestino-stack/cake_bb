@@ -126,6 +126,9 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
     try {
       await axios.put('/auth/me', { language: newLanguage });
       
+      // Change i18n language
+      i18n.changeLanguage(newLanguage);
+      
       // Update local and global user state
       const updatedUser = { ...user, language: newLanguage };
       setUser(updatedUser);
@@ -134,9 +137,9 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
         setGlobalUser(updatedUser);
       }
       
-      toast.success('Мову змінено');
+      toast.success(t('settings.appearance.languageChanged'));
     } catch (error) {
-      toast.error('Помилка зміни мови');
+      toast.error(t('settings.appearance.languageError'));
     }
   };
 
