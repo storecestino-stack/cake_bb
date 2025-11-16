@@ -120,17 +120,17 @@ export default function Recipes() {
 
       if (isEditing) {
         await axios.put(`/recipes/${editingId}`, recipeData);
-        toast.success('Виріб оновлено');
+        toast.success(t('recipes.updated'));
       } else {
         await axios.post('/recipes', recipeData);
-        toast.success('Виріб створено');
+        toast.success(t('recipes.created'));
       }
       
       setDialogOpen(false);
       resetForm();
       fetchData();
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Помилка');
+      toast.error(error.response?.data?.detail || t('recipes.error'));
     }
   };
 
@@ -150,16 +150,16 @@ export default function Recipes() {
   const handleDelete = async () => {
     if (!editingId) return;
     
-    if (!window.confirm('Ви впевнені, що хочете видалити цей виріб?')) return;
+    if (!window.confirm(t('recipes.deleteConfirm'))) return;
     
     try {
       await axios.delete(`/recipes/${editingId}`);
-      toast.success('Виріб видалено');
+      toast.success(t('recipes.deleted'));
       setDialogOpen(false);
       resetForm();
       fetchData();
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Помилка видалення');
+      toast.error(error.response?.data?.detail || t('recipes.error'));
     }
   };
 
