@@ -30,6 +30,7 @@ const languageOptions = [
 
 export default function Settings({ user: initialUser, setUser: setGlobalUser }) {
   const { theme, updateTheme } = useTheme();
+  const { t, i18n } = useTranslation();
   const [name, setName] = useState('');
   const [avatarFile, setAvatarFile] = useState(null);
   const [user, setUser] = useState(initialUser);
@@ -37,7 +38,7 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [language, setLanguage] = useState('uk');
+  const [language, setLanguage] = useState(i18n.language || 'uk');
   
   // Password visibility states
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
