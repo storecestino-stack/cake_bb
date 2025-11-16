@@ -46,7 +46,7 @@ export default function Semifinished() {
       setSemifinished(semifinishedRes.data);
       setIngredients(ingredientsRes.data);
     } catch (error) {
-      toast.error('Помилка завантаження даних');
+      toast.error(t('semifinished.errorLoad'));
     } finally {
       setLoading(false);
     }
@@ -84,17 +84,17 @@ export default function Semifinished() {
 
       if (isEditing) {
         await axios.put(`/semifinished/${editingId}`, data);
-        toast.success('Напівфабрикат оновлено');
+        toast.success(t('semifinished.updated'));
       } else {
         await axios.post('/semifinished', data);
-        toast.success('Напівфабрикат створено');
+        toast.success(t('semifinished.created'));
       }
       
       setDialogOpen(false);
       resetForm();
       fetchData();
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Помилка');
+      toast.error(error.response?.data?.detail || t('semifinished.error'));
     }
   };
 
@@ -113,16 +113,16 @@ export default function Semifinished() {
   const handleDelete = async () => {
     if (!editingId) return;
     
-    if (!window.confirm('Ви впевнені, що хочете видалити цей напівфабрикат?')) return;
+    if (!window.confirm(t('semifinished.deleteConfirm'))) return;
     
     try {
       await axios.delete(`/semifinished/${editingId}`);
-      toast.success('Напівфабрикат видалено');
+      toast.success(t('semifinished.deleted'));
       setDialogOpen(false);
       resetForm();
       fetchData();
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Помилка видалення');
+      toast.error(error.response?.data?.detail || t('semifinished.error'));
     }
   };
 
