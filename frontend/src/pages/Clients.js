@@ -9,8 +9,10 @@ import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Plus, MoreVertical, Mail, Phone } from 'lucide-react';
 import { toast } from 'sonner';
+import { useTranslation } from 'react-i18next';
 
 export default function Clients() {
+  const { t } = useTranslation();
   const [clients, setClients] = useState([]);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
