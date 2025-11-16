@@ -120,6 +120,24 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
     }
   };
 
+  const handleLanguageChange = async (newLanguage) => {
+    try {
+      await axios.put('/auth/me', { language: newLanguage });
+      
+      // Update local and global user state
+      const updatedUser = { ...user, language: newLanguage };
+      setUser(updatedUser);
+      setLanguage(newLanguage);
+      if (setGlobalUser) {
+        setGlobalUser(updatedUser);
+      }
+      
+      toast.success('Мову змінено');
+    } catch (error) {
+      toast.error('Помилка зміни мови');
+    }
+  };
+
   const handlePasswordChange = async (e) => {
     e.preventDefault();
     
