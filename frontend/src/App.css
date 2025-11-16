@@ -110,6 +110,31 @@
   background: linear-gradient(135deg, #0d1117 0%, #161b22 25%, #1a1f2e 50%, #1c2128 75%, #0d1117 100%);
 }
 
+/* Custom theme - uses CSS variables set by ThemeContext */
+:root[data-theme="custom"] {
+  --background: var(--custom-background, 0 0% 100%);
+  --foreground: var(--custom-foreground, 20 14.3% 4.1%);
+  --border: var(--custom-border, 20 5.9% 90%);
+  --primary: var(--custom-primary, 210 100% 45%);
+  
+  /* Derived colors based on custom selection */
+  --primary-foreground: 0 0% 100%;
+  --secondary: var(--custom-border, 60 4.8% 95.9%);
+  --secondary-foreground: var(--custom-foreground, 24 9.8% 10%);
+  --accent: var(--custom-border, 60 4.8% 95.9%);
+  --accent-foreground: var(--custom-foreground, 24 9.8% 10%);
+  --card: var(--custom-background, 0 0% 100%);
+  --card-foreground: var(--custom-foreground, 20 14.3% 4.1%);
+  --input: var(--custom-border, 20 5.9% 90%);
+  --ring: var(--custom-primary, 210 100% 45%);
+  --muted: var(--custom-border, 60 4.8% 95.9%);
+  --muted-foreground: var(--custom-foreground, 25 5.3% 44.7%);
+}
+
+:root[data-theme="custom"] body {
+  background: linear-gradient(135deg, var(--custom-background) 0%, var(--custom-background) 50%, var(--custom-border) 100%);
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
