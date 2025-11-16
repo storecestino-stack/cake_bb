@@ -7,13 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { uk } from 'date-fns/locale';
-
-const periodLabels = {
-  week: 'Тиждень',
-  month: 'Місяць',
-  quarter: 'Квартал',
-  year: 'Рік'
-};
+import { useTranslation } from 'react-i18next';
 
 const statusLabels = {
   'New': 'Нове',
