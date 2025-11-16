@@ -198,20 +198,53 @@ test_plan:
   test_all: false
   test_priority: "high_first"
 
-  - task: "New Language Tab Implementation"
+  - task: "Calendar View Mode Switching"
     implemented: true
-    working: true
-    file: "/app/frontend/src/pages/Settings.js"
+    working: "NA"
+    file: "/app/frontend/src/pages/CalendarPage.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
         - working: "NA"
           agent: "testing"
-          comment: "Need to test new Language tab implementation: 1) Verify new tab structure with 4 tabs (Профіль, Безпека, Мова, Вигляд), 2) Confirm language switcher moved from Appearance to Language tab, 3) Verify only 3 languages available (Ukrainian, English, Polish) with Russian removed, 4) Test language switching functionality still works."
-        - working: true
+          comment: "Need to test 4 view mode buttons (День, Тиждень, Місяць, Рік) are visible and functional. Verify clicking each button changes the view correctly and the clicked button is highlighted (default vs outline style)."
+
+  - task: "Calendar Navigation Controls"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/CalendarPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
           agent: "testing"
-          comment: "TESTED: ✅ NEW LANGUAGE TAB IMPLEMENTATION SUCCESSFUL! Tab structure correct: 4 tabs in proper order (Профіль, Безпека, Мова, Вигляд). Language switcher successfully moved to dedicated 'Мова' tab. Only 3 languages available (🇺🇦 Українська, 🇬🇧 Англійська, 🇵🇱 Польська) - Russian correctly removed. Language switching functional: tab names change correctly (Мова→Language→Język→Мова). Appearance tab now contains only theme options. Minor: Found 1 extra language option selector in appearance tab but no functional impact."
+          comment: "Need to test Previous (◄), 'Сьогодні' (Today), and Next (►) buttons work correctly in all view modes. Verify navigation goes back/forward appropriately (day/week/month/year based on current view) and Today button resets to current date."
+
+  - task: "Calendar View Rendering"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/CalendarPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "testing"
+          comment: "Need to verify each view mode renders correctly: Month (traditional calendar grid with highlighted dates), Week (7 columns with mini order cards, today highlighted), Day (detailed order list), Year (12 month cards with order counts)."
+
+  - task: "Calendar Order Details"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/CalendarPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "testing"
+          comment: "Need to test clicking on orders in any view opens order details dialog with full information (client, product, status, due date, amount, notes). Verify order details are accessible from all view modes."
 
 agent_communication:
     - agent: "testing"
