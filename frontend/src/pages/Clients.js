@@ -108,24 +108,24 @@ export default function Clients() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
-            Клієнти
+            {t('clients.title')}
           </h1>
-          <p className="text-muted-foreground">Керуйте своєю клієнтською базою</p>
+          <p className="text-muted-foreground">{t('clients.subtitle')}</p>
         </div>
         <Dialog open={dialogOpen} onOpenChange={(open) => { setDialogOpen(open); if (!open) resetForm(); }}>
           <DialogTrigger asChild>
             <Button data-testid="create-client-button">
               <Plus className="mr-2 h-4 w-4" />
-              Новий клієнт
+              {t('clients.newClient')}
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>{isEditing ? 'Редагувати клієнта' : 'Новий клієнт'}</DialogTitle>
+              <DialogTitle>{isEditing ? t('clients.editClient') : t('clients.newClient')}</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Ім'я</Label>
+                <Label htmlFor="name">{t('clients.name')}</Label>
                 <Input
                   id="name"
                   value={formData.name}
