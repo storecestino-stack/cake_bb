@@ -65,7 +65,7 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
         setGlobalUser(response.data);
       }
     } catch (error) {
-      toast.error('Помилка завантаження профілю');
+      toast.error(t('settings.profile.profileError'));
     }
   };
 
@@ -77,7 +77,7 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
       toast.success('Ім\'я оновлено');
       fetchUser();
     } catch (error) {
-      toast.error('Помилка оновлення імені');
+      toast.error(t('settings.profile.nameError'));
     } finally {
       setLoading(false);
     }
@@ -94,11 +94,11 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
       await axios.post('/upload/avatar', formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
-      toast.success('Аватар оновлено');
+      toast.success(t('settings.profile.photoUpdated'));
       setAvatarFile(null);
       fetchUser();
     } catch (error) {
-      toast.error('Помилка завантаження аватара');
+      toast.error(t('settings.profile.photoError'));
     } finally {
       setLoading(false);
     }
