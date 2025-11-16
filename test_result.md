@@ -190,10 +190,12 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Calendar Month View with Order Display"
+    - "Ingredients Page CRUD Operations"
+    - "Semifinished Page CRUD Operations"
+    - "Recipes Page CRUD Operations"
   stuck_tasks: []
   test_all: false
-  test_priority: "high_first"
+  test_priority: "sequential"
 
   - task: "Calendar View Mode Switching"
     implemented: true
