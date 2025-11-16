@@ -19,10 +19,10 @@ const themeOptions = [
 ];
 
 const colorPalette = [
-  '#FF6B6B', '#FFA07A', '#FFD93D', '#6BCF7F', '#4ECDC4', '#45B7D1',
-  '#5E60CE', '#A29BFE', '#FD79A8', '#FDCB6E', '#00B894', '#00CEC9',
-  '#0984E3', '#6C5CE7', '#E17055', '#D63031', '#FDCB6E', '#FFA502',
-  '#FF6348', '#2ECC71', '#3498DB', '#9B59B6', '#34495E', '#95A5A6'
+  '#FFE4E1', '#FADADD', '#FFB6C1', '#FFC0CB', '#FFD6E7', '#E6E6FA',
+  '#D8BFD8', '#DDA0DD', '#B0E0E6', '#ADD8E6', '#AFEEEE', '#B0E2FF',
+  '#C1FFC1', '#D4F1D4', '#E0FFE0', '#FFFACD', '#FFE4B5', '#FFEFD5',
+  '#F5DEB3', '#F0E68C', '#EEE8AA', '#E6D7C3', '#D3D3D3', '#E0E0E0'
 ];
 
 export default function Settings({ user: initialUser, setUser: setGlobalUser }) {
