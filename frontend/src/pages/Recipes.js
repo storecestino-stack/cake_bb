@@ -335,81 +335,37 @@ export default function Recipes() {
                     </div>
                     <Button
                       type="button"
-                      variant="destructive"
-                      size="sm"
+                      variant="ghost"
+                      size="icon"
                       onClick={() => removeComponentRow(idx)}
                     >
-                      {t('common.delete')}
+                      <Trash2 className="h-4 w-4" />
                     </Button>
                   </div>
                 ))}
                 <Button type="button" variant="outline" onClick={addComponentRow}>
-                  + {t('recipes.addComponent')}
+                  <Plus className="mr-2 h-4 w-4" />
+                  {t('recipes.addComponent')}
                 </Button>
               </div>
 
-              <div className="flex justify-end gap-2 pt-4">
-                <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
-                  {t('common.cancel')}
+              <DialogFooter className={isEditing ? "flex justify-between" : ""}>
+                {isEditing && (
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    onClick={handleDelete}
+                  >
+                    {t('common.delete')}
+                  </Button>
+                )}
+                <Button type="submit">
+                  {isEditing ? t('common.save') : t('common.create')}
                 </Button>
-                <Button type="submit">{isEditing ? t('common.save') : t('common.create')}</Button>
-              </div>
+              </DialogFooter>
             </form>
           </DialogContent>
         </Dialog>
-
-      {/* Table */}
-      <div className="overflow-x-auto">
-        <table className="min-w-full border">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="border p-2 text-left">{t('recipes.name')}</th>
-              <th className="border p-2 text-left">{t('orders.notes')}</th>
-              <th className="border p-2 text-left">{t('recipes.costPrice')}</th>
-              <th className="border p-2 text-left">{t('recipes.laborCost')}</th>
-              <th className="border p-2 text-left">{t('recipes.finalPrice')}</th>
-              <th className="border p-2 text-left">{t('common.actions')}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {recipes.length === 0 ? (
-              <tr>
-                <td colSpan={6} className="border p-4 text-center text-gray-500">
-                  {t('recipes.noRecipes')}
-                </td>
-              </tr>
-            ) : (
-              recipes.map((recipe) => {
-                const cost = parseFloat(computeCost(recipe.components || []));
-                const labor = recipe.laborCost || 0;
-                const total = (cost + labor).toFixed(2);
-                return (
-                  <tr key={recipe._id}>
-                    <td className="border p-2">{recipe.name}</td>
-                    <td className="border p-2">{recipe.description || '—'}</td>
-                    <td className="border p-2">{cost} грн</td>
-                    <td className="border p-2">{labor} грн</td>
-                    <td className="border p-2">{total} грн</td>
-                    <td className="border p-2 space-x-2">
-                      <Button size="sm" onClick={() => openEditDialog(recipe)}>
-                        {t('common.edit')}
-                      </Button>
-                      <Button size="sm" variant="outline" onClick={() => handleCopy(recipe)}>
-                        {t('recipes.copy')}
-                      </Button>
-                      <Button size="sm" variant="destructive" onClick={() => handleDelete(recipe._id)}>
-                        {t('common.delete')}
-                      </Button>
-                    </td>
-                  </tr>
-                );
-              })
-            )}
-          </tbody>
-        </table>
-      </div>
     </div>
   );
 }
-
-export default Recipes;
