@@ -6,14 +6,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { uk } from 'date-fns/locale';
-
-const statusLabels = {
-  'New': 'Нове',
-  'In Progress': 'В роботі',
-  'Ready': 'Готово',
-  'Delivered': 'Доставлено',
-  'Cancelled': 'Скасовано'
-};
+import { useTranslation } from 'react-i18next';
 
 const statusColors = {
   'New': 'bg-blue-100 text-blue-800',
@@ -24,6 +17,7 @@ const statusColors = {
 };
 
 export default function CalendarPage() {
+  const { t } = useTranslation();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -41,7 +35,7 @@ export default function CalendarPage() {
       const response = await axios.get('/orders');
       setOrders(response.data);
     } catch (error) {
-      toast.error('Помилка завантаження замовлень');
+      toast.error(t('orders.errorLoad'));
     } finally {
       setLoading(false);
     }
