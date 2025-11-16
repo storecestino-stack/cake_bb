@@ -406,11 +406,6 @@ export default function Orders() {
             </div>
           ) : (
             <div className="text-center py-12">
-              <img
-                src="https://images.unsplash.com/photo-1555507036-ab1f4038808a"
-                alt="No orders"
-                className="w-48 h-48 mx-auto mb-4 rounded-lg opacity-50 object-cover"
-              />
               <p className="text-muted-foreground mb-4">Ще немає замовлень</p>
               <Button onClick={openCreateDialog}>
                 <Plus className="mr-2 h-4 w-4" />
