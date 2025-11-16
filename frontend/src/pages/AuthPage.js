@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { toast } from 'sonner';
-import { ChefHat } from 'lucide-react';
+import { ChefHat, Eye, EyeOff } from 'lucide-react';
 
 export default function AuthPage({ onLogin }) {
   const [isLoading, setIsLoading] = useState(false);
@@ -17,6 +17,11 @@ export default function AuthPage({ onLogin }) {
   const [newPassword, setNewPassword] = useState('');
   const [showResetForm, setShowResetForm] = useState(false);
   const [resetStep, setResetStep] = useState(1); // 1: email, 2: code+password
+  
+  // Password visibility states
+  const [showLoginPassword, setShowLoginPassword] = useState(false);
+  const [showSignupPassword, setShowSignupPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
