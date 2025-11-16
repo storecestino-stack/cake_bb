@@ -27,7 +27,7 @@ export default function Ingredients() {
       const response = await axios.get('/ingredients');
       setIngredients(response.data);
     } catch (error) {
-      toast.error('Помилка завантаження інгредієнтів');
+      toast.error(t('ingredients.errorLoad'));
     } finally {
       setLoading(false);
     }
