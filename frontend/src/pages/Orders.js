@@ -14,11 +14,6 @@ import { format } from 'date-fns';
 import { uk } from 'date-fns/locale';
 import { useTranslation } from 'react-i18next';
 
-const statusOptions = ['New', 'In Progress', 'Ready', 'Delivered', 'Cancelled'];
-  'Delivered': 'Доставлено',
-  'Cancelled': 'Скасовано'
-};
-
 const statusColors = {
   'New': 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200',
   'In Progress': 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200',
@@ -28,6 +23,7 @@ const statusColors = {
 };
 
 export default function Orders() {
+  const { t } = useTranslation();
   const [orders, setOrders] = useState([]);
   const [clients, setClients] = useState([]);
   const [recipes, setRecipes] = useState([]);
