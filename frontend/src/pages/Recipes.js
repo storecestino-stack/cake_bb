@@ -452,10 +452,10 @@ export default function Recipes() {
       ) : (
         <Card>
           <CardContent className="text-center py-12">
-            <p className="text-muted-foreground mb-4">Ще немає рецептів</p>
+            <p className="text-muted-foreground mb-4">Ще немає виробів</p>
             <Button onClick={() => setDialogOpen(true)}>
               <Plus className="mr-2 h-4 w-4" />
-              Створити перший рецепт
+              Створити перший виріб
             </Button>
           </CardContent>
         </Card>
