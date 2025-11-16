@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Протестувати конструктор користувацької теми та відсутність декоративних зображень. Користувач попросив видалити декоративні зображення з порожніх екранів та створити конструктор користувацької теми з палітрою з 24 кольорів для: фону, шрифту, рамок та іконок."
+user_problem_statement: "Test i18n (Internationalization) Implementation - Full internationalization system using i18next with 4 languages: Ukrainian (uk), English (en), Polish (pl), and Russian (ru). All UI components now use translation keys instead of hardcoded text."
 
 frontend:
   - task: "Custom Theme Constructor"
