@@ -353,7 +353,7 @@ export default function AuthPage({ onLogin }) {
                     disabled={isLoading}
                     data-testid="signup-submit-button"
                   >
-                    {isLoading ? 'Створення...' : 'Створити акаунт'}
+                    {isLoading ? t('auth.creatingAccount') : t('auth.signupButton')}
                   </Button>
                 </form>
               </TabsContent>
