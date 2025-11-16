@@ -58,17 +58,17 @@ export default function Dashboard() {
     <div className="space-y-8 animate-fade-in">
       <div>
         <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
-          Панель керування
+          {t('dashboard.title')}
         </h1>
-        <p className="text-muted-foreground">Огляд вашого бізнесу</p>
+        <p className="text-muted-foreground">{t('dashboard.subtitle')}</p>
       </div>
 
       {/* Revenue Card with Period Selector */}
       <Card className="border-primary/20 shadow-lg">
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <div>
-            <CardTitle className="text-base font-medium">Загальний дохід</CardTitle>
-            <CardDescription>Доставлені замовлення</CardDescription>
+            <CardTitle className="text-base font-medium">{t('dashboard.totalRevenue')}</CardTitle>
+            <CardDescription>{t('dashboard.deliveredOrders')}</CardDescription>
           </div>
           <TrendingUp className="h-4 w-4 text-primary" />
         </CardHeader>
