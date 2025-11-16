@@ -24,6 +24,11 @@ const statusColors = {
 
 export default function Orders() {
   const { t } = useTranslation();
+  
+  const getStatusLabel = (status) => {
+    return t(`orders.statuses.${status}`);
+  };
+  
   const [orders, setOrders] = useState([]);
   const [clients, setClients] = useState([]);
   const [recipes, setRecipes] = useState([]);
