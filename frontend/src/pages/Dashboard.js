@@ -125,7 +125,7 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats?.recentActivities || 0}</div>
-            <p className="text-xs text-muted-foreground mt-1">Нових за тиждень</p>
+            <p className="text-xs text-muted-foreground mt-1">{t('dashboard.newThisWeek')}</p>
           </CardContent>
         </Card>
       </div>
@@ -133,8 +133,8 @@ export default function Dashboard() {
       {/* Upcoming Orders */}
       <Card>
         <CardHeader>
-          <CardTitle>Майбутні замовлення</CardTitle>
-          <CardDescription>Найближчі 5 замовлень</CardDescription>
+          <CardTitle>{t('dashboard.upcomingOrders')}</CardTitle>
+          <CardDescription>{t('dashboard.nextOrders')}</CardDescription>
         </CardHeader>
         <CardContent>
           {stats?.upcomingOrders?.length > 0 ? (
@@ -154,14 +154,14 @@ export default function Dashboard() {
                     <p className="text-sm font-medium">
                       {order.dueDate ? format(new Date(order.dueDate), 'dd MMM yyyy, HH:mm', { locale: uk }) : ''}
                     </p>
-                    <p className="text-xs text-muted-foreground">{statusLabels[order.status]}</p>
+                    <p className="text-xs text-muted-foreground">{t(`orders.statuses.${order.status}`)}</p>
                   </div>
                 </div>
               ))}
             </div>
           ) : (
             <div className="text-center py-8">
-              <p className="text-muted-foreground">Немає майбутніх замовлень</p>
+              <p className="text-muted-foreground">{t('dashboard.noUpcomingOrders')}</p>
             </div>
           )}
         </CardContent>
