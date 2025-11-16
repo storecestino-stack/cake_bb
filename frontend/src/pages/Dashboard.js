@@ -18,10 +18,18 @@ const statusLabels = {
 };
 
 export default function Dashboard() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [period, setPeriod] = useState('month');
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const periodLabels = {
+    week: t('dashboard.period.week'),
+    month: t('dashboard.period.month'),
+    quarter: t('dashboard.period.quarter'),
+    year: t('dashboard.period.year')
+  };
 
   useEffect(() => {
     fetchStats();
@@ -32,7 +40,7 @@ export default function Dashboard() {
       const response = await axios.get(`/stats/dashboard?period=${period}`);
       setStats(response.data);
     } catch (error) {
-      toast.error('Помилка завантаження статистики');
+      toast.error(t('clients.errorLoad'));
     } finally {
       setLoading(false);
     }
