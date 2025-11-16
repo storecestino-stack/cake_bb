@@ -52,9 +52,6 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
       if (setGlobalUser) {
         setGlobalUser(response.data);
       }
-      if (response.data.customColors) {
-        setCustomColors(response.data.customColors);
-      }
     } catch (error) {
       toast.error('Помилка завантаження профілю');
     }
