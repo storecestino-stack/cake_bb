@@ -15,19 +15,9 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const themeOptions = [
   { value: 'minimal', label: 'Мінімалістичні', description: 'Чисті блакитні тони' },
   { value: 'dark', label: 'Темна тема', description: 'Темний режим для роботи вночі' },
-  { value: 'custom', label: 'Користувацька', description: 'Створіть власну колірну схему' }
-];
-
-const colorPalette = [
-  // Набір 1: Приглушені сині/сірі
-  '#5D6474', '#A7A6B0', '#ECEDE6', '#8CA9BD', '#6498AF',
-  // Набір 2: Темні фіолетові/пурпурні
-  '#120223', '#430357', '#6E022F', '#8C0286', '#C40361',
-  // Набір 3: Жовто-зелені
-  '#8A889E', '#EDD600', '#956B00', '#1A4208', '#051107',
-  // Додаткові гармонійні кольори
-  '#2C3E50', '#34495E', '#7F8C8D', '#95A5A6', '#BDC3C7',
-  '#ECF0F1', '#FFFFFF', '#000000', '#1A1A1A'
+  { value: 'elegant', label: 'Елегантна', description: 'Приглушені сині та сірі тони' },
+  { value: 'dramatic', label: 'Драматична', description: 'Темні фіолетові та пурпурні' },
+  { value: 'contrast', label: 'Контрастна', description: 'Яскраві жовто-зелені відтінки' }
 ];
 
 export default function Settings({ user: initialUser, setUser: setGlobalUser }) {
