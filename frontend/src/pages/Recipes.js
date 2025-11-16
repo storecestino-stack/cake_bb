@@ -118,10 +118,10 @@ export default function Recipes() {
 
       if (isEditing) {
         await axios.put(`/recipes/${editingId}`, recipeData);
-        toast.success('Рецепт оновлено');
+        toast.success('Виріб оновлено');
       } else {
         await axios.post('/recipes', recipeData);
-        toast.success('Рецепт створено');
+        toast.success('Виріб створено');
       }
       
       setDialogOpen(false);
