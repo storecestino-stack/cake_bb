@@ -320,7 +320,7 @@ export default function AuthPage({ onLogin }) {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="signup-password">Пароль</Label>
+                    <Label htmlFor="signup-password">{t('auth.password')}</Label>
                     <div className="relative">
                       <Input
                         id="signup-password"
