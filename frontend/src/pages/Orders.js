@@ -56,7 +56,7 @@ export default function Orders() {
       setClients(clientsRes.data);
       setRecipes(recipesRes.data);
     } catch (error) {
-      toast.error('Помилка завантаження даних');
+      toast.error(t('orders.errorLoad'));
     } finally {
       setLoading(false);
     }
@@ -67,44 +67,44 @@ export default function Orders() {
     try {
       if (isEditing && selectedOrder) {
         await axios.put(`/orders/${selectedOrder.id}`, formData);
-        toast.success('Замовлення оновлено');
+        toast.success(t('orders.updated'));
       } else {
         await axios.post('/orders', formData);
-        toast.success('Замовлення створено');
+        toast.success(t('orders.created'));
       }
       setDialogOpen(false);
       setDetailsOpen(false);
       resetForm();
       fetchData();
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Помилка');
+      toast.error(error.response?.data?.detail || t('orders.error'));
     }
   };
 
   const handleStatusChange = async (orderId, newStatus) => {
     try {
       await axios.put(`/orders/${orderId}`, { status: newStatus });
-      toast.success('Статус оновлено');
+      toast.success(t('orders.statusUpdated'));
       fetchData();
     } catch (error) {
-      toast.error('Помилка оновлення статусу');
+      toast.error(t('orders.error'));
     }
   };
 
   const handleDelete = async () => {
     if (!selectedOrder) return;
     
-    if (!window.confirm('Ви впевнені, що хочете видалити це замовлення?')) return;
+    if (!window.confirm(t('orders.deleteConfirm'))) return;
     
     try {
       await axios.delete(`/orders/${selectedOrder.id}`);
-      toast.success('Замовлення видалено');
+      toast.success(t('orders.deleted'));
       setDialogOpen(false);
       setDetailsOpen(false);
       resetForm();
       fetchData();
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Помилка видалення');
+      toast.error(error.response?.data?.detail || t('orders.error'));
     }
   };
 
