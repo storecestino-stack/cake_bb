@@ -167,54 +167,91 @@ export default function Recipes() {
     return total.toFixed(2);
   };
 
-  // UI Components (shadcn)
-  const Dialog = ({ open, onOpenChange, children }) => {
-    if (!open) return null;
+  if (loading) {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center">
-        <div className="absolute inset-0 bg-black/50" onClick={() => onOpenChange(false)}></div>
-        <div className="relative bg-white rounded-lg shadow-lg z-10">{children}</div>
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
       </div>
     );
-  };
-
-  const DialogTrigger = ({ children }) => <>{children}</>;
-  const DialogContent = ({ children, className }) => <div className={className}>{children}</div>;
-  const DialogHeader = ({ children }) => <div className="p-4 border-b">{children}</div>;
-  const DialogTitle = ({ children }) => <h2 className="text-xl font-bold">{children}</h2>;
-  const Button = ({ children, onClick, variant, size, type }) => (
-    <button
-      type={type || 'button'}
-      onClick={onClick}
-      className={`px-4 py-2 rounded ${variant === 'destructive' ? 'bg-red-600 text-white' : variant === 'outline' ? 'border border-gray-300' : 'bg-blue-600 text-white'} ${size === 'sm' ? 'text-sm' : ''}`}
-    >
-      {children}
-    </button>
-  );
-  const Input = ({ ...props }) => <input {...props} className="border rounded p-2 w-full" />;
-  const Textarea = ({ ...props }) => <textarea {...props} className="border rounded p-2 w-full" />;
-  const Label = ({ children, htmlFor }) => <label htmlFor={htmlFor} className="block font-medium mb-1">{children}</label>;
-  const Select = ({ value, onValueChange, children }) => (
-    <select value={value} onChange={(e) => onValueChange(e.target.value)} className="border rounded p-2 w-full">
-      {children}
-    </select>
-  );
-  const SelectTrigger = ({ children }) => <>{children}</>;
-  const SelectValue = ({ placeholder }) => <option value="">{placeholder}</option>;
-  const SelectContent = ({ children }) => <>{children}</>;
-  const SelectItem = ({ value, children }) => <option value={value}>{children}</option>;
+  }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">{t('recipes.title')}</h1>
-        <Button onClick={openNewDialog}>
+        <div>
+          <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
+            {t('recipes.title')}
+          </h1>
+          <p className="text-muted-foreground">{t('recipes.subtitle')}</p>
+        </div>
+        <Button onClick={() => { resetForm(); setDialogOpen(true); }}>
+          <Plus className="mr-2 h-4 w-4" />
           {t('recipes.newRecipe')}
         </Button>
       </div>
 
+      <Card>
+        <CardContent className="p-0">
+          {recipes.length > 0 ? (
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-muted/50 border-b">
+                  <tr>
+                    <th className="text-left p-4 font-semibold">{t('recipes.name')}</th>
+                    <th className="text-left p-4 font-semibold">{t('orders.notes')}</th>
+                    <th className="text-left p-4 font-semibold">{t('recipes.costPrice')}</th>
+                    <th className="text-left p-4 font-semibold">{t('recipes.laborCost')}</th>
+                    <th className="text-left p-4 font-semibold">{t('recipes.finalPrice')}</th>
+                    <th className="text-right p-4 font-semibold">{t('common.actions')}</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y">
+                  {recipes.map((recipe) => {
+                    const cost = parseFloat(computeCost(recipe.components || []));
+                    const labor = recipe.laborCost || 0;
+                    const total = (cost + labor).toFixed(2);
+                    return (
+                      <tr key={recipe._id} className="hover:bg-muted/50 transition-colors">
+                        <td className="p-4">{recipe.name}</td>
+                        <td className="p-4">{recipe.description || '—'}</td>
+                        <td className="p-4">{cost} грн</td>
+                        <td className="p-4">{labor} грн</td>
+                        <td className="p-4">{total} грн</td>
+                        <td className="p-4 text-right">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="icon">
+                                <MoreVertical className="h-4 w-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem onClick={() => openEditDialog(recipe)}>
+                                {t('common.edit')}
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => handleCopy(recipe)}>
+                                <Copy className="mr-2 h-4 w-4" />
+                                {t('recipes.copy')}
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-12 text-center">
+              <p className="text-lg text-muted-foreground mb-2">{t('recipes.noRecipes')}</p>
+              <p className="text-sm text-muted-foreground">{t('recipes.addFirst')}</p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
+
       {/* Dialog */}
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      <Dialog open={dialogOpen} onOpenChange={(open) => { setDialogOpen(open); if (!open) resetForm(); }}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>{isEditing ? t('recipes.editRecipe') : t('recipes.newRecipe')}</DialogTitle>
