@@ -175,10 +175,10 @@ export default function Recipes() {
       };
       
       await axios.post('/recipes', recipeData);
-      toast.success('Виріб скопійовано');
+      toast.success(t('recipes.copied'));
       fetchData();
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Помилка копіювання');
+      toast.error(error.response?.data?.detail || t('recipes.error'));
     }
   };
 
