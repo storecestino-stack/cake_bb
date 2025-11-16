@@ -133,7 +133,7 @@ export default function AuthPage({ onLogin }) {
                 {!showResetForm ? (
                   <form onSubmit={handleLogin} className="space-y-4">
                     <div className="space-y-2">
-                      <Label htmlFor="login-email">Email</Label>
+                      <Label htmlFor="login-email">{t('auth.email')}</Label>
                       <Input
                         id="login-email"
                         type="email"
@@ -145,7 +145,7 @@ export default function AuthPage({ onLogin }) {
                       />
                     </div>
                     <div className="space-y-2">
-                      <Label htmlFor="login-password">Пароль</Label>
+                      <Label htmlFor="login-password">{t('auth.password')}</Label>
                       <div className="relative">
                         <Input
                           id="login-password"
