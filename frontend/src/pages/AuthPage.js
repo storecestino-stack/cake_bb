@@ -105,9 +105,9 @@ export default function AuthPage({ onLogin }) {
           </div>
           <div className="text-center space-y-2">
             <h1 className="text-4xl lg:text-5xl font-bold text-foreground" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
-              Кондитерський Помічник
+              {t('auth.appTitle')}
             </h1>
-            <p className="text-lg text-muted-foreground">CRM для кондитерів та малих пекарень</p>
+            <p className="text-lg text-muted-foreground">{t('auth.appDescription')}</p>
           </div>
         </div>
 
@@ -119,14 +119,14 @@ export default function AuthPage({ onLogin }) {
                 <ChefHat className="w-10 h-10 text-primary" />
               </div>
             </div>
-            <CardTitle className="text-2xl text-center">Вітаємо!</CardTitle>
-            <CardDescription className="text-center">Увійдіть або створіть новий акаунт</CardDescription>
+            <CardTitle className="text-2xl text-center">{t('auth.welcome')}</CardTitle>
+            <CardDescription className="text-center">{t('auth.loginDescription')}</CardDescription>
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="login" className="w-full">
               <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="login" data-testid="login-tab">Вхід</TabsTrigger>
-                <TabsTrigger value="signup" data-testid="signup-tab">Реєстрація</TabsTrigger>
+                <TabsTrigger value="login" data-testid="login-tab">{t('auth.loginTab')}</TabsTrigger>
+                <TabsTrigger value="signup" data-testid="signup-tab">{t('auth.signupTab')}</TabsTrigger>
               </TabsList>
               
               <TabsContent value="login">
