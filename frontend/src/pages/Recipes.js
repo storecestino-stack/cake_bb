@@ -392,19 +392,19 @@ function Recipes() {
         <table className="min-w-full border">
           <thead>
             <tr className="bg-gray-100">
-              <th className="border p-2 text-left">Назва</th>
-              <th className="border p-2 text-left">Опис</th>
-              <th className="border p-2 text-left">Собівартість</th>
-              <th className="border p-2 text-left">Вартість роботи</th>
-              <th className="border p-2 text-left">Загальна вартість</th>
-              <th className="border p-2 text-left">Дії</th>
+              <th className="border p-2 text-left">{t('recipes.name')}</th>
+              <th className="border p-2 text-left">{t('orders.notes')}</th>
+              <th className="border p-2 text-left">{t('recipes.costPrice')}</th>
+              <th className="border p-2 text-left">{t('recipes.laborCost')}</th>
+              <th className="border p-2 text-left">{t('recipes.finalPrice')}</th>
+              <th className="border p-2 text-left">{t('common.actions')}</th>
             </tr>
           </thead>
           <tbody>
             {recipes.length === 0 ? (
               <tr>
                 <td colSpan={6} className="border p-4 text-center text-gray-500">
-                  Немає виробів
+                  {t('recipes.noRecipes')}
                 </td>
               </tr>
             ) : (
@@ -421,13 +421,13 @@ function Recipes() {
                     <td className="border p-2">{total} грн</td>
                     <td className="border p-2 space-x-2">
                       <Button size="sm" onClick={() => openEditDialog(recipe)}>
-                        Редагувати
+                        {t('common.edit')}
                       </Button>
                       <Button size="sm" variant="outline" onClick={() => handleCopy(recipe)}>
-                        Копіювати
+                        {t('recipes.copy')}
                       </Button>
                       <Button size="sm" variant="destructive" onClick={() => handleDelete(recipe._id)}>
-                        Видалити
+                        {t('common.delete')}
                       </Button>
                     </td>
                   </tr>
