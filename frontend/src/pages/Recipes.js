@@ -236,12 +236,12 @@ export default function Recipes() {
           <DialogTrigger asChild>
             <Button data-testid="create-recipe-button">
               <Plus className="mr-2 h-4 w-4" />
-              Новий рецепт
+              Новий виріб
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>{isEditing ? 'Редагувати рецепт' : 'Новий рецепт'}</DialogTitle>
+              <DialogTitle>{isEditing ? 'Редагувати виріб' : 'Новий виріб'}</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
