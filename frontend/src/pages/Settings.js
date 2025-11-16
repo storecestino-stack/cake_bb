@@ -19,10 +19,15 @@ const themeOptions = [
 ];
 
 const colorPalette = [
-  '#FFE4E1', '#FADADD', '#FFB6C1', '#FFC0CB', '#FFD6E7', '#E6E6FA',
-  '#D8BFD8', '#DDA0DD', '#B0E0E6', '#ADD8E6', '#AFEEEE', '#B0E2FF',
-  '#C1FFC1', '#D4F1D4', '#E0FFE0', '#FFFACD', '#FFE4B5', '#FFEFD5',
-  '#F5DEB3', '#F0E68C', '#EEE8AA', '#E6D7C3', '#D3D3D3', '#E0E0E0'
+  // Набір 1: Приглушені сині/сірі
+  '#5D6474', '#A7A6B0', '#ECEDE6', '#8CA9BD', '#6498AF',
+  // Набір 2: Темні фіолетові/пурпурні
+  '#120223', '#430357', '#6E022F', '#8C0286', '#C40361',
+  // Набір 3: Жовто-зелені
+  '#8A889E', '#EDD600', '#956B00', '#1A4208', '#051107',
+  // Додаткові гармонійні кольори
+  '#2C3E50', '#34495E', '#7F8C8D', '#95A5A6', '#BDC3C7',
+  '#ECF0F1', '#FFFFFF', '#000000', '#1A1A1A'
 ];
 
 export default function Settings({ user: initialUser, setUser: setGlobalUser }) {
