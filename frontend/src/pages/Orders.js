@@ -242,7 +242,7 @@ export default function Orders() {
                         onValueChange={(value) => updateOrderRecipe(index, 'recipeId', value)}
                       >
                         <SelectTrigger className="flex-1" data-testid={`order-recipe-select-${index}`}>
-                          <SelectValue placeholder="Оберіть виріб" />
+                          <SelectValue placeholder={t('orders.selectProduct')} />
                         </SelectTrigger>
                         <SelectContent>
                           {recipes.map((recipe) => (
@@ -253,7 +253,7 @@ export default function Orders() {
                       <Input
                         type="number"
                         min="1"
-                        placeholder="Кількість"
+                        placeholder={t('orders.quantity')}
                         value={orderRecipe.quantity}
                         onChange={(e) => updateOrderRecipe(index, 'quantity', e.target.value)}
                         className="w-24"
@@ -273,12 +273,12 @@ export default function Orders() {
                 </div>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="item">Назва замовлення</Label>
+                <Label htmlFor="item">{t('orders.orderName')}</Label>
                 <Input
                   id="item"
                   value={formData.item}
                   onChange={(e) => setFormData({ ...formData, item: e.target.value })}
-                  placeholder="Наприклад: Весільний торт"
+                  placeholder={t('orders.orderNamePlaceholder')}
                   required
                   data-testid="order-item-input"
                 />
