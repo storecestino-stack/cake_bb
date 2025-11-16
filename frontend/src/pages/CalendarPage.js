@@ -84,14 +84,14 @@ export default function CalendarPage() {
     <div className="space-y-6 animate-fade-in">
       <div>
         <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
-          Календар
+          {t('nav.calendar')}
         </h1>
-        <p className="text-muted-foreground">Плануйте замовлення на календарі</p>
+        <p className="text-muted-foreground">{t('nav.calendar')}</p>
       </div>
 
       <Card className="max-w-4xl mx-auto">
         <CardHeader>
-          <CardTitle>Замовлення по датах</CardTitle>
+          <CardTitle>{t('orders.title')}</CardTitle>
         </CardHeader>
         <CardContent className="flex justify-center">
           <Calendar
@@ -116,7 +116,7 @@ export default function CalendarPage() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>
-              Замовлення на {selectedDate && format(selectedDate, 'dd MMMM yyyy', { locale: uk })}
+              {t('orders.title')} {selectedDate && format(selectedDate, 'dd MMMM yyyy', { locale: uk })}
             </DialogTitle>
           </DialogHeader>
           <div className="space-y-3">
@@ -130,7 +130,7 @@ export default function CalendarPage() {
                 <div className="flex items-center justify-between mb-2">
                   <p className="font-medium text-foreground">{order.item}</p>
                   <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColors[order.status]}`}>
-                    {statusLabels[order.status]}
+                    {t(`orders.statuses.${order.status}`)}
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-sm text-muted-foreground">
@@ -147,39 +147,39 @@ export default function CalendarPage() {
       <Dialog open={detailsOpen} onOpenChange={setDetailsOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Деталі замовлення</DialogTitle>
+            <DialogTitle>{t('orders.orderDetails')}</DialogTitle>
           </DialogHeader>
           {selectedOrder && (
             <div className="space-y-4">
               <div>
-                <p className="text-sm text-muted-foreground">Клієнт</p>
+                <p className="text-sm text-muted-foreground">{t('orders.client')}</p>
                 <p className="text-lg font-medium">{selectedOrder.client?.name}</p>
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Виріб</p>
+                <p className="text-sm text-muted-foreground">{t('orders.product')}</p>
                 <p className="text-lg font-medium">{selectedOrder.item}</p>
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Статус</p>
+                <p className="text-sm text-muted-foreground">{t('orders.status')}</p>
                 <p className="text-lg">
                   <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColors[selectedOrder.status]}`}>
-                    {statusLabels[selectedOrder.status]}
+                    {t(`orders.statuses.${selectedOrder.status}`)}
                   </span>
                 </p>
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Дата виконання</p>
+                <p className="text-sm text-muted-foreground">{t('orders.dueDate')}</p>
                 <p className="text-lg font-medium">
                   {selectedOrder.dueDate && format(new Date(selectedOrder.dueDate), 'dd MMMM yyyy, HH:mm', { locale: uk })}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-muted-foreground">Сума</p>
+                <p className="text-sm text-muted-foreground">{t('orders.amount')}</p>
                 <p className="text-2xl font-bold text-primary">{selectedOrder.total.toFixed(2)} грн</p>
               </div>
               {selectedOrder.notes && (
                 <div>
-                  <p className="text-sm text-muted-foreground">Примітки</p>
+                  <p className="text-sm text-muted-foreground">{t('orders.notes')}</p>
                   <p className="text-sm">{selectedOrder.notes}</p>
                 </div>
               )}
