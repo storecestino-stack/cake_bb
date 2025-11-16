@@ -147,12 +147,12 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
     e.preventDefault();
     
     if (newPassword !== confirmPassword) {
-      toast.error('Паролі не співпадають');
+      toast.error(t('settings.security.passwordMismatch'));
       return;
     }
 
     if (newPassword.length < 6) {
-      toast.error('Пароль має містити мінімум 6 символів');
+      toast.error(t('settings.security.passwordTooShort'));
       return;
     }
 
@@ -162,7 +162,7 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
         current_password: currentPassword,
         new_password: newPassword
       });
-      toast.success('Пароль успішно змінено');
+      toast.success(t('settings.security.passwordChanged'));
       setCurrentPassword('');
       setNewPassword('');
       setConfirmPassword('');
