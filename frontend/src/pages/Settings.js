@@ -20,6 +20,13 @@ const themeOptions = [
   { value: 'contrast', label: 'Контрастна', description: 'Яскраві жовто-зелені відтінки' }
 ];
 
+const languageOptions = [
+  { value: 'uk', label: 'Українська', flag: '🇺🇦' },
+  { value: 'pl', label: 'Польська', flag: '🇵🇱' },
+  { value: 'en', label: 'Англійська', flag: '🇬🇧' },
+  { value: 'ru', label: 'Російська', flag: '🇷🇺' }
+];
+
 export default function Settings({ user: initialUser, setUser: setGlobalUser }) {
   const { theme, updateTheme } = useTheme();
   const [name, setName] = useState('');
