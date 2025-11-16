@@ -142,7 +142,6 @@ export default function Ingredients() {
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-12 text-center">
-              <div className="text-6xl mb-4">📦</div>
               <p className="text-lg text-muted-foreground mb-2">{t('ingredients.noIngredients')}</p>
               <p className="text-sm text-muted-foreground">{t('ingredients.addFirst')}</p>
             </div>
