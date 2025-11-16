@@ -159,11 +159,6 @@ export default function Dashboard() {
             </div>
           ) : (
             <div className="text-center py-8">
-              <img
-                src="https://images.unsplash.com/photo-1555507036-ab1f4038808a"
-                alt="No orders"
-                className="w-32 h-32 mx-auto mb-4 rounded-lg opacity-50 object-cover"
-              />
               <p className="text-muted-foreground">Немає майбутніх замовлень</p>
             </div>
           )}
