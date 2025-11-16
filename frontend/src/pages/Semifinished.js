@@ -269,7 +269,8 @@ export default function Semifinished() {
                   </div>
                 ))}
                 <Button type="button" variant="outline" onClick={addIngredientRow}>
-                  + {t('semifinished.addIngredient')}
+                  <Plus className="mr-2 h-4 w-4" />
+                  {t('semifinished.addIngredient')}
                 </Button>
               </div>
 
