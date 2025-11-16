@@ -179,7 +179,7 @@ export default function AuthPage({ onLogin }) {
                       onClick={() => setShowResetForm(true)}
                       data-testid="forgot-password-link"
                     >
-                      Забули пароль?
+                      {t('auth.forgotPassword')}
                     </Button>
                     <Button
                       type="submit"
@@ -187,7 +187,7 @@ export default function AuthPage({ onLogin }) {
                       disabled={isLoading}
                       data-testid="login-submit-button"
                     >
-                      {isLoading ? 'Вхід...' : 'Увійти'}
+                      {isLoading ? t('auth.loggingIn') : t('auth.loginButton')}
                     </Button>
                   </form>
                 ) : (
