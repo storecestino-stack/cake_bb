@@ -31,9 +31,9 @@ export default function AuthPage({ onLogin }) {
     try {
       const response = await axios.post('/auth/login', loginData);
       onLogin(response.data.access_token, response.data.user);
-      toast.success('Успішний вхід!');
+      toast.success(t('auth.successLogin'));
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Помилка входу');
+      toast.error(error.response?.data?.detail || t('auth.errorLogin'));
     } finally {
       setIsLoading(false);
     }
@@ -45,9 +45,9 @@ export default function AuthPage({ onLogin }) {
     try {
       const response = await axios.post('/auth/signup', signupData);
       onLogin(response.data.access_token, response.data.user);
-      toast.success('Акаунт створено!');
+      toast.success(t('auth.successSignup'));
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Помилка реєстрації');
+      toast.error(error.response?.data?.detail || t('auth.errorSignup'));
     } finally {
       setIsLoading(false);
     }
