@@ -15,9 +15,8 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 const languageOptions = [
   { value: 'uk', label: 'Українська', flag: '🇺🇦' },
-  { value: 'pl', label: 'Польська', flag: '🇵🇱' },
   { value: 'en', label: 'Англійська', flag: '🇬🇧' },
-  { value: 'ru', label: 'Російська', flag: '🇷🇺' }
+  { value: 'pl', label: 'Польська', flag: '🇵🇱' }
 ];
 
 export default function Settings({ user: initialUser, setUser: setGlobalUser }) {
