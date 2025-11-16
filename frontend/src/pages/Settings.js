@@ -110,31 +110,6 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
     }
   };
 
-  const handleCustomColorChange = async (colorType, color) => {
-    const newColors = { ...customColors, [colorType]: color };
-    setCustomColors(newColors);
-    
-    try {
-      await axios.put('/auth/me', { customColors: newColors, theme: 'custom' });
-      
-      // Update user state to trigger ThemeContext
-      const updatedUser = { ...user, customColors: newColors, theme: 'custom' };
-      setUser(updatedUser);
-      if (setGlobalUser) {
-        setGlobalUser(updatedUser);
-      }
-      
-      // If theme is not already custom, update it
-      if (theme !== 'custom') {
-        updateTheme('custom');
-      }
-      
-      toast.success('Колір збережено');
-    } catch (error) {
-      toast.error('Помилка збереження кольорів');
-    }
-  };
-
   const handlePasswordChange = async (e) => {
     e.preventDefault();
     
