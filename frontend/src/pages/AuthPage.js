@@ -58,14 +58,14 @@ export default function AuthPage({ onLogin }) {
     setIsLoading(true);
     try {
       const response = await axios.post('/auth/password-reset-request', { email: resetEmail });
-      toast.success('Код відновлення надіслано на email');
+      toast.success(t('auth.resetCodeSent'));
       // In development, show the code
       if (response.data.reset_code) {
         toast.info(`Код для тестування: ${response.data.reset_code}`);
       }
       setResetStep(2);
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Помилка запиту');
+      toast.error(error.response?.data?.detail || t('auth.errorLogin'));
     } finally {
       setIsLoading(false);
     }
@@ -80,14 +80,14 @@ export default function AuthPage({ onLogin }) {
         reset_code: resetCode,
         new_password: newPassword
       });
-      toast.success('Пароль успішно змінено!');
+      toast.success(t('auth.passwordChanged'));
       setShowResetForm(false);
       setResetStep(1);
       setResetEmail('');
       setResetCode('');
       setNewPassword('');
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Помилка зміни пароля');
+      toast.error(error.response?.data?.detail || t('auth.errorLogin'));
     } finally {
       setIsLoading(false);
     }
