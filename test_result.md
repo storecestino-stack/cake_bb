@@ -105,38 +105,53 @@
 user_problem_statement: "Test i18n (Internationalization) Implementation - Full internationalization system using i18next with 4 languages: Ukrainian (uk), English (en), Polish (pl), and Russian (ru). All UI components now use translation keys instead of hardcoded text."
 
 frontend:
-  - task: "Custom Theme Constructor"
+  - task: "i18n Language Switcher"
     implemented: true
-    working: true
+    working: "NA"
     file: "/app/frontend/src/pages/Settings.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
         - working: "NA"
           agent: "testing"
-          comment: "Need to test custom theme constructor with 24 colors for background, font, borders, and icons. Verify theme switching, color selection, persistence, and UI application."
-        - working: false
-          agent: "testing"
-          comment: "TESTED: Custom theme constructor is mostly working but has 2 critical issues: 1) Theme persistence fails - custom theme selection not saved after page reload, 2) Theme switching between Dark/Minimal themes not working properly. POSITIVE: All 24 colors available for each category (background, font, borders, icons), color selection works, HEX codes displayed, preview section present, color constructor appears correctly."
-        - working: true
-          agent: "testing"
-          comment: "FINAL TESTING COMPLETED: ✅ ALL CRITICAL FIXES VERIFIED! Custom theme constructor now working perfectly. TESTED: 1) ✅ Theme persistence after page reload - custom theme and colors persist correctly, 2) ✅ Theme switching functionality - Dark/Minimal themes switch properly and custom theme restores correctly, 3) ✅ Color application - all 4 custom colors (background, foreground, border, primary) apply to interface, 4) ✅ Color selection - all 24 colors available for each category, 5) ✅ Multiple theme switches - custom theme restoration works consistently. All previously identified critical issues have been resolved. User can now create custom themes with full persistence and proper theme switching."
+          comment: "Need to test language switcher with 4 flags (🇺🇦 🇬🇧 🇵🇱 🇷🇺) in Settings page. Verify switching between Ukrainian → English → Polish → Russian → Ukrainian and backend persistence."
 
-  - task: "Empty States Without Decorative Images"
+  - task: "UI Translation Verification"
     implemented: true
-    working: true
-    file: "/app/frontend/src/pages/"
+    working: "NA"
+    file: "/app/frontend/src/"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
         - working: "NA"
           agent: "testing"
-          comment: "Need to verify that empty states in Dashboard, Clients, Orders, Recipes, Ingredients, and Semifinished pages contain only text and buttons without decorative images."
-        - working: true
+          comment: "Need to verify all UI components use translation keys instead of hardcoded text. Test Navigation menu, Dashboard, Clients, Orders, Recipes, Ingredients, Semifinished, Calendar, Settings pages for proper translations in all 4 languages."
+
+  - task: "Language Persistence"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/contexts/LanguageContext.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
           agent: "testing"
-          comment: "TESTED: ✅ All empty states verified successfully. Dashboard (0 decorative images), Clients (0 decorative images), Orders (0 decorative images), Recipes (0 decorative images), Ingredients (0 decorative images), Semifinished (0 decorative images). All empty states contain only text and buttons as requested - no decorative illustrations found."
+          comment: "Need to test language persistence across page refreshes and navigation. Verify selected language remains consistent across all pages and after browser refresh."
+
+  - task: "Toast Messages Translation"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "testing"
+          comment: "Need to test CRUD operations (Create, Update, Delete) on Clients/Ingredients to verify toast messages appear in the selected language."
 
   - task: "User Registration and Login"
     implemented: true
@@ -148,7 +163,7 @@ frontend:
     status_history:
         - working: "NA"
           agent: "testing"
-          comment: "Need to test user registration and login functionality to access the application for theme testing."
+          comment: "Need to test user registration and login functionality to access the application for i18n testing."
         - working: true
           agent: "testing"
           comment: "TESTED: ✅ Registration and login functionality working perfectly. Successfully registered new user with random credentials (testuserm40euijp@example.com) and was automatically redirected to dashboard. Authentication flow is smooth and functional."
