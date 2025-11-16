@@ -187,6 +187,7 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
         <TabsList>
           <TabsTrigger value="profile" data-testid="profile-tab">{t('settings.tabs.profile')}</TabsTrigger>
           <TabsTrigger value="security" data-testid="security-tab">{t('settings.tabs.security')}</TabsTrigger>
+          <TabsTrigger value="language" data-testid="language-tab">{t('settings.tabs.language')}</TabsTrigger>
           <TabsTrigger value="appearance" data-testid="appearance-tab">{t('settings.tabs.appearance')}</TabsTrigger>
         </TabsList>
 
