@@ -110,6 +110,31 @@ export default function Settings() {
     }
   };
 
+  const handleCustomColorChange = async (colorType, color) => {
+    const newColors = { ...customColors, [colorType]: color };
+    setCustomColors(newColors);
+    
+    try {
+      await axios.put('/auth/me', { customColors: newColors });
+      
+      // Apply custom colors to CSS variables
+      if (theme === 'custom') {
+        applyCustomColors(newColors);
+      }
+    } catch (error) {
+      toast.error('Помилка збереження кольорів');
+    }
+  };
+
+  const applyCustomColors = (colors) => {
+    const root = document.documentElement;
+    // Convert hex to HSL for CSS variables
+    root.style.setProperty('--custom-background', colors.background);
+    root.style.setProperty('--custom-foreground', colors.foreground);
+    root.style.setProperty('--custom-border', colors.border);
+    root.style.setProperty('--custom-primary', colors.primary);
+  };
+
   const handlePasswordChange = async (e) => {
     e.preventDefault();
     
