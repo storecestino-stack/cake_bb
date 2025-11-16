@@ -296,11 +296,11 @@ export default function AuthPage({ onLogin }) {
               <TabsContent value="signup">
                 <form onSubmit={handleSignup} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="signup-name">Ім'я</Label>
+                    <Label htmlFor="signup-name">{t('auth.name')}</Label>
                     <Input
                       id="signup-name"
                       type="text"
-                      placeholder="Ваше ім'я"
+                      placeholder={t('auth.yourName')}
                       value={signupData.name}
                       onChange={(e) => setSignupData({ ...signupData, name: e.target.value })}
                       required
