@@ -107,11 +107,6 @@ export default function AuthPage({ onLogin }) {
             </h1>
             <p className="text-lg text-muted-foreground">CRM для кондитерів та малих пекарень</p>
           </div>
-          <img
-            src="https://images.unsplash.com/photo-1603532648955-039310d9ed75"
-            alt="Confectionery"
-            className="w-full max-w-md rounded-2xl shadow-2xl"
-          />
         </div>
 
         {/* Right side - auth forms */}
