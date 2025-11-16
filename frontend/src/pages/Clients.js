@@ -229,10 +229,10 @@ export default function Clients() {
             </div>
           ) : (
             <div className="text-center py-12">
-              <p className="text-muted-foreground mb-4">Ще немає клієнтів</p>
+              <p className="text-muted-foreground mb-4">{t('clients.noClients')}</p>
               <Button onClick={() => setDialogOpen(true)}>
                 <Plus className="mr-2 h-4 w-4" />
-                Додати першого клієнта
+                {t('clients.addFirstClient')}
               </Button>
             </div>
           )}
