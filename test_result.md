@@ -107,39 +107,48 @@ user_problem_statement: "Протестувати конструктор кор�
 frontend:
   - task: "Custom Theme Constructor"
     implemented: true
-    working: "NA"
+    working: false
     file: "/app/frontend/src/pages/Settings.js"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         - working: "NA"
           agent: "testing"
           comment: "Need to test custom theme constructor with 24 colors for background, font, borders, and icons. Verify theme switching, color selection, persistence, and UI application."
+        - working: false
+          agent: "testing"
+          comment: "TESTED: Custom theme constructor is mostly working but has 2 critical issues: 1) Theme persistence fails - custom theme selection not saved after page reload, 2) Theme switching between Dark/Minimal themes not working properly. POSITIVE: All 24 colors available for each category (background, font, borders, icons), color selection works, HEX codes displayed, preview section present, color constructor appears correctly."
 
   - task: "Empty States Without Decorative Images"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/frontend/src/pages/"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         - working: "NA"
           agent: "testing"
           comment: "Need to verify that empty states in Dashboard, Clients, Orders, Recipes, Ingredients, and Semifinished pages contain only text and buttons without decorative images."
+        - working: true
+          agent: "testing"
+          comment: "TESTED: ✅ All empty states verified successfully. Dashboard (0 decorative images), Clients (0 decorative images), Orders (0 decorative images), Recipes (0 decorative images), Ingredients (0 decorative images), Semifinished (0 decorative images). All empty states contain only text and buttons as requested - no decorative illustrations found."
 
   - task: "User Registration and Login"
     implemented: true
-    working: "NA"
+    working: true
     file: "/app/frontend/src/pages/AuthPage.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         - working: "NA"
           agent: "testing"
           comment: "Need to test user registration and login functionality to access the application for theme testing."
+        - working: true
+          agent: "testing"
+          comment: "TESTED: ✅ Registration and login functionality working perfectly. Successfully registered new user with random credentials (testuserm40euijp@example.com) and was automatically redirected to dashboard. Authentication flow is smooth and functional."
 
 metadata:
   created_by: "testing_agent"
