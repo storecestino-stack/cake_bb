@@ -29,160 +29,93 @@ export default function Recipes() {
   });
 
   useEffect(() => {
-    fetchRecipes();
-    fetchIngredients();
-    fetchSemiProducts();
+    fetchData();
   }, []);
 
-  const fetchRecipes = async () => {
+  const fetchData = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const res = await fetch(`${API_URL}/api/recipes`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const data = await res.json();
-      setRecipes(data);
+      const [recipesRes, ingRes, semiRes] = await Promise.all([
+        axios.get('/recipes'),
+        axios.get('/ingredients'),
+        axios.get('/semifinished')
+      ]);
+      setRecipes(recipesRes.data);
+      setIngredients(ingRes.data);
+      setSemiProducts(semiRes.data);
     } catch (err) {
-      console.error('Failed to fetch recipes', err);
+      toast.error(t('common.error'));
+    } finally {
+      setLoading(false);
     }
-  };
-
-  const fetchIngredients = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const res = await fetch(`${API_URL}/api/ingredients`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const data = await res.json();
-      setIngredients(data);
-    } catch (err) {
-      console.error('Failed to fetch ingredients', err);
-    }
-  };
-
-  const fetchSemiProducts = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const res = await fetch(`${API_URL}/api/semifinished`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const data = await res.json();
-      setSemiProducts(data);
-    } catch (err) {
-      console.error('Failed to fetch semi-products', err);
-    }
-  };
-
-  const openNewDialog = () => {
-    setIsEditing(false);
-    setCurrentId(null);
-    setFormData({
-      name: '',
-      description: '',
-      laborCost: 0,
-      components: [{ type: 'ingredient', id: '', quantity: 0 }]
-    });
-    setIsDialogOpen(true);
   };
 
   const openEditDialog = (recipe) => {
     setIsEditing(true);
-    setCurrentId(recipe._id);
+    setEditingId(recipe._id);
     setFormData({
       name: recipe.name,
       description: recipe.description || '',
       laborCost: recipe.laborCost || 0,
       components: recipe.components || [{ type: 'ingredient', id: '', quantity: 0 }]
     });
-    setIsDialogOpen(true);
+    setDialogOpen(true);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem('token');
-      const url = isEditing
-        ? `${API_URL}/api/recipes/${currentId}`
-        : `${API_URL}/api/recipes`;
-      const method = isEditing ? 'PUT' : 'POST';
-
-      const res = await fetch(url, {
-        method,
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      });
-
-      if (res.ok) {
-        setIsDialogOpen(false);
-        fetchRecipes();
-        const toast = (await import('sonner')).toast;
-        toast.success(isEditing ? t('recipes.updated') : t('recipes.created'));
+      if (isEditing) {
+        await axios.put(`/recipes/${editingId}`, formData);
+        toast.success(t('recipes.updated'));
       } else {
-        const toast = (await import('sonner')).toast;
-        toast.error(t('common.error'));
+        await axios.post('/recipes', formData);
+        toast.success(t('recipes.created'));
       }
+      setDialogOpen(false);
+      resetForm();
+      fetchData();
     } catch (err) {
-      console.error(err);
-      const toast = (await import('sonner')).toast;
       toast.error(t('common.error'));
     }
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async () => {
     if (!window.confirm(t('recipes.deleteConfirm'))) return;
     try {
-      const token = localStorage.getItem('token');
-      const res = await fetch(`${API_URL}/api/recipes/${id}`, {
-        method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      if (res.ok) {
-        fetchRecipes();
-        const toast = (await import('sonner')).toast;
-        toast.success(t('recipes.deleted'));
-      } else {
-        const toast = (await import('sonner')).toast;
-        toast.error(t('common.error'));
-      }
+      await axios.delete(`/recipes/${editingId}`);
+      toast.success(t('recipes.deleted'));
+      setDialogOpen(false);
+      resetForm();
+      fetchData();
     } catch (err) {
-      console.error(err);
-      const toast = (await import('sonner')).toast;
       toast.error(t('common.error'));
     }
   };
 
   const handleCopy = async (recipe) => {
     try {
-      const token = localStorage.getItem('token');
-      const res = await fetch(`${API_URL}/api/recipes`, {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          name: `${recipe.name} (копія)`,
-          description: recipe.description,
-          laborCost: recipe.laborCost,
-          components: recipe.components
-        })
+      await axios.post('/recipes', {
+        name: `${recipe.name} (копія)`,
+        description: recipe.description,
+        laborCost: recipe.laborCost,
+        components: recipe.components
       });
-      if (res.ok) {
-        fetchRecipes();
-        const toast = (await import('sonner')).toast;
-        toast.success(t('recipes.copied'));
-      } else {
-        const toast = (await import('sonner')).toast;
-        toast.error(t('common.error'));
-      }
+      toast.success(t('recipes.copied'));
+      fetchData();
     } catch (err) {
-      console.error(err);
-      const toast = (await import('sonner')).toast;
       toast.error(t('common.error'));
     }
+  };
+
+  const resetForm = () => {
+    setFormData({
+      name: '',
+      description: '',
+      laborCost: 0,
+      components: [{ type: 'ingredient', id: '', quantity: 0 }]
+    });
+    setIsEditing(false);
+    setEditingId(null);
   };
 
   const addComponentRow = () => {
