@@ -121,8 +121,10 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
       await axios.put('/auth/me', { customColors: newColors, theme: 'custom' });
       
       // Update user state to trigger ThemeContext
-      if (user) {
-        setUser({ ...user, customColors: newColors, theme: 'custom' });
+      const updatedUser = { ...user, customColors: newColors, theme: 'custom' };
+      setUser(updatedUser);
+      if (setGlobalUser) {
+        setGlobalUser(updatedUser);
       }
       
       // If theme is not already custom, update it
