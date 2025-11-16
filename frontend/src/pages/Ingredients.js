@@ -139,7 +139,7 @@ function Ingredients() {
     <div className="space-y-4">
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold">Інгредієнти</h1>
+          <h1 className="text-2xl font-bold">{t('ingredients.title')}</h1>
           <DialogTrigger>
             <Button onClick={openNewDialog}>
               {t('ingredients.newIngredient')}
@@ -160,7 +160,7 @@ function Ingredients() {
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Назва</Label>
+                <Label htmlFor="name">{t('ingredients.name')}</Label>
                 <Input
                   id="name"
                   value={formData.name}
@@ -169,10 +169,10 @@ function Ingredients() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="unit">Одиниця виміру</Label>
+                <Label htmlFor="unit">{t('ingredients.unit')}</Label>
                 <Select value={formData.unit} onValueChange={(val) => setFormData({ ...formData, unit: val })}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Виберіть одиницю" />
+                    <SelectValue placeholder={t('ingredients.unitPlaceholder')} />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="кг">кг</SelectItem>
@@ -184,7 +184,7 @@ function Ingredients() {
                 </Select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="price">Ціна</Label>
+                <Label htmlFor="price">{t('ingredients.pricePerUnit')}</Label>
                 <Input
                   id="price"
                   type="number"
@@ -196,9 +196,9 @@ function Ingredients() {
               </div>
               <div className="flex justify-end gap-2">
                 <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
-                  Скасувати
+                  {t('common.cancel')}
                 </Button>
-                <Button type="submit">{isEditing ? 'Зберегти' : 'Створити'}</Button>
+                <Button type="submit">{isEditing ? t('common.save') : t('common.create')}</Button>
               </div>
             </form>
           </DialogContent>
@@ -210,17 +210,17 @@ function Ingredients() {
         <table className="min-w-full border">
           <thead>
             <tr className="bg-gray-100">
-              <th className="border p-2 text-left">Назва</th>
-              <th className="border p-2 text-left">Одиниця</th>
-              <th className="border p-2 text-left">Ціна</th>
-              <th className="border p-2 text-left">Дії</th>
+              <th className="border p-2 text-left">{t('ingredients.name')}</th>
+              <th className="border p-2 text-left">{t('ingredients.unit')}</th>
+              <th className="border p-2 text-left">{t('ingredients.pricePerUnit')}</th>
+              <th className="border p-2 text-left">{t('common.actions')}</th>
             </tr>
           </thead>
           <tbody>
             {ingredients.length === 0 ? (
               <tr>
                 <td colSpan={4} className="border p-4 text-center text-gray-500">
-                  Немає інгредієнтів
+                  {t('ingredients.noIngredients')}
                 </td>
               </tr>
             ) : (
@@ -231,10 +231,10 @@ function Ingredients() {
                   <td className="border p-2">{ingredient.price} грн</td>
                   <td className="border p-2 space-x-2">
                     <Button size="sm" onClick={() => openEditDialog(ingredient)}>
-                      Редагувати
+                      {t('common.edit')}
                     </Button>
                     <Button size="sm" variant="destructive" onClick={() => handleDelete(ingredient._id)}>
-                      Видалити
+                      {t('common.delete')}
                     </Button>
                   </td>
                 </tr>
