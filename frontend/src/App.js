@@ -70,9 +70,10 @@ function App() {
   }
 
   return (
-    <ThemeProvider user={user} setUser={setUser}>
-      <BrowserRouter>
-        <Routes>
+    <LanguageProvider user={user} setUser={setUser}>
+      <ThemeProvider user={user} setUser={setUser}>
+        <BrowserRouter>
+          <Routes>
           <Route
             path="/auth"
             element={
