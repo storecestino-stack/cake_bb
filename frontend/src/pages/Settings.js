@@ -57,6 +57,9 @@ export default function Settings() {
       const response = await axios.get('/auth/me');
       setUser(response.data);
       setName(response.data.name);
+      if (response.data.customColors) {
+        setCustomColors(response.data.customColors);
+      }
     } catch (error) {
       toast.error('Помилка завантаження профілю');
     }
