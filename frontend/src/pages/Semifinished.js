@@ -274,12 +274,20 @@ export default function Semifinished() {
                 </Button>
               </div>
 
-              <div className="flex justify-end gap-2 pt-4">
-                <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
-                  {t('common.cancel')}
+              <DialogFooter className={isEditing ? "flex justify-between" : ""}>
+                {isEditing && (
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    onClick={handleDelete}
+                  >
+                    {t('common.delete')}
+                  </Button>
+                )}
+                <Button type="submit">
+                  {isEditing ? t('common.save') : t('common.create')}
                 </Button>
-                <Button type="submit">{isEditing ? t('common.save') : t('common.create')}</Button>
-              </div>
+              </DialogFooter>
             </form>
           </DialogContent>
         </Dialog>
