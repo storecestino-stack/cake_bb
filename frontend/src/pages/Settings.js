@@ -167,7 +167,7 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
       setNewPassword('');
       setConfirmPassword('');
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Помилка зміни пароля');
+      toast.error(error.response?.data?.detail || t('settings.security.passwordError'));
     } finally {
       setLoading(false);
     }
