@@ -47,7 +47,7 @@ export default function Ingredients() {
       resetForm();
       fetchIngredients();
     } catch (error) {
-      toast.error(error.response?.data?.detail || 'Помилка');
+      toast.error(error.response?.data?.detail || t('ingredients.error'));
     }
   };
 
