@@ -51,7 +51,7 @@ export default function Recipes() {
       setIngredients(ingredientsRes.data);
       setSemifinished(semifinishedRes.data);
     } catch (error) {
-      toast.error('Помилка завантаження даних');
+      toast.error(t('recipes.errorLoad'));
     } finally {
       setLoading(false);
     }
