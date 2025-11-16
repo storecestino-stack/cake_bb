@@ -190,10 +190,7 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Calendar View Mode Switching"
-    - "Calendar Navigation Controls"
-    - "Calendar Order Details"
-    - "Calendar View Rendering"
+    - "Calendar Month View with Order Display"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
