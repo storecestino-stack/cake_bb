@@ -265,7 +265,7 @@ function Recipes() {
     <div className="space-y-4">
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold">Вироби</h1>
+          <h1 className="text-2xl font-bold">{t('recipes.title')}</h1>
           <DialogTrigger>
             <Button onClick={openNewDialog}>
               {t('recipes.newRecipe')}
@@ -286,7 +286,7 @@ function Recipes() {
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Назва</Label>
+                <Label htmlFor="name">{t('recipes.name')}</Label>
                 <Input
                   id="name"
                   value={formData.name}
@@ -295,7 +295,7 @@ function Recipes() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="description">Опис</Label>
+                <Label htmlFor="description">{t('orders.notes')}</Label>
                 <Textarea
                   id="description"
                   value={formData.description}
@@ -304,7 +304,7 @@ function Recipes() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="laborCost">Вартість роботи (грн)</Label>
+                <Label htmlFor="laborCost">{t('recipes.laborCost')}</Label>
                 <Input
                   id="laborCost"
                   type="number"
@@ -315,32 +315,32 @@ function Recipes() {
               </div>
 
               <div className="space-y-2">
-                <Label>Компоненти</Label>
+                <Label>{t('recipes.components')}</Label>
                 {formData.components.map((comp, idx) => (
                   <div key={idx} className="flex gap-2 items-end">
                     <div className="w-40">
-                      <Label htmlFor={`type-${idx}`}>Тип</Label>
+                      <Label htmlFor={`type-${idx}`}>{t('recipes.componentType')}</Label>
                       <Select
                         value={comp.type}
                         onValueChange={(val) => updateComponentRow(idx, 'type', val)}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="Виберіть тип" />
+                          <SelectValue placeholder={t('recipes.componentType')} />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="ingredient">Інгредієнт</SelectItem>
-                          <SelectItem value="semifinished">Напівфабрикат</SelectItem>
+                          <SelectItem value="ingredient">{t('recipes.ingredient')}</SelectItem>
+                          <SelectItem value="semifinished">{t('recipes.semifinished')}</SelectItem>
                         </SelectContent>
                       </Select>
                     </div>
                     <div className="flex-1">
-                      <Label htmlFor={`comp-${idx}`}>Елемент</Label>
+                      <Label htmlFor={`comp-${idx}`}>{comp.type === 'ingredient' ? t('recipes.ingredient') : t('recipes.semifinished')}</Label>
                       <Select
                         value={comp.id}
                         onValueChange={(val) => updateComponentRow(idx, 'id', val)}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="Виберіть елемент" />
+                          <SelectValue placeholder={comp.type === 'ingredient' ? t('recipes.selectIngredient') : t('recipes.selectSemifinished')} />
                         </SelectTrigger>
                         <SelectContent>
                           {comp.type === 'ingredient'
@@ -351,7 +351,7 @@ function Recipes() {
                       </Select>
                     </div>
                     <div className="w-32">
-                      <Label htmlFor={`qty-${idx}`}>Кількість</Label>
+                      <Label htmlFor={`qty-${idx}`}>{t('recipes.quantity')}</Label>
                       <Input
                         id={`qty-${idx}`}
                         type="number"
@@ -367,20 +367,20 @@ function Recipes() {
                       size="sm"
                       onClick={() => removeComponentRow(idx)}
                     >
-                      Видалити
+                      {t('common.delete')}
                     </Button>
                   </div>
                 ))}
                 <Button type="button" variant="outline" onClick={addComponentRow}>
-                  + Додати компонент
+                  + {t('recipes.addComponent')}
                 </Button>
               </div>
 
               <div className="flex justify-end gap-2 pt-4">
                 <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
-                  Скасувати
+                  {t('common.cancel')}
                 </Button>
-                <Button type="submit">{isEditing ? 'Зберегти' : 'Створити'}</Button>
+                <Button type="submit">{isEditing ? t('common.save') : t('common.create')}</Button>
               </div>
             </form>
           </DialogContent>
