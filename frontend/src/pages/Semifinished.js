@@ -292,44 +292,6 @@ export default function Semifinished() {
           </DialogContent>
         </Dialog>
 
-      {/* Table */}
-      <div className="overflow-x-auto">
-        <table className="min-w-full border">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="border p-2 text-left">{t('semifinished.name')}</th>
-              <th className="border p-2 text-left">{t('semifinished.unit')}</th>
-              <th className="border p-2 text-left">{t('recipes.costPrice')}</th>
-              <th className="border p-2 text-left">{t('common.actions')}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {semiProducts.length === 0 ? (
-              <tr>
-                <td colSpan={4} className="border p-4 text-center text-gray-500">
-                  {t('semifinished.noSemifinished')}
-                </td>
-              </tr>
-            ) : (
-              semiProducts.map((sp) => (
-                <tr key={sp._id}>
-                  <td className="border p-2">{sp.name}</td>
-                  <td className="border p-2">{sp.unit}</td>
-                  <td className="border p-2">{computeCost(sp.ingredients)} грн</td>
-                  <td className="border p-2 space-x-2">
-                    <Button size="sm" onClick={() => openEditDialog(sp)}>
-                      {t('common.edit')}
-                    </Button>
-                    <Button size="sm" variant="destructive" onClick={() => handleDelete(sp._id)}>
-                      {t('common.delete')}
-                    </Button>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
     </div>
   );
 }
