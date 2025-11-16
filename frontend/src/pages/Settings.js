@@ -47,6 +47,7 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
     if (initialUser) {
       setUser(initialUser);
       setName(initialUser.name);
+      setLanguage(initialUser.language || 'uk');
     } else {
       fetchUser();
     }
