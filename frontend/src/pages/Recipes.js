@@ -228,9 +228,9 @@ export default function Recipes() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
-            Рецепти
+            Вироби
           </h1>
-          <p className="text-muted-foreground">Створюйте рецепти та розраховуйте собівартість</p>
+          <p className="text-muted-foreground">Створюйте вироби та розраховуйте собівартість</p>
         </div>
         <Dialog open={dialogOpen} onOpenChange={(open) => { setDialogOpen(open); if (!open) resetForm(); }}>
           <DialogTrigger asChild>
