@@ -220,6 +220,7 @@
     "tabs": {
       "profile": "Profile",
       "security": "Security",
+      "language": "Language",
       "appearance": "Appearance"
     },
     "profile": {
