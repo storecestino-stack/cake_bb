@@ -22,7 +22,7 @@ const menuItems = [
   { icon: LayoutDashboard, label: 'Панель', path: '/' },
   { icon: ShoppingBag, label: 'Замовлення', path: '/orders' },
   { icon: Users, label: 'Клієнти', path: '/clients' },
-  { icon: ChefHat, label: 'Рецепти', path: '/recipes' },
+  { icon: ChefHat, label: 'Вироби', path: '/recipes' },
   { icon: Factory, label: 'Напівфабрикати', path: '/semifinished' },
   { icon: Package, label: 'Інгредієнти', path: '/ingredients' },
   { icon: Calendar, label: 'Календар', path: '/calendar' },
