@@ -175,9 +175,10 @@ metadata:
 
 test_plan:
   current_focus:
-    - "User Registration and Login"
-    - "Custom Theme Constructor"
-    - "Empty States Without Decorative Images"
+    - "i18n Language Switcher"
+    - "UI Translation Verification"
+    - "Language Persistence"
+    - "Toast Messages Translation"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
