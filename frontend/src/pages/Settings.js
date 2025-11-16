@@ -316,7 +316,7 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="confirm-password">Підтвердіть новий пароль</Label>
+                  <Label htmlFor="confirm-password">{t('settings.security.confirmPassword')}</Label>
                   <div className="relative">
                     <Input
                       id="confirm-password"
@@ -348,7 +348,7 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
                   disabled={loading}
                   data-testid="change-password-button"
                 >
-                  {loading ? 'Зміна...' : 'Змінити пароль'}
+                  {loading ? t('settings.security.changing') : t('settings.security.changePasswordButton')}
                 </Button>
               </form>
             </CardContent>
