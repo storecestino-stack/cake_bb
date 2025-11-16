@@ -249,7 +249,7 @@ export default function Orders() {
                         onValueChange={(value) => updateOrderRecipe(index, 'recipeId', value)}
                       >
                         <SelectTrigger className="flex-1" data-testid={`order-recipe-select-${index}`}>
-                          <SelectValue placeholder="Оберіть рецепт" />
+                          <SelectValue placeholder="Оберіть виріб" />
                         </SelectTrigger>
                         <SelectContent>
                           {recipes.map((recipe) => (
