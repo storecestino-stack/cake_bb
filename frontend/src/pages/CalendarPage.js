@@ -125,6 +125,154 @@ export default function CalendarPage() {
     );
   }
 
+  const renderDayView = () => {
+    const dayOrders = getOrdersForDate(currentDate);
+    return (
+      <div className="space-y-4">
+        <div className="text-center mb-4">
+          <h3 className="text-2xl font-bold">{format(currentDate, 'dd MMMM yyyy', { locale: uk })}</h3>
+        </div>
+        {dayOrders.length > 0 ? (
+          <div className="space-y-3">
+            {dayOrders.map((order) => (
+              <div
+                key={order.id}
+                className="p-4 border border-border rounded-lg hover:bg-muted/50 cursor-pointer transition-colors"
+                onClick={() => handleOrderClick(order)}
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <p className="font-medium text-foreground">{order.item}</p>
+                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColors[order.status]}`}>
+                    {t(`orders.statuses.${order.status}`)}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between text-sm text-muted-foreground">
+                  <span>{order.client?.name}</span>
+                  <span>{format(new Date(order.dueDate), 'HH:mm')}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-8 text-muted-foreground">
+            {t('dashboard.noUpcomingOrders')}
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const renderWeekView = () => {
+    const weekStart = startOfWeek(currentDate, { locale: uk });
+    const weekEnd = endOfWeek(currentDate, { locale: uk });
+    const weekDays = eachDayOfInterval({ start: weekStart, end: weekEnd });
+    
+    return (
+      <div className="space-y-4">
+        <div className="text-center mb-4">
+          <h3 className="text-xl font-bold">
+            {format(weekStart, 'dd MMM', { locale: uk })} - {format(weekEnd, 'dd MMM yyyy', { locale: uk })}
+          </h3>
+        </div>
+        <div className="grid grid-cols-7 gap-2">
+          {weekDays.map((day) => {
+            const dayOrders = getOrdersForDate(day);
+            const isToday = isSameDay(day, new Date());
+            return (
+              <div
+                key={day.toISOString()}
+                className={`p-3 border rounded-lg min-h-[120px] ${
+                  isToday ? 'border-primary bg-primary/5' : 'border-border'
+                }`}
+              >
+                <div className="font-semibold text-sm mb-2">
+                  {format(day, 'EEE', { locale: uk })}
+                  <div className="text-lg">{format(day, 'd')}</div>
+                </div>
+                <div className="space-y-1">
+                  {dayOrders.slice(0, 3).map((order) => (
+                    <div
+                      key={order.id}
+                      className="text-xs p-1 bg-primary/10 rounded cursor-pointer hover:bg-primary/20"
+                      onClick={() => handleOrderClick(order)}
+                    >
+                      <div className="truncate">{order.item}</div>
+                    </div>
+                  ))}
+                  {dayOrders.length > 3 && (
+                    <div className="text-xs text-muted-foreground">+{dayOrders.length - 3}</div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
+
+  const renderMonthView = () => {
+    return (
+      <div className="flex justify-center">
+        <Calendar
+          mode="single"
+          selected={selectedDate}
+          onSelect={handleDateSelect}
+          month={currentDate}
+          onMonthChange={setCurrentDate}
+          locale={uk}
+          className="rounded-md border"
+          modifiers={{
+            hasOrders: getDatesWithOrders()
+          }}
+          modifiersClassNames={{
+            hasOrders: 'bg-primary/20 font-bold'
+          }}
+        />
+      </div>
+    );
+  };
+
+  const renderYearView = () => {
+    const yearStart = startOfYear(currentDate);
+    const yearEnd = endOfYear(currentDate);
+    const months = eachMonthOfInterval({ start: yearStart, end: yearEnd });
+    
+    return (
+      <div className="space-y-4">
+        <div className="text-center mb-4">
+          <h3 className="text-2xl font-bold">{format(currentDate, 'yyyy')}</h3>
+        </div>
+        <div className="grid grid-cols-3 md:grid-cols-4 gap-4">
+          {months.map((month) => {
+            const monthStart = startOfMonth(month);
+            const monthEnd = endOfMonth(month);
+            const monthOrders = getOrdersForPeriod(monthStart, monthEnd);
+            
+            return (
+              <div
+                key={month.toISOString()}
+                className="p-4 border border-border rounded-lg hover:bg-muted/50 cursor-pointer transition-colors"
+                onClick={() => {
+                  setCurrentDate(month);
+                  setViewMode('month');
+                }}
+              >
+                <div className="font-semibold text-center mb-2">
+                  {format(month, 'LLLL', { locale: uk })}
+                </div>
+                <div className="text-center">
+                  <span className="text-2xl font-bold text-primary">{monthOrders.length}</span>
+                  <div className="text-xs text-muted-foreground">{t('orders.title')}</div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="space-y-6 animate-fade-in">
       <div>
@@ -134,25 +282,65 @@ export default function CalendarPage() {
         <p className="text-muted-foreground">{t('nav.calendar')}</p>
       </div>
 
-      <Card className="max-w-4xl mx-auto">
+      <Card className="max-w-6xl mx-auto">
         <CardHeader>
-          <CardTitle>{t('orders.title')}</CardTitle>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+            <CardTitle>{t('orders.title')}</CardTitle>
+            
+            {/* View Mode Selector */}
+            <div className="flex gap-2">
+              <Button
+                variant={viewMode === 'day' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setViewMode('day')}
+              >
+                День
+              </Button>
+              <Button
+                variant={viewMode === 'week' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setViewMode('week')}
+              >
+                Тиждень
+              </Button>
+              <Button
+                variant={viewMode === 'month' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setViewMode('month')}
+              >
+                Місяць
+              </Button>
+              <Button
+                variant={viewMode === 'year' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setViewMode('year')}
+              >
+                Рік
+              </Button>
+            </div>
+          </div>
+
+          {/* Navigation Controls */}
+          <div className="flex items-center justify-between mt-4">
+            <Button variant="outline" size="sm" onClick={navigatePrevious}>
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            
+            <Button variant="outline" size="sm" onClick={goToToday}>
+              Сьогодні
+            </Button>
+            
+            <Button variant="outline" size="sm" onClick={navigateNext}>
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
         </CardHeader>
-        <CardContent className="flex justify-center">
-          <Calendar
-            mode="single"
-            selected={selectedDate}
-            onSelect={handleDateSelect}
-            locale={uk}
-            className="rounded-md border"
-            modifiers={{
-              hasOrders: getDatesWithOrders()
-            }}
-            modifiersClassNames={{
-              hasOrders: 'bg-primary/20 font-bold'
-            }}
-            data-testid="calendar-component"
-          />
+        
+        <CardContent>
+          {viewMode === 'day' && renderDayView()}
+          {viewMode === 'week' && renderWeekView()}
+          {viewMode === 'month' && renderMonthView()}
+          {viewMode === 'year' && renderYearView()}
         </CardContent>
       </Card>
 
