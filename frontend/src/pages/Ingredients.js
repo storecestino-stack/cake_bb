@@ -38,10 +38,10 @@ export default function Ingredients() {
     try {
       if (isEditing) {
         await axios.put(`/ingredients/${editingId}`, formData);
-        toast.success('Інгредієнт оновлено');
+        toast.success(t('ingredients.updated'));
       } else {
         await axios.post('/ingredients', formData);
-        toast.success('Інгредієнт створено');
+        toast.success(t('ingredients.created'));
       }
       setDialogOpen(false);
       resetForm();
