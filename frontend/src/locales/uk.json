@@ -177,7 +177,7 @@
     "editIngredient": "Редагувати інгредієнт",
     "name": "Назва",
     "unit": "Одиниця виміру",
-    "unitPlaceholder": "грами, кг, штуки...",
+    "unitPlaceholder": "Виберіть одиницю",
     "pricePerUnit": "Ціна за одиницю (грн)",
     "noIngredients": "Ще немає інгредієнтів",
     "addFirst": "Додати перший інгредієнт",
