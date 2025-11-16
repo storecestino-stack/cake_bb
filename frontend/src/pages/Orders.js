@@ -370,7 +370,7 @@ export default function Orders() {
                       <td className="px-4 py-3 text-sm">{order.item}</td>
                       <td className="px-4 py-3">
                         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColors[order.status]}`}>
-                          {statusLabels[order.status]}
+                          {getStatusLabel(order.status)}
                         </span>
                       </td>
                       <td className="px-4 py-3 text-sm">
@@ -391,7 +391,7 @@ export default function Orders() {
                                 onClick={() => handleStatusChange(order.id, status)}
                                 data-testid={`status-${status}`}
                               >
-                                {statusLabels[status]}
+                                {getStatusLabel(status)}
                               </DropdownMenuItem>
                             ))}
                           </DropdownMenuContent>
@@ -434,7 +434,7 @@ export default function Orders() {
                 <Label className="text-muted-foreground">Статус</Label>
                 <p className="text-lg">
                   <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColors[selectedOrder.status]}`}>
-                    {statusLabels[selectedOrder.status]}
+                    {getStatusLabel(selectedOrder.status)}
                   </span>
                 </p>
               </div>
