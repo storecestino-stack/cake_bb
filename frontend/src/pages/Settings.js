@@ -13,14 +13,6 @@ import { useTranslation } from 'react-i18next';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
-const themeOptions = [
-  { value: 'minimal', label: 'Мінімалістичні', description: 'Чисті блакитні тони' },
-  { value: 'dark', label: 'Темна тема', description: 'Темний режим для роботи вночі' },
-  { value: 'elegant', label: 'Елегантна', description: 'Приглушені сині та сірі тони' },
-  { value: 'dramatic', label: 'Драматична', description: 'Темні фіолетові та пурпурні' },
-  { value: 'contrast', label: 'Контрастна', description: 'Яскраві жовто-зелені відтінки' }
-];
-
 const languageOptions = [
   { value: 'uk', label: 'Українська', flag: '🇺🇦' },
   { value: 'pl', label: 'Польська', flag: '🇵🇱' },
@@ -31,6 +23,14 @@ const languageOptions = [
 export default function Settings({ user: initialUser, setUser: setGlobalUser }) {
   const { theme, updateTheme } = useTheme();
   const { t, i18n } = useTranslation();
+  
+  const themeOptions = [
+    { value: 'minimal', label: t('settings.appearance.themes.minimal.label'), description: t('settings.appearance.themes.minimal.description') },
+    { value: 'dark', label: t('settings.appearance.themes.dark.label'), description: t('settings.appearance.themes.dark.description') },
+    { value: 'elegant', label: t('settings.appearance.themes.elegant.label'), description: t('settings.appearance.themes.elegant.description') },
+    { value: 'dramatic', label: t('settings.appearance.themes.dramatic.label'), description: t('settings.appearance.themes.dramatic.description') },
+    { value: 'contrast', label: t('settings.appearance.themes.contrast.label'), description: t('settings.appearance.themes.contrast.description') }
+  ];
   const [name, setName] = useState('');
   const [avatarFile, setAvatarFile] = useState(null);
   const [user, setUser] = useState(initialUser);
