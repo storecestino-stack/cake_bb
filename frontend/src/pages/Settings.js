@@ -359,8 +359,8 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
           {/* Language Selection */}
           <Card>
             <CardHeader>
-              <CardTitle>Мова інтерфейсу</CardTitle>
-              <CardDescription>Оберіть мову для відображення інтерфейсу</CardDescription>
+              <CardTitle>{t('settings.appearance.language')}</CardTitle>
+              <CardDescription>{t('settings.appearance.languageDescription')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid gap-4 md:grid-cols-2">
