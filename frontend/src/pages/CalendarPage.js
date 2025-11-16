@@ -207,33 +207,59 @@ export default function CalendarPage() {
             {format(weekStart, 'dd MMM', { locale: uk })} - {format(weekEnd, 'dd MMM yyyy', { locale: uk })}
           </h3>
         </div>
+        
         <div className="grid grid-cols-7 gap-2">
           {weekDays.map((day) => {
-            const dayOrders = getOrdersForDate(day);
+            const dayOrders = getOrdersForDate(day).sort((a, b) => {
+              return new Date(a.dueDate) - new Date(b.dueDate);
+            });
             const isToday = isSameDay(day, new Date());
+            
             return (
               <div
                 key={day.toISOString()}
-                className={`p-3 border rounded-lg min-h-[120px] ${
+                className={`border rounded-lg overflow-hidden ${
                   isToday ? 'border-primary bg-primary/5' : 'border-border'
                 }`}
               >
-                <div className="font-semibold text-sm mb-2">
-                  {format(day, 'EEE', { locale: uk })}
+                {/* Day header */}
+                <div 
+                  className={`p-2 text-center font-semibold cursor-pointer hover:bg-muted/50 ${
+                    isToday ? 'bg-primary text-primary-foreground' : 'bg-muted'
+                  }`}
+                  onClick={() => {
+                    setCurrentDate(day);
+                    setViewMode('day');
+                  }}
+                >
+                  <div className="text-xs">{format(day, 'EEE', { locale: uk })}</div>
                   <div className="text-lg">{format(day, 'd')}</div>
                 </div>
-                <div className="space-y-1">
-                  {dayOrders.slice(0, 3).map((order) => (
-                    <div
-                      key={order.id}
-                      className="text-xs p-1 bg-primary/10 rounded cursor-pointer hover:bg-primary/20"
-                      onClick={() => handleOrderClick(order)}
-                    >
-                      <div className="truncate">{order.item}</div>
+                
+                {/* Orders list */}
+                <div className="p-2 space-y-1.5 max-h-[400px] overflow-y-auto">
+                  {dayOrders.length > 0 ? (
+                    dayOrders.map((order) => (
+                      <div
+                        key={order.id}
+                        className="text-xs p-2 bg-card border border-border rounded cursor-pointer hover:bg-muted/50 transition-colors"
+                        onClick={() => handleOrderClick(order)}
+                      >
+                        <div className="font-medium text-foreground mb-1 line-clamp-2">
+                          {order.item}
+                        </div>
+                        <div className="text-[10px] text-muted-foreground flex items-center justify-between">
+                          <span>{format(new Date(order.dueDate), 'HH:mm')}</span>
+                          <span className={`px-1 py-0.5 rounded text-[9px] ${statusColors[order.status]}`}>
+                            {t(`orders.statuses.${order.status}`).substring(0, 3)}
+                          </span>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-4 text-xs text-muted-foreground">
+                      Немає
                     </div>
-                  ))}
-                  {dayOrders.length > 3 && (
-                    <div className="text-xs text-muted-foreground">+{dayOrders.length - 3}</div>
                   )}
                 </div>
               </div>
