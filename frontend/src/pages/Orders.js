@@ -284,7 +284,7 @@ export default function Orders() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="dueDate">Дата виконання</Label>
+                <Label htmlFor="dueDate">{t('orders.dueDate')}</Label>
                 <Input
                   id="dueDate"
                   type="datetime-local"
@@ -295,7 +295,7 @@ export default function Orders() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="total">Сума (грн)</Label>
+                <Label htmlFor="total">{t('orders.amount')}</Label>
                 <Input
                   id="total"
                   type="number"
@@ -307,7 +307,7 @@ export default function Orders() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="notes">Примітки</Label>
+                <Label htmlFor="notes">{t('orders.notes')}</Label>
                 <Textarea
                   id="notes"
                   value={formData.notes}
@@ -324,11 +324,11 @@ export default function Orders() {
                     onClick={handleDelete}
                     data-testid="order-delete-button"
                   >
-                    Видалити
+                    {t('common.delete')}
                   </Button>
                 )}
                 <Button type="submit" data-testid="order-submit-button">
-                  {isEditing ? 'Зберегти' : 'Створити'}
+                  {isEditing ? t('common.save') : t('common.create')}
                 </Button>
               </DialogFooter>
             </form>
