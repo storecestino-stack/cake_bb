@@ -15,21 +15,23 @@ import {
   Factory
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useTranslation } from 'react-i18next';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
-const menuItems = [
-  { icon: LayoutDashboard, label: 'Панель', path: '/' },
-  { icon: ShoppingBag, label: 'Замовлення', path: '/orders' },
-  { icon: Users, label: 'Клієнти', path: '/clients' },
-  { icon: ChefHat, label: 'Вироби', path: '/recipes' },
-  { icon: Factory, label: 'Напівфабрикати', path: '/semifinished' },
-  { icon: Package, label: 'Інгредієнти', path: '/ingredients' },
-  { icon: Calendar, label: 'Календар', path: '/calendar' },
-  { icon: Settings, label: 'Налаштування', path: '/settings' },
-];
-
 export default function DashboardLayout({ children, user, onLogout }) {
+  const { t } = useTranslation();
+  
+  const menuItems = [
+    { icon: LayoutDashboard, label: t('nav.dashboard'), path: '/' },
+    { icon: ShoppingBag, label: t('nav.orders'), path: '/orders' },
+    { icon: Users, label: t('nav.clients'), path: '/clients' },
+    { icon: ChefHat, label: t('nav.recipes'), path: '/recipes' },
+    { icon: Factory, label: t('nav.semifinished'), path: '/semifinished' },
+    { icon: Package, label: t('nav.ingredients'), path: '/ingredients' },
+    { icon: Calendar, label: t('nav.calendar'), path: '/calendar' },
+    { icon: Settings, label: t('nav.settings'), path: '/settings' },
+  ];
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
