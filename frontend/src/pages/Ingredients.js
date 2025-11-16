@@ -137,24 +137,16 @@ function Ingredients() {
 
   return (
     <div className="space-y-4">
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold">{t('ingredients.title')}</h1>
-          <DialogTrigger>
-            <Button onClick={openNewDialog}>
-              {t('ingredients.newIngredient')}
-            </Button>
-          </DialogTrigger>
-        </div>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">{t('ingredients.title')}</h1>
+        <Button onClick={openNewDialog}>
+          {t('ingredients.newIngredient')}
+        </Button>
+      </div>
 
-        {/* Dialog */}
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger>
-            <Button onClick={openNewDialog}>
-              {t('ingredients.newIngredient')}
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
+      {/* Dialog */}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent>
             <DialogHeader>
               <DialogTitle>{isEditing ? t('ingredients.editIngredient') : t('ingredients.newIngredient')}</DialogTitle>
             </DialogHeader>
