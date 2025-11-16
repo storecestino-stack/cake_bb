@@ -39,6 +39,14 @@ export default function Settings() {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  
+  // Custom colors
+  const [customColors, setCustomColors] = useState({
+    background: '#FFFFFF',
+    foreground: '#000000',
+    border: '#E5E5E5',
+    primary: '#3B82F6'
+  });
 
   useEffect(() => {
     fetchUser();
