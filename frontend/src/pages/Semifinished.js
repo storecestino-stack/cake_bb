@@ -260,11 +260,11 @@ export default function Semifinished() {
                     </div>
                     <Button
                       type="button"
-                      variant="destructive"
-                      size="sm"
+                      variant="ghost"
+                      size="icon"
                       onClick={() => removeIngredientRow(idx)}
                     >
-                      {t('common.delete')}
+                      <Trash2 className="h-4 w-4" />
                     </Button>
                   </div>
                 ))}
