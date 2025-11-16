@@ -114,6 +114,14 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
   const handleThemeChange = async (newTheme) => {
     try {
       await axios.put('/auth/me', { theme: newTheme });
+      
+      // Update local and global user state
+      const updatedUser = { ...user, theme: newTheme };
+      setUser(updatedUser);
+      if (setGlobalUser) {
+        setGlobalUser(updatedUser);
+      }
+      
       updateTheme(newTheme);
       toast.success('Тему змінено');
     } catch (error) {
