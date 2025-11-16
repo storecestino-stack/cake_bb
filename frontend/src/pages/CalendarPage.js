@@ -271,29 +271,97 @@ export default function CalendarPage() {
   };
 
   const renderMonthView = () => {
-    const handleMonthDateSelect = (date) => {
-      setSelectedDate(date);
-      setCurrentDate(date);
-      setViewMode('day'); // Switch to day view when date is clicked
-    };
+    const monthStart = startOfMonth(currentDate);
+    const monthEnd = endOfMonth(currentDate);
+    const calendarStart = startOfWeek(monthStart, { locale: uk });
+    const calendarEnd = endOfWeek(monthEnd, { locale: uk });
+    const calendarDays = eachDayOfInterval({ start: calendarStart, end: calendarEnd });
+    
+    // Group days into weeks
+    const weeks = [];
+    for (let i = 0; i < calendarDays.length; i += 7) {
+      weeks.push(calendarDays.slice(i, i + 7));
+    }
     
     return (
-      <div className="flex justify-center">
-        <Calendar
-          mode="single"
-          selected={selectedDate}
-          onSelect={handleMonthDateSelect}
-          month={currentDate}
-          onMonthChange={setCurrentDate}
-          locale={uk}
-          className="rounded-md border"
-          modifiers={{
-            hasOrders: getDatesWithOrders()
-          }}
-          modifiersClassNames={{
-            hasOrders: 'bg-primary/20 font-bold'
-          }}
-        />
+      <div className="space-y-4">
+        <div className="text-center mb-4">
+          <h3 className="text-2xl font-bold">{format(currentDate, 'LLLL yyyy', { locale: uk })}</h3>
+        </div>
+        
+        {/* Day names header */}
+        <div className="grid grid-cols-7 gap-1 mb-2">
+          {['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Нд'].map((day, idx) => (
+            <div key={idx} className="text-center font-semibold text-sm text-muted-foreground py-2">
+              {day}
+            </div>
+          ))}
+        </div>
+        
+        {/* Calendar grid */}
+        <div className="space-y-1">
+          {weeks.map((week, weekIdx) => (
+            <div key={weekIdx} className="grid grid-cols-7 gap-1" style={{ minHeight: '120px' }}>
+              {week.map((day) => {
+                const dayOrders = getOrdersForDate(day).sort((a, b) => {
+                  return new Date(a.dueDate) - new Date(b.dueDate);
+                });
+                const isToday = isSameDay(day, new Date());
+                const isCurrentMonth = isSameMonth(day, currentDate);
+                const isSelected = selectedDate && isSameDay(day, selectedDate);
+                
+                return (
+                  <div
+                    key={day.toISOString()}
+                    className={`border rounded-lg overflow-hidden transition-colors cursor-pointer ${
+                      isToday ? 'border-primary border-2' : 'border-border'
+                    } ${isSelected ? 'ring-2 ring-primary' : ''} ${
+                      !isCurrentMonth ? 'bg-muted/30' : 'bg-card'
+                    } hover:bg-muted/50`}
+                    onClick={() => {
+                      setSelectedDate(day);
+                      setCurrentDate(day);
+                      setViewMode('day');
+                    }}
+                  >
+                    {/* Day header */}
+                    <div 
+                      className={`p-1.5 text-center font-semibold ${
+                        isToday ? 'bg-primary text-primary-foreground' : 'bg-muted'
+                      } ${!isCurrentMonth ? 'opacity-50' : ''}`}
+                    >
+                      <div className="text-sm">{format(day, 'd')}</div>
+                    </div>
+                    
+                    {/* Orders list */}
+                    <div className="p-1 space-y-0.5">
+                      {dayOrders.slice(0, 4).map((order) => (
+                        <div
+                          key={order.id}
+                          className={`text-[10px] p-1 rounded truncate ${statusColors[order.status]} hover:opacity-80`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleOrderClick(order);
+                          }}
+                        >
+                          <div className="flex items-center justify-between gap-1">
+                            <span className="truncate font-medium">{order.item}</span>
+                            <span className="flex-shrink-0">{format(new Date(order.dueDate), 'HH:mm')}</span>
+                          </div>
+                        </div>
+                      ))}
+                      {dayOrders.length > 4 && (
+                        <div className="text-[9px] text-center text-muted-foreground font-medium">
+                          +{dayOrders.length - 4} ще
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          ))}
+        </div>
       </div>
     );
   };
