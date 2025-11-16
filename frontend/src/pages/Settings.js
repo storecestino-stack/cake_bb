@@ -351,6 +351,41 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
         </TabsContent>
 
         <TabsContent value="appearance" className="space-y-6">
+          {/* Language Selection */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Мова інтерфейсу</CardTitle>
+              <CardDescription>Оберіть мову для відображення інтерфейсу</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="grid gap-4 md:grid-cols-2">
+                {languageOptions.map((option) => (
+                  <div
+                    key={option.value}
+                    className={`p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                      language === option.value
+                        ? 'border-primary bg-primary/5'
+                        : 'border-border hover:border-primary/50'
+                    }`}
+                    onClick={() => handleLanguageChange(option.value)}
+                    data-testid={`language-${option.value}`}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-3">
+                        <span className="text-2xl">{option.flag}</span>
+                        <h3 className="font-semibold text-foreground">{option.label}</h3>
+                      </div>
+                      {language === option.value && (
+                        <div className="h-2 w-2 rounded-full bg-primary"></div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Theme Selection */}
           <Card>
             <CardHeader>
               <CardTitle>Колірна тема</CardTitle>
@@ -381,7 +416,6 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
               </div>
             </CardContent>
           </Card>
-
         </TabsContent>
       </Tabs>
     </div>
