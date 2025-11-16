@@ -377,7 +377,6 @@ function Recipes() {
             </form>
           </DialogContent>
         </Dialog>
-      </Dialog>
 
       {/* Table */}
       <div className="overflow-x-auto">
