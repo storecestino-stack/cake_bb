@@ -228,15 +228,15 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
           {/* Name */}
           <Card>
             <CardHeader>
-              <CardTitle>Ім'я користувача</CardTitle>
-              <CardDescription>Змініть своє відображуване ім'я</CardDescription>
+              <CardTitle>{t('settings.profile.userName')}</CardTitle>
+              <CardDescription>{t('settings.profile.userNameDescription')}</CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleNameUpdate} className="space-y-3">
                 <Input
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Ваше ім'я"
+                  placeholder={t('settings.profile.namePlaceholder')}
                   required
                   data-testid="name-input"
                 />
@@ -245,7 +245,7 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
                   disabled={loading || name === user?.name}
                   data-testid="name-submit-button"
                 >
-                  {loading ? 'Збереження...' : 'Зберегти ім\'я'}
+                  {loading ? t('settings.profile.saving') : t('settings.profile.saveName')}
                 </Button>
               </form>
             </CardContent>
@@ -255,8 +255,8 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
         <TabsContent value="security" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Зміна пароля</CardTitle>
-              <CardDescription>Оновіть свій пароль для безпеки акаунту</CardDescription>
+              <CardTitle>{t('settings.security.changePassword')}</CardTitle>
+              <CardDescription>{t('settings.security.changePasswordDescription')}</CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handlePasswordChange} className="space-y-4">
