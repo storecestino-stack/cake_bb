@@ -302,20 +302,41 @@ test_plan:
           agent: "testing"
           comment: "TESTED: ✅ MONTH TO DAY NAVIGATION WORKING PERFECTLY! Successfully verified: 1) Month view displays traditional calendar grid with proper date layout, 2) Clicking any date successfully switches to Day view (handleMonthDateSelect function), 3) Selected date is properly set and Day view shows correct date, 4) Navigation is instant and smooth, 5) No dialog popup - direct navigation to Day view as intended, 6) Dates with orders are highlighted (bg-primary/20 font-bold), 7) Month view integration with Day view working flawlessly. Month to Day navigation enhancement fully implemented."
 
-  - task: "Calendar Month View with Order Display"
+  - task: "Ingredients Page CRUD Operations"
     implemented: true
-    working: true
-    file: "/app/frontend/src/pages/CalendarPage.js"
+    working: "NA"
+    file: "/app/frontend/src/pages/Ingredients.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
         - working: "NA"
           agent: "testing"
-          comment: "Need to test improved Month View with orders displayed directly in calendar grid: full-width custom calendar grid, orders shown on dates (up to 4 with name + time), color-coded order badges by status, overflow indicator (+X ще), current month dates highlighted, today highlighted with primary border, click behaviors (date → Day view, order badge → details dialog), responsive layout."
-        - working: true
+          comment: "Need to test Ingredients page (/ingredients) CRUD operations: Navigate to page, verify UI elements (title, 'Новий інгредієнт' button, table), test Create (form with Назва, Одиниця виміру, Ціна fields), test Edit (pre-fill and update), test Delete (confirmation dialog), check for console errors, verify toast notifications."
+
+  - task: "Semifinished Page CRUD Operations"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/Semifinished.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
           agent: "testing"
-          comment: "TESTED: ✅ IMPROVED MONTH VIEW WORKING PERFECTLY! Successfully verified all new features: 1) Full-width calendar grid with 7 columns (Пн-Нд headers), 2) Orders displayed directly on date cells with name and time (e.g., 'Chocolate Birthday Cake 14:00', 'Vanilla Cupcakes (12 pcs) 16:30'), 3) Color-coded order badges using status colors (blue for New, green for Ready), 4) Today (16th) properly highlighted with primary border (border-2) and primary background on date number, 5) Previous/next month dates dimmed with opacity-50, 6) Navigation controls (Previous ◄, Сьогодні, Next ►) working perfectly, 7) Click behaviors: date click switches to Day view, order badge click opens details dialog with proper stopPropagation, 8) Responsive layout with max-w-6xl container. Month view shows up to 4 orders per day with overflow handling. All calendar grid features implemented and functional!"
+          comment: "Need to test Semifinished page (/semifinished) CRUD operations: Navigate to page, verify UI elements, test Create (form with Назва, Одиниця виміру, Інгредієнти list with add/remove rows), test Edit (ingredients list loads correctly), test Delete, verify cost calculation accuracy, check for console errors."
+
+  - task: "Recipes Page CRUD Operations"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/Recipes.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "testing"
+          comment: "Need to test Recipes page (/recipes) CRUD operations: Navigate to page, verify UI elements, test Create (form with Назва, Опис, Вартість роботи, Компоненти with type switching ingredient/semifinished), test Edit, test Copy (creates recipe with '(копія)' suffix), test Delete, verify cost calculations (Собівартість, Вартість роботи, Загальна вартість), check for console errors."
 
 agent_communication:
     - agent: "testing"
