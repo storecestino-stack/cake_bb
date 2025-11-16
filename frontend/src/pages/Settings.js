@@ -261,7 +261,7 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
             <CardContent>
               <form onSubmit={handlePasswordChange} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="current-password">Поточний пароль</Label>
+                  <Label htmlFor="current-password">{t('settings.security.currentPassword')}</Label>
                   <div className="relative">
                     <Input
                       id="current-password"
@@ -288,7 +288,7 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="new-password">Новий пароль</Label>
+                  <Label htmlFor="new-password">{t('settings.security.newPassword')}</Label>
                   <div className="relative">
                     <Input
                       id="new-password"
