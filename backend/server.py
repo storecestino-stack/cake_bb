@@ -55,6 +55,7 @@ class User(BaseModel):
     email: EmailStr
     avatar: Optional[str] = None
     theme: str = "system"
+    language: str = "uk"
     customColors: Optional[dict] = None
     createdAt: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
