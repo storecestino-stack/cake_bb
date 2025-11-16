@@ -230,20 +230,20 @@ export default function Recipes() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
-            Вироби
+            {t('recipes.title')}
           </h1>
-          <p className="text-muted-foreground">Створюйте вироби та розраховуйте собівартість</p>
+          <p className="text-muted-foreground">{t('recipes.subtitle')}</p>
         </div>
         <Dialog open={dialogOpen} onOpenChange={(open) => { setDialogOpen(open); if (!open) resetForm(); }}>
           <DialogTrigger asChild>
             <Button data-testid="create-recipe-button">
               <Plus className="mr-2 h-4 w-4" />
-              Новий виріб
+              {t('recipes.newRecipe')}
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>{isEditing ? 'Редагувати виріб' : 'Новий виріб'}</DialogTitle>
+              <DialogTitle>{isEditing ? t('recipes.editRecipe') : '{t('recipes.newRecipe')}'}</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
@@ -454,10 +454,10 @@ export default function Recipes() {
       ) : (
         <Card>
           <CardContent className="text-center py-12">
-            <p className="text-muted-foreground mb-4">Ще немає виробів</p>
+            <p className="text-muted-foreground mb-4">{t('recipes.noRecipes')}</p>
             <Button onClick={() => setDialogOpen(true)}>
               <Plus className="mr-2 h-4 w-4" />
-              Створити перший виріб
+              {t('recipes.createFirst')}
             </Button>
           </CardContent>
         </Card>
