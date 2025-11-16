@@ -304,15 +304,18 @@ test_plan:
 
   - task: "Ingredients Page CRUD Operations"
     implemented: true
-    working: "NA"
+    working: false
     file: "/app/frontend/src/pages/Ingredients.js"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         - working: "NA"
           agent: "testing"
           comment: "Need to test Ingredients page (/ingredients) CRUD operations: Navigate to page, verify UI elements (title, 'Новий інгредієнт' button, table), test Create (form with Назва, Одиниця виміру, Ціна fields), test Edit (pre-fill and update), test Delete (confirmation dialog), check for console errors, verify toast notifications."
+        - working: false
+          agent: "testing"
+          comment: "TESTED: ❌ CRITICAL UI BUG FOUND - Ingredients page loads successfully and shows empty state 'Ще немає інгредієнтів' but the 'Новий інгредієнт' (New Ingredient) button is MISSING from the UI. Only 2 buttons found on page: 'Вийти' (Logout). The create button is not rendered, preventing users from adding ingredients. Code issue: Nested Dialog components and improper DialogTrigger structure in lines 140-148. Backend API working fine (200 OK responses). UI components are HTML-based instead of proper shadcn components."
 
   - task: "Semifinished Page CRUD Operations"
     implemented: true
