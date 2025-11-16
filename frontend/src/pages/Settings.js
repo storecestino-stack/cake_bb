@@ -39,9 +39,6 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
     if (initialUser) {
       setUser(initialUser);
       setName(initialUser.name);
-      if (initialUser.customColors) {
-        setCustomColors(initialUser.customColors);
-      }
     } else {
       fetchUser();
     }
