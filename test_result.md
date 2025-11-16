@@ -190,7 +190,10 @@ metadata:
 
 test_plan:
   current_focus:
-    - "All CRUD pages testing completed successfully"
+    - "Modern Design Verification for CRUD Pages"
+    - "Ingredients Page Modern Design"
+    - "Semifinished Page Modern Design" 
+    - "Recipes Page Modern Design"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
