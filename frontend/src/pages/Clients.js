@@ -170,9 +170,9 @@ export default function Clients() {
               <table className="w-full">
                 <thead className="border-b border-border bg-muted/50">
                   <tr>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Клієнт</th>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Контакти</th>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Замовлень</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">{t('clients.client')}</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">{t('clients.contacts')}</th>
+                    <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">{t('clients.orders')}</th>
                     <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground"></th>
                   </tr>
                 </thead>
