@@ -180,6 +180,7 @@ function App() {
         <Toaster position="top-right" />
       </BrowserRouter>
     </ThemeProvider>
+    </LanguageProvider>
   );
 }
 
