@@ -167,7 +167,7 @@ function App() {
             element={
               user ? (
                 <DashboardLayout user={user} onLogout={handleLogout}>
-                  <Settings />
+                  <Settings user={user} setUser={setUser} />
                 </DashboardLayout>
               ) : (
                 <Navigate to="/auth" />
