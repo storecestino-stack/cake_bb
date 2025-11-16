@@ -355,7 +355,7 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
           </Card>
         </TabsContent>
 
-        <TabsContent value="appearance" className="space-y-6">
+        <TabsContent value="language" className="space-y-6">
           {/* Language Selection */}
           <Card>
             <CardHeader>
@@ -389,7 +389,9 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
               </div>
             </CardContent>
           </Card>
+        </TabsContent>
 
+        <TabsContent value="appearance" className="space-y-6">
           {/* Theme Selection */}
           <Card>
             <CardHeader>
