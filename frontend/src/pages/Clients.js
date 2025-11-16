@@ -217,7 +217,7 @@ export default function Clients() {
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
                             <DropdownMenuItem onClick={() => handleEdit(client)} data-testid="edit-client">
-                              Редагувати
+                              {t('common.edit')}
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
