@@ -190,13 +190,8 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Ingredients Page CRUD Operations"
-    - "Semifinished Page CRUD Operations"
-    - "Recipes Page CRUD Operations"
-  stuck_tasks:
-    - "Ingredients Page CRUD Operations"
-    - "Semifinished Page CRUD Operations"
-    - "Recipes Page CRUD Operations"
+    - "All CRUD pages testing completed successfully"
+  stuck_tasks: []
   test_all: false
   test_priority: "high_first"
 
