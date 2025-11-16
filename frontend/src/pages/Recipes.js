@@ -1,249 +1,288 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Plus, Pencil, X, Copy } from 'lucide-react';
-import { toast } from 'sonner';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+const API_URL = process.env.REACT_APP_BACKEND_URL;
 
-export default function Recipes() {
+function Recipes() {
   const { t } = useTranslation();
   const [recipes, setRecipes] = useState([]);
   const [ingredients, setIngredients] = useState([]);
-  const [semifinished, setSemifinished] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const [semiProducts, setSemiProducts] = useState([]);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [currentId, setCurrentId] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
     laborCost: 0,
-    components: [], // {type: 'ingredient'|'semifinished', itemId, quantity}
-    imageFile: null
+    components: [{ type: 'ingredient', id: '', quantity: 0 }]
   });
-  const [isEditing, setIsEditing] = useState(false);
-  const [editingId, setEditingId] = useState(null);
-  const [costs, setCosts] = useState({});
 
   useEffect(() => {
-    fetchData();
+    fetchRecipes();
+    fetchIngredients();
+    fetchSemiProducts();
   }, []);
 
-  useEffect(() => {
-    if (formData.components && formData.components.length > 0) {
-      calculateCost();
-    }
-  }, [formData.components, formData.laborCost]);
-
-  const fetchData = async () => {
+  const fetchRecipes = async () => {
     try {
-      const [recipesRes, ingredientsRes, semifinishedRes] = await Promise.all([
-        axios.get('/recipes'),
-        axios.get('/ingredients'),
-        axios.get('/semifinished')
-      ]);
-      setRecipes(recipesRes.data);
-      setIngredients(ingredientsRes.data);
-      setSemifinished(semifinishedRes.data);
-    } catch (error) {
-      toast.error(t('recipes.errorLoad'));
-    } finally {
-      setLoading(false);
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${API_URL}/api/recipes`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const data = await res.json();
+      setRecipes(data);
+    } catch (err) {
+      console.error('Failed to fetch recipes', err);
     }
   };
 
-  const calculateCost = async () => {
-    let totalCost = 0;
-    
-    for (const component of formData.components) {
-      if (component.type === 'ingredient') {
-        const ingredient = ingredients.find(i => i.id === component.itemId);
-        if (ingredient) {
-          totalCost += ingredient.price * component.quantity;
-        }
-      } else if (component.type === 'semifinished') {
-        const sf = semifinished.find(s => s.id === component.itemId);
-        if (sf) {
-          // Calculate semifinished cost
-          let sfCost = 0;
-          (sf.ingredients || []).forEach(ing => {
-            const ingredient = ingredients.find(i => i.id === ing.ingredientId);
-            if (ingredient) {
-              sfCost += ingredient.price * ing.quantity;
-            }
-          });
-          const sfTotal = sfCost + (sf.laborCost || 0);
-          totalCost += sfTotal * component.quantity;
-        }
-      }
+  const fetchIngredients = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${API_URL}/api/ingredients`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const data = await res.json();
+      setIngredients(data);
+    } catch (err) {
+      console.error('Failed to fetch ingredients', err);
     }
-    
-    const laborCost = parseFloat(formData.laborCost) || 0;
-    const finalPrice = totalCost + laborCost;
-    
-    setCosts({
-      recipeCost: totalCost,
-      laborCost: laborCost,
-      totalCost: totalCost + laborCost,
-      finalPrice: finalPrice
+  };
+
+  const fetchSemiProducts = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${API_URL}/api/semifinished`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const data = await res.json();
+      setSemiProducts(data);
+    } catch (err) {
+      console.error('Failed to fetch semi-products', err);
+    }
+  };
+
+  const openNewDialog = () => {
+    setIsEditing(false);
+    setCurrentId(null);
+    setFormData({
+      name: '',
+      description: '',
+      laborCost: 0,
+      components: [{ type: 'ingredient', id: '', quantity: 0 }]
     });
+    setIsDialogOpen(true);
+  };
+
+  const openEditDialog = (recipe) => {
+    setIsEditing(true);
+    setCurrentId(recipe._id);
+    setFormData({
+      name: recipe.name,
+      description: recipe.description || '',
+      laborCost: recipe.laborCost || 0,
+      components: recipe.components || [{ type: 'ingredient', id: '', quantity: 0 }]
+    });
+    setIsDialogOpen(true);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      let imageUrl = '';
-      
-      // Upload image if selected
-      if (formData.imageFile) {
-        const imageFormData = new FormData();
-        imageFormData.append('file', formData.imageFile);
-        const imageRes = await axios.post('/upload/recipe', imageFormData, {
-          headers: { 'Content-Type': 'multipart/form-data' }
-        });
-        imageUrl = imageRes.data.imageUrl;
-      }
+      const token = localStorage.getItem('token');
+      const url = isEditing
+        ? `${API_URL}/api/recipes/${currentId}`
+        : `${API_URL}/api/recipes`;
+      const method = isEditing ? 'PUT' : 'POST';
 
-      const recipeData = {
-        name: formData.name,
-        description: formData.description || `${formData.components.length} компонентів`,
-        laborCost: parseFloat(formData.laborCost) || 0,
-        markup: 0,
-        ingredients: [],
-        components: formData.components
-      };
+      const res = await fetch(url, {
+        method,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
 
-      if (isEditing) {
-        await axios.put(`/recipes/${editingId}`, recipeData);
-        toast.success(t('recipes.updated'));
+      if (res.ok) {
+        setIsDialogOpen(false);
+        fetchRecipes();
+        const toast = (await import('sonner')).toast;
+        toast.success(isEditing ? t('recipes.updated') : t('recipes.created'));
       } else {
-        await axios.post('/recipes', recipeData);
-        toast.success(t('recipes.created'));
+        const toast = (await import('sonner')).toast;
+        toast.error(t('common.error'));
       }
-      
-      setDialogOpen(false);
-      resetForm();
-      fetchData();
-    } catch (error) {
-      toast.error(error.response?.data?.detail || t('recipes.error'));
+    } catch (err) {
+      console.error(err);
+      const toast = (await import('sonner')).toast;
+      toast.error(t('common.error'));
     }
   };
 
-  const handleEdit = (recipe) => {
-    setFormData({
-      name: recipe.name,
-      description: recipe.description,
-      laborCost: recipe.laborCost,
-      components: recipe.components || [],
-      imageFile: null
-    });
-    setEditingId(recipe.id);
-    setIsEditing(true);
-    setDialogOpen(true);
-  };
-
-  const handleDelete = async () => {
-    if (!editingId) return;
-    
+  const handleDelete = async (id) => {
     if (!window.confirm(t('recipes.deleteConfirm'))) return;
-    
     try {
-      await axios.delete(`/recipes/${editingId}`);
-      toast.success(t('recipes.deleted'));
-      setDialogOpen(false);
-      resetForm();
-      fetchData();
-    } catch (error) {
-      toast.error(error.response?.data?.detail || t('recipes.error'));
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${API_URL}/api/recipes/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.ok) {
+        fetchRecipes();
+        const toast = (await import('sonner')).toast;
+        toast.success(t('recipes.deleted'));
+      } else {
+        const toast = (await import('sonner')).toast;
+        toast.error(t('common.error'));
+      }
+    } catch (err) {
+      console.error(err);
+      const toast = (await import('sonner')).toast;
+      toast.error(t('common.error'));
     }
   };
 
   const handleCopy = async (recipe) => {
     try {
-      const recipeData = {
-        name: `${recipe.name} (копія)`,
-        description: recipe.description,
-        laborCost: recipe.laborCost,
-        markup: 0,
-        ingredients: [],
-        components: recipe.components || []
-      };
-      
-      await axios.post('/recipes', recipeData);
-      toast.success(t('recipes.copied'));
-      fetchData();
-    } catch (error) {
-      toast.error(error.response?.data?.detail || t('recipes.error'));
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${API_URL}/api/recipes`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          name: `${recipe.name} (копія)`,
+          description: recipe.description,
+          laborCost: recipe.laborCost,
+          components: recipe.components
+        })
+      });
+      if (res.ok) {
+        fetchRecipes();
+        const toast = (await import('sonner')).toast;
+        toast.success(t('recipes.copied'));
+      } else {
+        const toast = (await import('sonner')).toast;
+        toast.error(t('common.error'));
+      }
+    } catch (err) {
+      console.error(err);
+      const toast = (await import('sonner')).toast;
+      toast.error(t('common.error'));
     }
   };
 
-  const addComponent = () => {
-    setFormData({
-      ...formData,
-      components: [...formData.components, { type: 'ingredient', itemId: '', quantity: 0 }]
-    });
+  const addComponentRow = () => {
+    setFormData(prev => ({
+      ...prev,
+      components: [...prev.components, { type: 'ingredient', id: '', quantity: 0 }]
+    }));
   };
 
-  const removeComponent = (index) => {
-    const newComponents = formData.components.filter((_, i) => i !== index);
-    setFormData({ ...formData, components: newComponents });
+  const removeComponentRow = (index) => {
+    setFormData(prev => ({
+      ...prev,
+      components: prev.components.filter((_, i) => i !== index)
+    }));
   };
 
-  const updateComponent = (index, field, value) => {
-    const newComponents = [...formData.components];
-    if (field === 'quantity') {
-      newComponents[index][field] = parseFloat(value);
-    } else {
+  const updateComponentRow = (index, field, value) => {
+    setFormData(prev => {
+      const newComponents = [...prev.components];
       newComponents[index][field] = value;
-    }
-    setFormData({ ...formData, components: newComponents });
-  };
-
-  const resetForm = () => {
-    setFormData({
-      name: '',
-      description: '',
-      laborCost: 0,
-      components: [],
-      imageFile: null
+      // Reset id when type changes
+      if (field === 'type') {
+        newComponents[index].id = '';
+      }
+      return { ...prev, components: newComponents };
     });
-    setIsEditing(false);
-    setEditingId(null);
-    setCosts({});
   };
 
-  if (loading) {
+  const computeCost = (recipeComponents) => {
+    let total = 0;
+    for (const comp of recipeComponents) {
+      if (comp.type === 'ingredient') {
+        const ingredient = ingredients.find(i => i._id === comp.id);
+        if (ingredient) {
+          total += ingredient.price * comp.quantity;
+        }
+      } else if (comp.type === 'semifinished') {
+        const sp = semiProducts.find(s => s._id === comp.id);
+        if (sp && sp.ingredients) {
+          for (const ing of sp.ingredients) {
+            const ingredient = ingredients.find(i => i._id === ing.ingredientId);
+            if (ingredient) {
+              total += ingredient.price * ing.quantity * comp.quantity;
+            }
+          }
+        }
+      }
+    }
+    return total.toFixed(2);
+  };
+
+  // UI Components (shadcn)
+  const Dialog = ({ open, onOpenChange, children }) => {
+    if (!open) return null;
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <div className="absolute inset-0 bg-black/50" onClick={() => onOpenChange(false)}></div>
+        <div className="relative bg-white rounded-lg shadow-lg z-10">{children}</div>
       </div>
     );
-  }
+  };
+
+  const DialogTrigger = ({ children }) => <>{children}</>;
+  const DialogContent = ({ children, className }) => <div className={className}>{children}</div>;
+  const DialogHeader = ({ children }) => <div className="p-4 border-b">{children}</div>;
+  const DialogTitle = ({ children }) => <h2 className="text-xl font-bold">{children}</h2>;
+  const Button = ({ children, onClick, variant, size, type }) => (
+    <button
+      type={type || 'button'}
+      onClick={onClick}
+      className={`px-4 py-2 rounded ${variant === 'destructive' ? 'bg-red-600 text-white' : variant === 'outline' ? 'border border-gray-300' : 'bg-blue-600 text-white'} ${size === 'sm' ? 'text-sm' : ''}`}
+    >
+      {children}
+    </button>
+  );
+  const Input = ({ ...props }) => <input {...props} className="border rounded p-2 w-full" />;
+  const Textarea = ({ ...props }) => <textarea {...props} className="border rounded p-2 w-full" />;
+  const Label = ({ children, htmlFor }) => <label htmlFor={htmlFor} className="block font-medium mb-1">{children}</label>;
+  const Select = ({ value, onValueChange, children }) => (
+    <select value={value} onChange={(e) => onValueChange(e.target.value)} className="border rounded p-2 w-full">
+      {children}
+    </select>
+  );
+  const SelectTrigger = ({ children }) => <>{children}</>;
+  const SelectValue = ({ placeholder }) => <option value="">{placeholder}</option>;
+  const SelectContent = ({ children }) => <>{children}</>;
+  const SelectItem = ({ value, children }) => <option value={value}>{children}</option>;
 
   return (
-    <div className="space-y-6 animate-fade-in">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
-            {t('recipes.title')}
-          </h1>
-          <p className="text-muted-foreground">{t('recipes.subtitle')}</p>
+    <div className="space-y-4">
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-bold">Вироби</h1>
+          <DialogTrigger>
+            <Button onClick={openNewDialog}>
+              {t('recipes.newRecipe')}
+            </Button>
+          </DialogTrigger>
         </div>
-        <Dialog open={dialogOpen} onOpenChange={(open) => { setDialogOpen(open); if (!open) resetForm(); }}>
-          <DialogTrigger asChild>
-            <Button data-testid="create-recipe-button">
-              <Plus className="mr-2 h-4 w-4" />
+
+        {/* Dialog */}
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger>
+            <Button onClick={openNewDialog}>
               {t('recipes.newRecipe')}
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>{isEditing ? t('recipes.editRecipe') : '{t('recipes.newRecipe')}'}</DialogTitle>
+              <DialogTitle>{isEditing ? t('recipes.editRecipe') : t('recipes.newRecipe')}</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
@@ -253,90 +292,17 @@ export default function Recipes() {
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   required
-                  data-testid="recipe-name-input"
                 />
               </div>
-              
               <div className="space-y-2">
-                <Label htmlFor="image">Зображення</Label>
-                <Input
-                  id="image"
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => setFormData({ ...formData, imageFile: e.target.files[0] })}
-                  data-testid="recipe-image-input"
+                <Label htmlFor="description">Опис</Label>
+                <Textarea
+                  id="description"
+                  value={formData.description}
+                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  rows={3}
                 />
               </div>
-
-              <div className="space-y-2">
-                <div className="flex items-center justify-between">
-                  <Label>Компоненти (Інгредієнти + Напівфабрикати)</Label>
-                  <Button type="button" size="sm" onClick={addComponent} data-testid="add-component-button">
-                    <Plus className="h-4 w-4 mr-1" />
-                    Додати
-                  </Button>
-                </div>
-                <div className="space-y-2">
-                  {formData.components.map((component, index) => (
-                    <div key={index} className="flex gap-2 items-center p-3 border border-border rounded-lg">
-                      <Select
-                        value={component.type}
-                        onValueChange={(value) => updateComponent(index, 'type', value)}
-                      >
-                        <SelectTrigger className="w-40" data-testid={`component-type-${index}`}>
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="ingredient">Інгредієнт</SelectItem>
-                          <SelectItem value="semifinished">Напівфабрикат</SelectItem>
-                        </SelectContent>
-                      </Select>
-                      <Select
-                        value={component.itemId}
-                        onValueChange={(value) => updateComponent(index, 'itemId', value)}
-                      >
-                        <SelectTrigger className="flex-1" data-testid={`component-item-${index}`}>
-                          <SelectValue placeholder={component.type === 'ingredient' ? 'Оберіть інгредієнт' : 'Оберіть напівфабрикат'} />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {component.type === 'ingredient' ? (
-                            ingredients.map((item) => (
-                              <SelectItem key={item.id} value={item.id}>
-                                {item.name} ({item.unit})
-                              </SelectItem>
-                            ))
-                          ) : (
-                            semifinished.map((item) => (
-                              <SelectItem key={item.id} value={item.id}>
-                                {item.name} ({item.unit})
-                              </SelectItem>
-                            ))
-                          )}
-                        </SelectContent>
-                      </Select>
-                      <Input
-                        type="number"
-                        step="0.01"
-                        placeholder="Кількість"
-                        value={component.quantity}
-                        onChange={(e) => updateComponent(index, 'quantity', e.target.value)}
-                        className="w-32"
-                        data-testid={`component-quantity-${index}`}
-                      />
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => removeComponent(index)}
-                        data-testid={`remove-component-${index}`}
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
               <div className="space-y-2">
                 <Label htmlFor="laborCost">Вартість роботи (грн)</Label>
                 <Input
@@ -344,124 +310,135 @@ export default function Recipes() {
                   type="number"
                   step="0.01"
                   value={formData.laborCost}
-                  onChange={(e) => setFormData({ ...formData, laborCost: e.target.value })}
-                  data-testid="recipe-labor-cost-input"
+                  onChange={(e) => setFormData({ ...formData, laborCost: parseFloat(e.target.value) })}
                 />
               </div>
 
-              {costs.finalPrice > 0 && (
-                <div className="p-4 bg-muted/50 rounded-lg space-y-1">
-                  <p className="text-sm text-muted-foreground">Собівартість: {costs.recipeCost?.toFixed(2)} грн</p>
-                  <p className="text-lg font-bold text-primary">Фінальна ціна: {costs.finalPrice?.toFixed(2)} грн</p>
-                </div>
-              )}
-
-              <DialogFooter className={isEditing ? "flex justify-between" : ""}>
-                {isEditing && (
-                  <Button
-                    type="button"
-                    variant="destructive"
-                    onClick={handleDelete}
-                    data-testid="recipe-delete-button"
-                  >
-                    Видалити
-                  </Button>
-                )}
-                <Button type="submit" data-testid="recipe-submit-button">
-                  {isEditing ? 'Зберегти' : 'Створити'}
+              <div className="space-y-2">
+                <Label>Компоненти</Label>
+                {formData.components.map((comp, idx) => (
+                  <div key={idx} className="flex gap-2 items-end">
+                    <div className="w-40">
+                      <Label htmlFor={`type-${idx}`}>Тип</Label>
+                      <Select
+                        value={comp.type}
+                        onValueChange={(val) => updateComponentRow(idx, 'type', val)}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Виберіть тип" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="ingredient">Інгредієнт</SelectItem>
+                          <SelectItem value="semifinished">Напівфабрикат</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="flex-1">
+                      <Label htmlFor={`comp-${idx}`}>Елемент</Label>
+                      <Select
+                        value={comp.id}
+                        onValueChange={(val) => updateComponentRow(idx, 'id', val)}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Виберіть елемент" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {comp.type === 'ingredient'
+                            ? ingredients.map(i => <SelectItem key={i._id} value={i._id}>{i.name}</SelectItem>)
+                            : semiProducts.map(s => <SelectItem key={s._id} value={s._id}>{s.name}</SelectItem>)
+                          }
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="w-32">
+                      <Label htmlFor={`qty-${idx}`}>Кількість</Label>
+                      <Input
+                        id={`qty-${idx}`}
+                        type="number"
+                        step="0.01"
+                        value={comp.quantity}
+                        onChange={(e) => updateComponentRow(idx, 'quantity', parseFloat(e.target.value))}
+                        required
+                      />
+                    </div>
+                    <Button
+                      type="button"
+                      variant="destructive"
+                      size="sm"
+                      onClick={() => removeComponentRow(idx)}
+                    >
+                      Видалити
+                    </Button>
+                  </div>
+                ))}
+                <Button type="button" variant="outline" onClick={addComponentRow}>
+                  + Додати компонент
                 </Button>
-              </DialogFooter>
+              </div>
+
+              <div className="flex justify-end gap-2 pt-4">
+                <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
+                  Скасувати
+                </Button>
+                <Button type="submit">{isEditing ? 'Зберегти' : 'Створити'}</Button>
+              </div>
             </form>
           </DialogContent>
         </Dialog>
-      </div>
+      </Dialog>
 
-      {recipes.length > 0 ? (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {recipes.map((recipe) => (
-            <Card key={recipe.id} className="overflow-hidden hover:shadow-lg transition-shadow" data-testid={`recipe-card-${recipe.id}`}>
-              {recipe.imageUrl && (
-                <div className="aspect-video w-full overflow-hidden bg-muted">
-                  <img
-                    src={`${BACKEND_URL}${recipe.imageUrl}`}
-                    alt={recipe.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              )}
-              <CardHeader>
-                <CardTitle>{recipe.name}</CardTitle>
-                <CardDescription>{recipe.description}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-1">
-                  <p className="text-sm text-muted-foreground">
-                    Компонентів: {(recipe.components?.length || 0) + (recipe.ingredients?.length || 0)}
-                  </p>
-                  <p className="text-lg font-bold text-primary">
-                    Ціна: {(() => {
-                      let cost = 0;
-                      // Old format ingredients
-                      (recipe.ingredients || []).forEach(ing => {
-                        const ingredient = ingredients.find(i => i.id === ing.ingredientId);
-                        if (ingredient) cost += ingredient.price * ing.quantity;
-                      });
-                      // New format components
-                      (recipe.components || []).forEach(comp => {
-                        if (comp.type === 'ingredient') {
-                          const ingredient = ingredients.find(i => i.id === comp.itemId);
-                          if (ingredient) cost += ingredient.price * comp.quantity;
-                        } else if (comp.type === 'semifinished') {
-                          const sf = semifinished.find(s => s.id === comp.itemId);
-                          if (sf) {
-                            let sfCost = 0;
-                            (sf.ingredients || []).forEach(ing => {
-                              const ingredient = ingredients.find(i => i.id === ing.ingredientId);
-                              if (ingredient) sfCost += ingredient.price * ing.quantity;
-                            });
-                            cost += (sfCost + sf.laborCost) * comp.quantity;
-                          }
-                        }
-                      });
-                      return (cost + recipe.laborCost).toFixed(2);
-                    })()} грн
-                  </p>
-                </div>
-              </CardContent>
-              <CardFooter className="flex gap-2">
-                <Button
-                  variant="outline"
-                  className="flex-1"
-                  onClick={() => handleEdit(recipe)}
-                  data-testid={`edit-recipe-${recipe.id}`}
-                >
-                  <Pencil className="h-4 w-4 mr-2" />
-                  Редагувати
-                </Button>
-                <Button
-                  variant="outline"
-                  className="flex-1"
-                  onClick={() => handleCopy(recipe)}
-                  data-testid={`copy-recipe-${recipe.id}`}
-                >
-                  <Copy className="h-4 w-4 mr-2" />
-                  Копіювати
-                </Button>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
-      ) : (
-        <Card>
-          <CardContent className="text-center py-12">
-            <p className="text-muted-foreground mb-4">{t('recipes.noRecipes')}</p>
-            <Button onClick={() => setDialogOpen(true)}>
-              <Plus className="mr-2 h-4 w-4" />
-              {t('recipes.createFirst')}
-            </Button>
-          </CardContent>
-        </Card>
-      )}
+      {/* Table */}
+      <div className="overflow-x-auto">
+        <table className="min-w-full border">
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="border p-2 text-left">Назва</th>
+              <th className="border p-2 text-left">Опис</th>
+              <th className="border p-2 text-left">Собівартість</th>
+              <th className="border p-2 text-left">Вартість роботи</th>
+              <th className="border p-2 text-left">Загальна вартість</th>
+              <th className="border p-2 text-left">Дії</th>
+            </tr>
+          </thead>
+          <tbody>
+            {recipes.length === 0 ? (
+              <tr>
+                <td colSpan={6} className="border p-4 text-center text-gray-500">
+                  Немає виробів
+                </td>
+              </tr>
+            ) : (
+              recipes.map((recipe) => {
+                const cost = parseFloat(computeCost(recipe.components || []));
+                const labor = recipe.laborCost || 0;
+                const total = (cost + labor).toFixed(2);
+                return (
+                  <tr key={recipe._id}>
+                    <td className="border p-2">{recipe.name}</td>
+                    <td className="border p-2">{recipe.description || '—'}</td>
+                    <td className="border p-2">{cost} грн</td>
+                    <td className="border p-2">{labor} грн</td>
+                    <td className="border p-2">{total} грн</td>
+                    <td className="border p-2 space-x-2">
+                      <Button size="sm" onClick={() => openEditDialog(recipe)}>
+                        Редагувати
+                      </Button>
+                      <Button size="sm" variant="outline" onClick={() => handleCopy(recipe)}>
+                        Копіювати
+                      </Button>
+                      <Button size="sm" variant="destructive" onClick={() => handleDelete(recipe._id)}>
+                        Видалити
+                      </Button>
+                    </td>
+                  </tr>
+                );
+              })
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
+
+export default Recipes;

@@ -1,22 +1,15 @@
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Plus, Pencil } from 'lucide-react';
-import { toast } from 'sonner';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
-export default function Ingredients() {
+const API_URL = process.env.REACT_APP_BACKEND_URL;
+
+function Ingredients() {
   const { t } = useTranslation();
   const [ingredients, setIngredients] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [formData, setFormData] = useState({ name: '', unit: '', price: 0 });
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [editingId, setEditingId] = useState(null);
+  const [currentId, setCurrentId] = useState(null);
+  const [formData, setFormData] = useState({ name: '', unit: 'кг', price: 0 });
 
   useEffect(() => {
     fetchIngredients();
@@ -24,93 +17,146 @@ export default function Ingredients() {
 
   const fetchIngredients = async () => {
     try {
-      const response = await axios.get('/ingredients');
-      setIngredients(response.data);
-    } catch (error) {
-      toast.error(t('ingredients.errorLoad'));
-    } finally {
-      setLoading(false);
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${API_URL}/api/ingredients`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const data = await res.json();
+      setIngredients(data);
+    } catch (err) {
+      console.error('Failed to fetch ingredients', err);
     }
+  };
+
+  const openNewDialog = () => {
+    setIsEditing(false);
+    setCurrentId(null);
+    setFormData({ name: '', unit: 'кг', price: 0 });
+    setIsDialogOpen(true);
+  };
+
+  const openEditDialog = (ingredient) => {
+    setIsEditing(true);
+    setCurrentId(ingredient._id);
+    setFormData({ name: ingredient.name, unit: ingredient.unit, price: ingredient.price });
+    setIsDialogOpen(true);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      if (isEditing) {
-        await axios.put(`/ingredients/${editingId}`, formData);
-        toast.success(t('ingredients.updated'));
+      const token = localStorage.getItem('token');
+      const url = isEditing
+        ? `${API_URL}/api/ingredients/${currentId}`
+        : `${API_URL}/api/ingredients`;
+      const method = isEditing ? 'PUT' : 'POST';
+
+      const res = await fetch(url, {
+        method,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      if (res.ok) {
+        setIsDialogOpen(false);
+        fetchIngredients();
+        const toast = (await import('sonner')).toast;
+        toast.success(isEditing ? t('ingredients.updated') : t('ingredients.created'));
       } else {
-        await axios.post('/ingredients', formData);
-        toast.success(t('ingredients.created'));
+        const toast = (await import('sonner')).toast;
+        toast.error(t('common.error'));
       }
-      setDialogOpen(false);
-      resetForm();
-      fetchIngredients();
-    } catch (error) {
-      toast.error(error.response?.data?.detail || t('ingredients.error'));
+    } catch (err) {
+      console.error(err);
+      const toast = (await import('sonner')).toast;
+      toast.error(t('common.error'));
     }
   };
 
-  const handleEdit = (ingredient) => {
-    setFormData({
-      name: ingredient.name,
-      unit: ingredient.unit,
-      price: ingredient.price
-    });
-    setEditingId(ingredient.id);
-    setIsEditing(true);
-    setDialogOpen(true);
-  };
-
-  const handleDelete = async () => {
-    if (!editingId) return;
-    
+  const handleDelete = async (id) => {
     if (!window.confirm(t('ingredients.deleteConfirm'))) return;
-    
     try {
-      await axios.delete(`/ingredients/${editingId}`);
-      toast.success(t('ingredients.deleted'));
-      setDialogOpen(false);
-      resetForm();
-      fetchIngredients();
-    } catch (error) {
-      toast.error(error.response?.data?.detail || t('ingredients.error'));
+      const token = localStorage.getItem('token');
+      const res = await fetch(`${API_URL}/api/ingredients/${id}`, {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.ok) {
+        fetchIngredients();
+        const toast = (await import('sonner')).toast;
+        toast.success(t('ingredients.deleted'));
+      } else {
+        const toast = (await import('sonner')).toast;
+        toast.error(t('common.error'));
+      }
+    } catch (err) {
+      console.error(err);
+      const toast = (await import('sonner')).toast;
+      toast.error(t('common.error'));
     }
   };
 
-  const resetForm = () => {
-    setFormData({ name: '', unit: '', price: 0 });
-    setIsEditing(false);
-    setEditingId(null);
-  };
-
-  if (loading) {
+  // UI Components (shadcn)
+  const Dialog = ({ open, onOpenChange, children }) => {
+    if (!open) return null;
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <div className="absolute inset-0 bg-black/50" onClick={() => onOpenChange(false)}></div>
+        <div className="relative bg-white rounded-lg shadow-lg z-10">{children}</div>
       </div>
     );
-  }
+  };
+
+  const DialogTrigger = ({ children }) => <>{children}</>;
+  const DialogContent = ({ children }) => <div className="p-6">{children}</div>;
+  const DialogHeader = ({ children }) => <div className="mb-4">{children}</div>;
+  const DialogTitle = ({ children }) => <h2 className="text-xl font-bold">{children}</h2>;
+  const Button = ({ children, onClick, variant, size, type }) => (
+    <button
+      type={type || 'button'}
+      onClick={onClick}
+      className={`px-4 py-2 rounded ${variant === 'destructive' ? 'bg-red-600 text-white' : variant === 'outline' ? 'border border-gray-300' : 'bg-blue-600 text-white'} ${size === 'sm' ? 'text-sm' : ''}`}
+    >
+      {children}
+    </button>
+  );
+  const Input = ({ ...props }) => <input {...props} className="border rounded p-2 w-full" />;
+  const Label = ({ children, htmlFor }) => <label htmlFor={htmlFor} className="block font-medium mb-1">{children}</label>;
+  const Select = ({ value, onValueChange, children }) => (
+    <select value={value} onChange={(e) => onValueChange(e.target.value)} className="border rounded p-2 w-full">
+      {children}
+    </select>
+  );
+  const SelectTrigger = ({ children }) => <>{children}</>;
+  const SelectValue = ({ placeholder }) => <option value="">{placeholder}</option>;
+  const SelectContent = ({ children }) => <>{children}</>;
+  const SelectItem = ({ value, children }) => <option value={value}>{children}</option>;
 
   return (
-    <div className="space-y-6 animate-fade-in">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
-            {t('ingredients.title')}
-          </h1>
-          <p className="text-muted-foreground">{t('ingredients.subtitle')}</p>
+    <div className="space-y-4">
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-bold">Інгредієнти</h1>
+          <DialogTrigger>
+            <Button onClick={openNewDialog}>
+              {t('ingredients.newIngredient')}
+            </Button>
+          </DialogTrigger>
         </div>
-        <Dialog open={dialogOpen} onOpenChange={(open) => { setDialogOpen(open); if (!open) resetForm(); }}>
-          <DialogTrigger asChild>
-            <Button data-testid="create-ingredient-button">
-              <Plus className="mr-2 h-4 w-4" />
+
+        {/* Dialog */}
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger>
+            <Button onClick={openNewDialog}>
               {t('ingredients.newIngredient')}
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>{isEditing ? t('ingredients.editIngredient') : '{t('ingredients.newIngredient')}'}</DialogTitle>
+              <DialogTitle>{isEditing ? t('ingredients.editIngredient') : t('ingredients.newIngredient')}</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
@@ -120,22 +166,25 @@ export default function Ingredients() {
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   required
-                  data-testid="ingredient-name-input"
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="unit">Одиниця виміру</Label>
-                <Input
-                  id="unit"
-                  placeholder="грами, кг, штуки..."
-                  value={formData.unit}
-                  onChange={(e) => setFormData({ ...formData, unit: e.target.value })}
-                  required
-                  data-testid="ingredient-unit-input"
-                />
+                <Select value={formData.unit} onValueChange={(val) => setFormData({ ...formData, unit: val })}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Виберіть одиницю" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="кг">кг</SelectItem>
+                    <SelectItem value="г">г</SelectItem>
+                    <SelectItem value="л">л</SelectItem>
+                    <SelectItem value="мл">мл</SelectItem>
+                    <SelectItem value="шт">шт</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               <div className="space-y-2">
-                <Label htmlFor="price">Ціна за одиницю (грн)</Label>
+                <Label htmlFor="price">Ціна</Label>
                 <Input
                   id="price"
                   type="number"
@@ -143,74 +192,59 @@ export default function Ingredients() {
                   value={formData.price}
                   onChange={(e) => setFormData({ ...formData, price: parseFloat(e.target.value) })}
                   required
-                  data-testid="ingredient-price-input"
                 />
               </div>
-              <DialogFooter className={isEditing ? "flex justify-between" : ""}>
-                {isEditing && (
-                  <Button
-                    type="button"
-                    variant="destructive"
-                    onClick={handleDelete}
-                    data-testid="ingredient-delete-button"
-                  >
-                    Видалити
-                  </Button>
-                )}
-                <Button type="submit" data-testid="ingredient-submit-button">
-                  {isEditing ? 'Зберегти' : 'Створити'}
+              <div className="flex justify-end gap-2">
+                <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
+                  Скасувати
                 </Button>
-              </DialogFooter>
+                <Button type="submit">{isEditing ? 'Зберегти' : 'Створити'}</Button>
+              </div>
             </form>
           </DialogContent>
         </Dialog>
-      </div>
+      </Dialog>
 
-      <Card>
-        <CardContent className="p-0">
-          {ingredients.length > 0 ? (
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="border-b border-border bg-muted/50">
-                  <tr>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Назва</th>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Одиниця</th>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground">Ціна</th>
-                    <th className="px-4 py-3 text-left text-sm font-medium text-muted-foreground"></th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border">
-                  {ingredients.map((ingredient) => (
-                    <tr key={ingredient.id} className="hover:bg-muted/30 transition-colors" data-testid={`ingredient-row-${ingredient.id}`}>
-                      <td className="px-4 py-3 font-medium text-foreground">{ingredient.name}</td>
-                      <td className="px-4 py-3 text-sm text-muted-foreground">{ingredient.unit}</td>
-                      <td className="px-4 py-3 text-sm font-medium">{ingredient.price.toFixed(2)} грн</td>
-                      <td className="px-4 py-3">
-                        <Button
-                          variant="ghost"
-                          size="icon"
-                          onClick={() => handleEdit(ingredient)}
-                          data-testid={`edit-ingredient-${ingredient.id}`}
-                        >
-                          <Pencil className="h-4 w-4" />
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          ) : (
-            <div className="text-center py-12">
-              <p className="text-muted-foreground mb-4">{t('ingredients.noIngredients')}</p>
-              <Button onClick={() => setDialogOpen(true)}>
-                <Plus className="mr-2 h-4 w-4" />
-                {t('ingredients.addFirst')}
-              </Button>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+      {/* Table */}
+      <div className="overflow-x-auto">
+        <table className="min-w-full border">
+          <thead>
+            <tr className="bg-gray-100">
+              <th className="border p-2 text-left">Назва</th>
+              <th className="border p-2 text-left">Одиниця</th>
+              <th className="border p-2 text-left">Ціна</th>
+              <th className="border p-2 text-left">Дії</th>
+            </tr>
+          </thead>
+          <tbody>
+            {ingredients.length === 0 ? (
+              <tr>
+                <td colSpan={4} className="border p-4 text-center text-gray-500">
+                  Немає інгредієнтів
+                </td>
+              </tr>
+            ) : (
+              ingredients.map((ingredient) => (
+                <tr key={ingredient._id}>
+                  <td className="border p-2">{ingredient.name}</td>
+                  <td className="border p-2">{ingredient.unit}</td>
+                  <td className="border p-2">{ingredient.price} грн</td>
+                  <td className="border p-2 space-x-2">
+                    <Button size="sm" onClick={() => openEditDialog(ingredient)}>
+                      Редагувати
+                    </Button>
+                    <Button size="sm" variant="destructive" onClick={() => handleDelete(ingredient._id)}>
+                      Видалити
+                    </Button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
+
+export default Ingredients;
