@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Test New Calendar View Modes - Complete calendar redesign with 4 different view modes: День (Day), Тиждень (Week), Місяць (Month), Рік (Year). Features include view mode selector buttons, navigation controls (Previous, Today, Next), and order details functionality."
+user_problem_statement: "Comprehensive Testing of Recipes, Semifinished, and Ingredients Pages - Test 3 core CRUD pages for any errors, bugs, or issues: 1) Вироби (Recipes/Products) - /recipes, 2) Напівфабрикати (Semifinished) - /semifinished, 3) Інгредієнти (Ingredients) - /ingredients. Test all CRUD operations, UI elements, form validations, cost calculations, and ensure no console errors."
 
 frontend:
   - task: "i18n Language Switcher"
