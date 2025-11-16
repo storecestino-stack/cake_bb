@@ -393,8 +393,8 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
           {/* Theme Selection */}
           <Card>
             <CardHeader>
-              <CardTitle>Колірна тема</CardTitle>
-              <CardDescription>Оберіть колірну схему додатку</CardDescription>
+              <CardTitle>{t('settings.appearance.theme')}</CardTitle>
+              <CardDescription>{t('settings.appearance.themeDescription')}</CardDescription>
             </CardHeader>
             <CardContent>
               <div className="grid gap-4 md:grid-cols-2">
