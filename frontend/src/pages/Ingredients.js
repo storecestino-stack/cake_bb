@@ -213,4 +213,3 @@ export default function Ingredients() {
   );
 }
 
-export default Ingredients;
