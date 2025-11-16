@@ -102,7 +102,7 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Test i18n (Internationalization) Implementation - Full internationalization system using i18next with 4 languages: Ukrainian (uk), English (en), Polish (pl), and Russian (ru). All UI components now use translation keys instead of hardcoded text."
+user_problem_statement: "Test New Calendar View Modes - Complete calendar redesign with 4 different view modes: День (Day), Тиждень (Week), Місяць (Month), Рік (Year). Features include view mode selector buttons, navigation controls (Previous, Today, Next), and order details functionality."
 
 frontend:
   - task: "i18n Language Switcher"
