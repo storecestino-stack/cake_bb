@@ -101,3 +101,60 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: "Протестувати конструктор користувацької теми та відсутність декоративних зображень. Користувач попросив видалити декоративні зображення з порожніх екранів та створити конструктор користувацької теми з палітрою з 24 кольорів для: фону, шрифту, рамок та іконок."
+
+frontend:
+  - task: "Custom Theme Constructor"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/Settings.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "testing"
+          comment: "Need to test custom theme constructor with 24 colors for background, font, borders, and icons. Verify theme switching, color selection, persistence, and UI application."
+
+  - task: "Empty States Without Decorative Images"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "testing"
+          comment: "Need to verify that empty states in Dashboard, Clients, Orders, Recipes, Ingredients, and Semifinished pages contain only text and buttons without decorative images."
+
+  - task: "User Registration and Login"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/pages/AuthPage.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+        - working: "NA"
+          agent: "testing"
+          comment: "Need to test user registration and login functionality to access the application for theme testing."
+
+metadata:
+  created_by: "testing_agent"
+  version: "1.0"
+  test_sequence: 1
+
+test_plan:
+  current_focus:
+    - "User Registration and Login"
+    - "Custom Theme Constructor"
+    - "Empty States Without Decorative Images"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+    - agent: "testing"
+      message: "Starting comprehensive testing of custom theme constructor and empty states. Will test registration/login first, then navigate through all pages to verify empty states, and finally test the custom theme constructor with all 24 colors for each category."
