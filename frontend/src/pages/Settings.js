@@ -378,6 +378,159 @@ export default function Settings() {
               </div>
             </CardContent>
           </Card>
+
+          {theme === 'custom' && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Конструктор кольорів</CardTitle>
+                <CardDescription>Налаштуйте власну колірну схему</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                {/* Background Color */}
+                <div className="space-y-3">
+                  <Label className="text-base font-semibold">Колір фону</Label>
+                  <div className="grid grid-cols-8 gap-2">
+                    {colorPalette.map((color, index) => (
+                      <button
+                        key={`bg-${index}`}
+                        type="button"
+                        onClick={() => handleCustomColorChange('background', color)}
+                        className={`w-10 h-10 rounded-md border-2 transition-all ${
+                          customColors.background === color
+                            ? 'border-foreground scale-110 shadow-lg'
+                            : 'border-transparent hover:scale-105'
+                        }`}
+                        style={{ backgroundColor: color }}
+                        data-testid={`color-background-${index}`}
+                        aria-label={`Колір фону ${color}`}
+                      />
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-2 mt-2">
+                    <span className="text-sm text-muted-foreground">Обраний колір:</span>
+                    <div
+                      className="w-8 h-8 rounded-md border border-border"
+                      style={{ backgroundColor: customColors.background }}
+                    />
+                    <span className="text-sm font-mono">{customColors.background}</span>
+                  </div>
+                </div>
+
+                {/* Foreground/Font Color */}
+                <div className="space-y-3">
+                  <Label className="text-base font-semibold">Колір шрифту</Label>
+                  <div className="grid grid-cols-8 gap-2">
+                    {colorPalette.map((color, index) => (
+                      <button
+                        key={`fg-${index}`}
+                        type="button"
+                        onClick={() => handleCustomColorChange('foreground', color)}
+                        className={`w-10 h-10 rounded-md border-2 transition-all ${
+                          customColors.foreground === color
+                            ? 'border-foreground scale-110 shadow-lg'
+                            : 'border-transparent hover:scale-105'
+                        }`}
+                        style={{ backgroundColor: color }}
+                        data-testid={`color-foreground-${index}`}
+                        aria-label={`Колір шрифту ${color}`}
+                      />
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-2 mt-2">
+                    <span className="text-sm text-muted-foreground">Обраний колір:</span>
+                    <div
+                      className="w-8 h-8 rounded-md border border-border"
+                      style={{ backgroundColor: customColors.foreground }}
+                    />
+                    <span className="text-sm font-mono">{customColors.foreground}</span>
+                  </div>
+                </div>
+
+                {/* Border Color */}
+                <div className="space-y-3">
+                  <Label className="text-base font-semibold">Колір рамок</Label>
+                  <div className="grid grid-cols-8 gap-2">
+                    {colorPalette.map((color, index) => (
+                      <button
+                        key={`border-${index}`}
+                        type="button"
+                        onClick={() => handleCustomColorChange('border', color)}
+                        className={`w-10 h-10 rounded-md border-2 transition-all ${
+                          customColors.border === color
+                            ? 'border-foreground scale-110 shadow-lg'
+                            : 'border-transparent hover:scale-105'
+                        }`}
+                        style={{ backgroundColor: color }}
+                        data-testid={`color-border-${index}`}
+                        aria-label={`Колір рамок ${color}`}
+                      />
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-2 mt-2">
+                    <span className="text-sm text-muted-foreground">Обраний колір:</span>
+                    <div
+                      className="w-8 h-8 rounded-md border border-border"
+                      style={{ backgroundColor: customColors.border }}
+                    />
+                    <span className="text-sm font-mono">{customColors.border}</span>
+                  </div>
+                </div>
+
+                {/* Primary/Icon Color */}
+                <div className="space-y-3">
+                  <Label className="text-base font-semibold">Колір іконок (Основний)</Label>
+                  <div className="grid grid-cols-8 gap-2">
+                    {colorPalette.map((color, index) => (
+                      <button
+                        key={`primary-${index}`}
+                        type="button"
+                        onClick={() => handleCustomColorChange('primary', color)}
+                        className={`w-10 h-10 rounded-md border-2 transition-all ${
+                          customColors.primary === color
+                            ? 'border-foreground scale-110 shadow-lg'
+                            : 'border-transparent hover:scale-105'
+                        }`}
+                        style={{ backgroundColor: color }}
+                        data-testid={`color-primary-${index}`}
+                        aria-label={`Колір іконок ${color}`}
+                      />
+                    ))}
+                  </div>
+                  <div className="flex items-center gap-2 mt-2">
+                    <span className="text-sm text-muted-foreground">Обраний колір:</span>
+                    <div
+                      className="w-8 h-8 rounded-md border border-border"
+                      style={{ backgroundColor: customColors.primary }}
+                    />
+                    <span className="text-sm font-mono">{customColors.primary}</span>
+                  </div>
+                </div>
+
+                {/* Preview Section */}
+                <div className="p-4 border-2 border-border rounded-lg space-y-3">
+                  <Label className="text-base font-semibold">Попередній перегляд</Label>
+                  <div
+                    className="p-4 rounded-md"
+                    style={{
+                      backgroundColor: customColors.background,
+                      color: customColors.foreground,
+                      border: `2px solid ${customColors.border}`
+                    }}
+                  >
+                    <div className="flex items-center gap-2">
+                      <div
+                        className="w-4 h-4 rounded-full"
+                        style={{ backgroundColor: customColors.primary }}
+                      />
+                      <p style={{ color: customColors.foreground }}>
+                        Приклад тексту з вашими кольорами
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          )}
         </TabsContent>
       </Tabs>
     </div>
