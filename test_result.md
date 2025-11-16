@@ -193,9 +193,12 @@ test_plan:
     - "Ingredients Page CRUD Operations"
     - "Semifinished Page CRUD Operations"
     - "Recipes Page CRUD Operations"
-  stuck_tasks: []
+  stuck_tasks:
+    - "Ingredients Page CRUD Operations"
+    - "Semifinished Page CRUD Operations"
+    - "Recipes Page CRUD Operations"
   test_all: false
-  test_priority: "sequential"
+  test_priority: "high_first"
 
   - task: "Calendar View Mode Switching"
     implemented: true
