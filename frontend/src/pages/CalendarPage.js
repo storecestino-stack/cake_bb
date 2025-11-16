@@ -55,8 +55,17 @@ export default function CalendarPage() {
     });
   };
 
+  const getOrdersForPeriod = (startDate, endDate) => {
+    return orders.filter(order => {
+      if (!order.dueDate) return false;
+      const orderDate = new Date(order.dueDate);
+      return orderDate >= startDate && orderDate <= endDate;
+    });
+  };
+
   const handleDateSelect = (date) => {
     setSelectedDate(date);
+    setCurrentDate(date);
     const ordersOnDate = getOrdersForDate(date);
     setDayOrders(ordersOnDate);
     if (ordersOnDate.length > 0) {
@@ -74,6 +83,38 @@ export default function CalendarPage() {
     return orders
       .filter(order => order.dueDate)
       .map(order => new Date(order.dueDate));
+  };
+
+  const navigatePrevious = () => {
+    const newDate = new Date(currentDate);
+    if (viewMode === 'day') {
+      newDate.setDate(newDate.getDate() - 1);
+    } else if (viewMode === 'week') {
+      newDate.setDate(newDate.getDate() - 7);
+    } else if (viewMode === 'month') {
+      newDate.setMonth(newDate.getMonth() - 1);
+    } else if (viewMode === 'year') {
+      newDate.setFullYear(newDate.getFullYear() - 1);
+    }
+    setCurrentDate(newDate);
+  };
+
+  const navigateNext = () => {
+    const newDate = new Date(currentDate);
+    if (viewMode === 'day') {
+      newDate.setDate(newDate.getDate() + 1);
+    } else if (viewMode === 'week') {
+      newDate.setDate(newDate.getDate() + 7);
+    } else if (viewMode === 'month') {
+      newDate.setMonth(newDate.getMonth() + 1);
+    } else if (viewMode === 'year') {
+      newDate.setFullYear(newDate.getFullYear() + 1);
+    }
+    setCurrentDate(newDate);
+  };
+
+  const goToToday = () => {
+    setCurrentDate(new Date());
   };
 
   if (loading) {
