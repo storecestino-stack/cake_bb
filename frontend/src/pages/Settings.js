@@ -116,9 +116,9 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
       }
       
       updateTheme(newTheme);
-      toast.success('Тему змінено');
+      toast.success(t('settings.appearance.themeChanged'));
     } catch (error) {
-      toast.error('Помилка зміни теми');
+      toast.error(t('settings.appearance.themeError'));
     }
   };
 
