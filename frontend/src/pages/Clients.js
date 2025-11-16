@@ -135,7 +135,7 @@ export default function Clients() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="phone">Телефон</Label>
+                <Label htmlFor="phone">{t('clients.phone')}</Label>
                 <Input
                   id="phone"
                   value={formData.phone}
@@ -151,11 +151,11 @@ export default function Clients() {
                     onClick={handleDelete}
                     data-testid="client-delete-button"
                   >
-                    Видалити
+                    {t('common.delete')}
                   </Button>
                 )}
                 <Button type="submit" data-testid="client-submit-button">
-                  {isEditing ? 'Зберегти' : 'Створити'}
+                  {isEditing ? t('common.save') : t('common.create')}
                 </Button>
               </DialogFooter>
             </form>
