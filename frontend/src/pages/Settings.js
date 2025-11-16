@@ -58,6 +58,7 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
       const response = await axios.get('/auth/me');
       setUser(response.data);
       setName(response.data.name);
+      setLanguage(response.data.language || 'uk');
       if (setGlobalUser) {
         setGlobalUser(response.data);
       }
