@@ -190,10 +190,10 @@ metadata:
 
 test_plan:
   current_focus:
-    - "i18n Language Switcher"
-    - "UI Translation Verification"
-    - "Language Persistence"
-    - "Toast Messages Translation"
+    - "Calendar View Mode Switching"
+    - "Calendar Navigation Controls"
+    - "Calendar Order Details"
+    - "Calendar View Rendering"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
