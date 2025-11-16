@@ -212,7 +212,7 @@ export default function AuthPage({ onLogin }) {
                           disabled={isLoading}
                           data-testid="reset-request-button"
                         >
-                          {isLoading ? 'Надсилання...' : 'Надіслати код'}
+                          {isLoading ? t('auth.sending') : t('auth.sendCode')}
                         </Button>
                         <Button
                           type="button"
@@ -223,13 +223,13 @@ export default function AuthPage({ onLogin }) {
                             setResetStep(1);
                           }}
                         >
-                          Повернутися до входу
+                          {t('auth.backToLogin')}
                         </Button>
                       </form>
                     ) : (
                       <form onSubmit={handlePasswordReset} className="space-y-4">
                         <div className="space-y-2">
-                          <Label htmlFor="reset-code">Код відновлення</Label>
+                          <Label htmlFor="reset-code">{t('auth.resetCode')}</Label>
                           <Input
                             id="reset-code"
                             type="text"
@@ -241,7 +241,7 @@ export default function AuthPage({ onLogin }) {
                           />
                         </div>
                         <div className="space-y-2">
-                          <Label htmlFor="new-password">Новий пароль</Label>
+                          <Label htmlFor="new-password">{t('auth.newPassword')}</Label>
                           <div className="relative">
                             <Input
                               id="new-password"
@@ -274,7 +274,7 @@ export default function AuthPage({ onLogin }) {
                           disabled={isLoading}
                           data-testid="reset-password-button"
                         >
-                          {isLoading ? 'Зміна...' : 'Змінити пароль'}
+                          {isLoading ? t('auth.changing') : t('auth.resetPasswordButton')}
                         </Button>
                         <Button
                           type="button"
@@ -285,7 +285,7 @@ export default function AuthPage({ onLogin }) {
                             setResetStep(1);
                           }}
                         >
-                          Повернутися до входу
+                          {t('auth.backToLogin')}
                         </Button>
                       </form>
                     )}
