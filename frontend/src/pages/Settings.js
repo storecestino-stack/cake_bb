@@ -13,11 +13,16 @@ import { Eye, EyeOff } from 'lucide-react';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 const themeOptions = [
-  { value: 'system', label: 'На ваш розсуд', description: 'Класичний світлий вигляд' },
   { value: 'minimal', label: 'Мінімалістичні', description: 'Чисті блакитні тони' },
-  { value: 'pastel', label: 'М\'які пастельні', description: 'Ніжні рожево-зелено-фіолетові відтінки' },
-  { value: 'vibrant', label: 'Яскраві енергійні', description: 'Насичені фіолетово-рожеві кольори' },
-  { value: 'dark', label: 'Темна тема', description: 'Темний режим для роботи вночі' }
+  { value: 'dark', label: 'Темна тема', description: 'Темний режим для роботи вночі' },
+  { value: 'custom', label: 'Користувацька', description: 'Створіть власну колірну схему' }
+];
+
+const colorPalette = [
+  '#FF6B6B', '#FFA07A', '#FFD93D', '#6BCF7F', '#4ECDC4', '#45B7D1',
+  '#5E60CE', '#A29BFE', '#FD79A8', '#FDCB6E', '#00B894', '#00CEC9',
+  '#0984E3', '#6C5CE7', '#E17055', '#D63031', '#FDCB6E', '#FFA502',
+  '#FF6348', '#2ECC71', '#3498DB', '#9B59B6', '#34495E', '#95A5A6'
 ];
 
 export default function Settings() {
