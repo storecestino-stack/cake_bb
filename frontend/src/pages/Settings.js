@@ -36,6 +36,7 @@ export default function Settings({ user: initialUser, setUser: setGlobalUser }) 
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [language, setLanguage] = useState('uk');
   
   // Password visibility states
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
