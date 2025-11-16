@@ -35,75 +35,48 @@ export default function Ingredients() {
     }
   };
 
-  const openNewDialog = () => {
-    setIsEditing(false);
-    setCurrentId(null);
-    setFormData({ name: '', unit: 'кг', price: 0 });
-    setIsDialogOpen(true);
-  };
-
   const openEditDialog = (ingredient) => {
     setIsEditing(true);
-    setCurrentId(ingredient._id);
+    setEditingId(ingredient._id);
     setFormData({ name: ingredient.name, unit: ingredient.unit, price: ingredient.price });
-    setIsDialogOpen(true);
+    setDialogOpen(true);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem('token');
-      const url = isEditing
-        ? `${API_URL}/api/ingredients/${currentId}`
-        : `${API_URL}/api/ingredients`;
-      const method = isEditing ? 'PUT' : 'POST';
-
-      const res = await fetch(url, {
-        method,
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      });
-
-      if (res.ok) {
-        setIsDialogOpen(false);
-        fetchIngredients();
-        const toast = (await import('sonner')).toast;
-        toast.success(isEditing ? t('ingredients.updated') : t('ingredients.created'));
+      if (isEditing) {
+        await axios.put(`/ingredients/${editingId}`, formData);
+        toast.success(t('ingredients.updated'));
       } else {
-        const toast = (await import('sonner')).toast;
-        toast.error(t('common.error'));
+        await axios.post('/ingredients', formData);
+        toast.success(t('ingredients.created'));
       }
+      setDialogOpen(false);
+      resetForm();
+      fetchIngredients();
     } catch (err) {
-      console.error(err);
-      const toast = (await import('sonner')).toast;
       toast.error(t('common.error'));
     }
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async () => {
     if (!window.confirm(t('ingredients.deleteConfirm'))) return;
     try {
-      const token = localStorage.getItem('token');
-      const res = await fetch(`${API_URL}/api/ingredients/${id}`, {
-        method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      if (res.ok) {
-        fetchIngredients();
-        const toast = (await import('sonner')).toast;
-        toast.success(t('ingredients.deleted'));
-      } else {
-        const toast = (await import('sonner')).toast;
-        toast.error(t('common.error'));
-      }
+      await axios.delete(`/ingredients/${editingId}`);
+      toast.success(t('ingredients.deleted'));
+      setDialogOpen(false);
+      resetForm();
+      fetchIngredients();
     } catch (err) {
-      console.error(err);
-      const toast = (await import('sonner')).toast;
       toast.error(t('common.error'));
     }
+  };
+
+  const resetForm = () => {
+    setFormData({ name: '', unit: 'кг', price: 0 });
+    setIsEditing(false);
+    setEditingId(null);
   };
 
   // UI Components (shadcn)
