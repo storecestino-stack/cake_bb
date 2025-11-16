@@ -307,9 +307,9 @@ test_plan:
 
   - task: "Ingredients Page CRUD Operations"
     implemented: true
-    working: false
+    working: true
     file: "/app/frontend/src/pages/Ingredients.js"
-    stuck_count: 1
+    stuck_count: 0
     priority: "high"
     needs_retesting: false
     status_history:
@@ -319,12 +319,15 @@ test_plan:
         - working: false
           agent: "testing"
           comment: "TESTED: ❌ CRITICAL UI BUG FOUND - Ingredients page loads successfully and shows empty state 'Ще немає інгредієнтів' but the 'Новий інгредієнт' (New Ingredient) button is MISSING from the UI. Only 2 buttons found on page: 'Вийти' (Logout). The create button is not rendered, preventing users from adding ingredients. Code issue: Nested Dialog components and improper DialogTrigger structure in lines 140-148. Backend API working fine (200 OK responses). UI components are HTML-based instead of proper shadcn components."
+        - working: true
+          agent: "testing"
+          comment: "RE-TESTED AFTER DIALOG FIX: ✅ CRITICAL ISSUE RESOLVED! Dialog structure fix successful - 'Новий інгредієнт' button is NOW VISIBLE and functional! Successfully tested: 1) Create button visible and clickable, 2) Create dialog opens correctly with proper form fields (Назва, Одиниця виміру, Ціна), 3) Form submission works - ingredient created and appears in table, 4) Edit functionality working - can modify ingredient details, 5) Delete functionality working with confirmation dialog, 6) Toast notifications appear correctly, 7) No console errors detected. All CRUD operations fully functional after removing nested Dialog components."
 
   - task: "Semifinished Page CRUD Operations"
     implemented: true
-    working: false
+    working: true
     file: "/app/frontend/src/pages/Semifinished.js"
-    stuck_count: 1
+    stuck_count: 0
     priority: "high"
     needs_retesting: false
     status_history:
@@ -334,12 +337,15 @@ test_plan:
         - working: false
           agent: "testing"
           comment: "TESTED: ❌ CRITICAL UI BUG FOUND - Semifinished page loads successfully and shows empty state 'Ще немає напівфабрикатів' but the 'Новий напівфабрикат' (New Semifinished) button is MISSING from the UI. Same structural issue as Ingredients page - nested Dialog components and improper DialogTrigger structure preventing create button from rendering. Backend API working fine. Cannot test CRUD operations without create button."
+        - working: true
+          agent: "testing"
+          comment: "RE-TESTED AFTER DIALOG FIX: ✅ CRITICAL ISSUE RESOLVED! Dialog structure fix successful - 'Новий напівфабрикат' button is NOW VISIBLE and functional! Successfully tested: 1) Create button visible and clickable, 2) Create dialog opens correctly with proper form fields (Назва, Одиниця виміру, Інгредієнти), 3) 'Додати інгредієнт' button works to add ingredient rows, 4) Ingredient selection dropdowns functional, 5) Cost calculation working accurately based on ingredient prices and quantities, 6) Form submission creates semifinished products correctly, 7) Edit functionality allows modification of ingredients and quantities, 8) Delete functionality working with confirmation. All CRUD operations fully functional after Dialog structure fix."
 
   - task: "Recipes Page CRUD Operations"
     implemented: true
-    working: false
+    working: true
     file: "/app/frontend/src/pages/Recipes.js"
-    stuck_count: 1
+    stuck_count: 0
     priority: "high"
     needs_retesting: false
     status_history:
@@ -349,6 +355,9 @@ test_plan:
         - working: false
           agent: "testing"
           comment: "TESTED: ❌ CRITICAL UI BUG FOUND - Recipes page loads successfully and shows empty state 'Ще немає виробів' but the 'Новий виріб' (New Recipe) button is MISSING from the UI. Same structural issue as other CRUD pages - nested Dialog components and improper DialogTrigger structure preventing create button from rendering. Backend API working fine. Cannot test CRUD operations without create button."
+        - working: true
+          agent: "testing"
+          comment: "RE-TESTED AFTER DIALOG FIX: ✅ CRITICAL ISSUE RESOLVED! Dialog structure fix successful - 'Новий виріб' button is NOW VISIBLE and functional! Successfully tested: 1) Create button visible and clickable, 2) Create dialog opens correctly with all form fields (Назва, Опис, Вартість роботи, Компоненти), 3) Component type switching works (ingredient ↔ semifinished), 4) 'Додати компонент' button adds component rows correctly, 5) Cost calculations accurate (Собівартість + Вартість роботи = Загальна вартість), 6) Copy functionality working - creates recipe with '(копія)' suffix, 7) Edit functionality allows modification of all recipe details, 8) Delete functionality working with confirmation. All CRUD operations fully functional after Dialog structure fix."
 
 agent_communication:
     - agent: "testing"
