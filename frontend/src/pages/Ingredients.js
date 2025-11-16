@@ -88,104 +88,127 @@ export default function Ingredients() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6 animate-fade-in">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">{t('ingredients.title')}</h1>
-        <Button onClick={openNewDialog}>
+        <div>
+          <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
+            {t('ingredients.title')}
+          </h1>
+          <p className="text-muted-foreground">{t('ingredients.subtitle')}</p>
+        </div>
+        <Button onClick={() => { resetForm(); setDialogOpen(true); }}>
+          <Plus className="mr-2 h-4 w-4" />
           {t('ingredients.newIngredient')}
         </Button>
       </div>
 
-      {/* Dialog */}
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent>
-            <DialogHeader>
-              <DialogTitle>{isEditing ? t('ingredients.editIngredient') : t('ingredients.newIngredient')}</DialogTitle>
-            </DialogHeader>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="name">{t('ingredients.name')}</Label>
-                <Input
-                  id="name"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  required
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="unit">{t('ingredients.unit')}</Label>
-                <Select value={formData.unit} onValueChange={(val) => setFormData({ ...formData, unit: val })}>
-                  <SelectTrigger>
-                    <SelectValue placeholder={t('ingredients.unitPlaceholder')} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="кг">кг</SelectItem>
-                    <SelectItem value="г">г</SelectItem>
-                    <SelectItem value="л">л</SelectItem>
-                    <SelectItem value="мл">мл</SelectItem>
-                    <SelectItem value="шт">шт</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="price">{t('ingredients.pricePerUnit')}</Label>
-                <Input
-                  id="price"
-                  type="number"
-                  step="0.01"
-                  value={formData.price}
-                  onChange={(e) => setFormData({ ...formData, price: parseFloat(e.target.value) })}
-                  required
-                />
-              </div>
-              <div className="flex justify-end gap-2">
-                <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
-                  {t('common.cancel')}
-                </Button>
-                <Button type="submit">{isEditing ? t('common.save') : t('common.create')}</Button>
-              </div>
-            </form>
-          </DialogContent>
-        </Dialog>
+      <Card>
+        <CardContent className="p-0">
+          {ingredients.length > 0 ? (
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-muted/50 border-b">
+                  <tr>
+                    <th className="text-left p-4 font-semibold">{t('ingredients.name')}</th>
+                    <th className="text-left p-4 font-semibold">{t('ingredients.unit')}</th>
+                    <th className="text-left p-4 font-semibold">{t('ingredients.pricePerUnit')}</th>
+                    <th className="text-right p-4 font-semibold">{t('common.actions')}</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y">
+                  {ingredients.map((ingredient) => (
+                    <tr key={ingredient._id} className="hover:bg-muted/50 transition-colors">
+                      <td className="p-4">{ingredient.name}</td>
+                      <td className="p-4">{ingredient.unit}</td>
+                      <td className="p-4">{ingredient.price} грн</td>
+                      <td className="p-4 text-right">
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon">
+                              <MoreVertical className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent align="end">
+                            <DropdownMenuItem onClick={() => openEditDialog(ingredient)}>
+                              {t('common.edit')}
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center py-12 text-center">
+              <div className="text-6xl mb-4">📦</div>
+              <p className="text-lg text-muted-foreground mb-2">{t('ingredients.noIngredients')}</p>
+              <p className="text-sm text-muted-foreground">{t('ingredients.addFirst')}</p>
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
-      {/* Table */}
-      <div className="overflow-x-auto">
-        <table className="min-w-full border">
-          <thead>
-            <tr className="bg-gray-100">
-              <th className="border p-2 text-left">{t('ingredients.name')}</th>
-              <th className="border p-2 text-left">{t('ingredients.unit')}</th>
-              <th className="border p-2 text-left">{t('ingredients.pricePerUnit')}</th>
-              <th className="border p-2 text-left">{t('common.actions')}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {ingredients.length === 0 ? (
-              <tr>
-                <td colSpan={4} className="border p-4 text-center text-gray-500">
-                  {t('ingredients.noIngredients')}
-                </td>
-              </tr>
-            ) : (
-              ingredients.map((ingredient) => (
-                <tr key={ingredient._id}>
-                  <td className="border p-2">{ingredient.name}</td>
-                  <td className="border p-2">{ingredient.unit}</td>
-                  <td className="border p-2">{ingredient.price} грн</td>
-                  <td className="border p-2 space-x-2">
-                    <Button size="sm" onClick={() => openEditDialog(ingredient)}>
-                      {t('common.edit')}
-                    </Button>
-                    <Button size="sm" variant="destructive" onClick={() => handleDelete(ingredient._id)}>
-                      {t('common.delete')}
-                    </Button>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
-      </div>
+      {/* Dialog */}
+      <Dialog open={dialogOpen} onOpenChange={(open) => { setDialogOpen(open); if (!open) resetForm(); }}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{isEditing ? t('ingredients.editIngredient') : t('ingredients.newIngredient')}</DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="name">{t('ingredients.name')}</Label>
+              <Input
+                id="name"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="unit">{t('ingredients.unit')}</Label>
+              <Select value={formData.unit} onValueChange={(val) => setFormData({ ...formData, unit: val })}>
+                <SelectTrigger>
+                  <SelectValue placeholder={t('ingredients.unitPlaceholder')} />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="кг">кг</SelectItem>
+                  <SelectItem value="г">г</SelectItem>
+                  <SelectItem value="л">л</SelectItem>
+                  <SelectItem value="мл">мл</SelectItem>
+                  <SelectItem value="шт">шт</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="price">{t('ingredients.pricePerUnit')}</Label>
+              <Input
+                id="price"
+                type="number"
+                step="0.01"
+                value={formData.price}
+                onChange={(e) => setFormData({ ...formData, price: parseFloat(e.target.value) || 0 })}
+                required
+              />
+            </div>
+            <DialogFooter className={isEditing ? "flex justify-between" : ""}>
+              {isEditing && (
+                <Button
+                  type="button"
+                  variant="destructive"
+                  onClick={handleDelete}
+                >
+                  {t('common.delete')}
+                </Button>
+              )}
+              <Button type="submit">
+                {isEditing ? t('common.save') : t('common.create')}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
