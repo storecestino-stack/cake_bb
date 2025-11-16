@@ -235,10 +235,10 @@ export default function Orders() {
               </div>
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <Label>Рецепти</Label>
+                  <Label>Вироби</Label>
                   <Button type="button" size="sm" onClick={addRecipeToOrder} data-testid="add-recipe-to-order-button">
                     <Plus className="h-4 w-4 mr-1" />
-                    Додати рецепт
+                    Додати виріб
                   </Button>
                 </div>
                 <div className="space-y-2">
