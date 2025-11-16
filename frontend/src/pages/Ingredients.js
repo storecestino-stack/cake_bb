@@ -11,12 +11,13 @@ import { Plus, MoreVertical } from 'lucide-react';
 import { toast } from 'sonner';
 import { useTranslation } from 'react-i18next';
 
-function Ingredients() {
+export default function Ingredients() {
   const { t } = useTranslation();
   const [ingredients, setIngredients] = useState([]);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [currentId, setCurrentId] = useState(null);
+  const [editingId, setEditingId] = useState(null);
   const [formData, setFormData] = useState({ name: '', unit: 'кг', price: 0 });
 
   useEffect(() => {
@@ -25,14 +26,12 @@ function Ingredients() {
 
   const fetchIngredients = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const res = await fetch(`${API_URL}/api/ingredients`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const data = await res.json();
-      setIngredients(data);
+      const res = await axios.get('/ingredients');
+      setIngredients(res.data);
     } catch (err) {
-      console.error('Failed to fetch ingredients', err);
+      toast.error(t('common.error'));
+    } finally {
+      setLoading(false);
     }
   };
 
