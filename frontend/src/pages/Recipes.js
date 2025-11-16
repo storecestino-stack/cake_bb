@@ -263,24 +263,16 @@ function Recipes() {
 
   return (
     <div className="space-y-4">
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold">{t('recipes.title')}</h1>
-          <DialogTrigger>
-            <Button onClick={openNewDialog}>
-              {t('recipes.newRecipe')}
-            </Button>
-          </DialogTrigger>
-        </div>
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">{t('recipes.title')}</h1>
+        <Button onClick={openNewDialog}>
+          {t('recipes.newRecipe')}
+        </Button>
+      </div>
 
-        {/* Dialog */}
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger>
-            <Button onClick={openNewDialog}>
-              {t('recipes.newRecipe')}
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      {/* Dialog */}
+      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>{isEditing ? t('recipes.editRecipe') : t('recipes.newRecipe')}</DialogTitle>
             </DialogHeader>
