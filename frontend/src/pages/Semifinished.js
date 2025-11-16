@@ -26,109 +26,70 @@ export default function Semifinished() {
   });
 
   useEffect(() => {
-    fetchSemiProducts();
-    fetchIngredients();
+    fetchData();
   }, []);
 
-  const fetchSemiProducts = async () => {
+  const fetchData = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const res = await fetch(`${API_URL}/api/semifinished`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const data = await res.json();
-      setSemiProducts(data);
+      const [semiRes, ingRes] = await Promise.all([
+        axios.get('/semifinished'),
+        axios.get('/ingredients')
+      ]);
+      setSemiProducts(semiRes.data);
+      setIngredients(ingRes.data);
     } catch (err) {
-      console.error('Failed to fetch semi-products', err);
+      toast.error(t('common.error'));
+    } finally {
+      setLoading(false);
     }
-  };
-
-  const fetchIngredients = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const res = await fetch(`${API_URL}/api/ingredients`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const data = await res.json();
-      setIngredients(data);
-    } catch (err) {
-      console.error('Failed to fetch ingredients', err);
-    }
-  };
-
-  const openNewDialog = () => {
-    setIsEditing(false);
-    setCurrentId(null);
-    setFormData({ name: '', unit: 'кг', ingredients: [{ ingredientId: '', quantity: 0 }] });
-    setIsDialogOpen(true);
   };
 
   const openEditDialog = (sp) => {
     setIsEditing(true);
-    setCurrentId(sp._id);
+    setEditingId(sp._id);
     setFormData({
       name: sp.name,
       unit: sp.unit,
       ingredients: sp.ingredients || [{ ingredientId: '', quantity: 0 }]
     });
-    setIsDialogOpen(true);
+    setDialogOpen(true);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem('token');
-      const url = isEditing
-        ? `${API_URL}/api/semifinished/${currentId}`
-        : `${API_URL}/api/semifinished`;
-      const method = isEditing ? 'PUT' : 'POST';
-
-      const res = await fetch(url, {
-        method,
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      });
-
-      if (res.ok) {
-        setIsDialogOpen(false);
-        fetchSemiProducts();
-        const toast = (await import('sonner')).toast;
-        toast.success(isEditing ? t('semifinished.updated') : t('semifinished.created'));
+      if (isEditing) {
+        await axios.put(`/semifinished/${editingId}`, formData);
+        toast.success(t('semifinished.updated'));
       } else {
-        const toast = (await import('sonner')).toast;
-        toast.error(t('common.error'));
+        await axios.post('/semifinished', formData);
+        toast.success(t('semifinished.created'));
       }
+      setDialogOpen(false);
+      resetForm();
+      fetchData();
     } catch (err) {
-      console.error(err);
-      const toast = (await import('sonner')).toast;
       toast.error(t('common.error'));
     }
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async () => {
     if (!window.confirm(t('semifinished.deleteConfirm'))) return;
     try {
-      const token = localStorage.getItem('token');
-      const res = await fetch(`${API_URL}/api/semifinished/${id}`, {
-        method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      if (res.ok) {
-        fetchSemiProducts();
-        const toast = (await import('sonner')).toast;
-        toast.success(t('semifinished.deleted'));
-      } else {
-        const toast = (await import('sonner')).toast;
-        toast.error(t('common.error'));
-      }
+      await axios.delete(`/semifinished/${editingId}`);
+      toast.success(t('semifinished.deleted'));
+      setDialogOpen(false);
+      resetForm();
+      fetchData();
     } catch (err) {
-      console.error(err);
-      const toast = (await import('sonner')).toast;
       toast.error(t('common.error'));
     }
+  };
+
+  const resetForm = () => {
+    setFormData({ name: '', unit: 'кг', ingredients: [{ ingredientId: '', quantity: 0 }] });
+    setIsEditing(false);
+    setEditingId(null);
   };
 
   const addIngredientRow = () => {
