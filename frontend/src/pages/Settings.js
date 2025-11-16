@@ -25,11 +25,11 @@ const colorPalette = [
   '#FF6348', '#2ECC71', '#3498DB', '#9B59B6', '#34495E', '#95A5A6'
 ];
 
-export default function Settings() {
+export default function Settings({ user: initialUser, setUser: setGlobalUser }) {
   const { theme, updateTheme } = useTheme();
   const [name, setName] = useState('');
   const [avatarFile, setAvatarFile] = useState(null);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(initialUser);
   const [loading, setLoading] = useState(false);
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
