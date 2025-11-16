@@ -195,7 +195,7 @@ function Semifinished() {
     <div className="space-y-4">
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold">Напівфабрикати</h1>
+          <h1 className="text-2xl font-bold">{t('semifinished.title')}</h1>
           <DialogTrigger>
             <Button onClick={openNewDialog}>
               {t('semifinished.newSemifinished')}
@@ -216,7 +216,7 @@ function Semifinished() {
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Назва</Label>
+                <Label htmlFor="name">{t('semifinished.name')}</Label>
                 <Input
                   id="name"
                   value={formData.name}
@@ -225,10 +225,10 @@ function Semifinished() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="unit">Одиниця виміру</Label>
+                <Label htmlFor="unit">{t('semifinished.unit')}</Label>
                 <Select value={formData.unit} onValueChange={(val) => setFormData({ ...formData, unit: val })}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Виберіть одиницю" />
+                    <SelectValue placeholder={t('semifinished.unitPlaceholder')} />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="кг">кг</SelectItem>
@@ -241,17 +241,17 @@ function Semifinished() {
               </div>
 
               <div className="space-y-2">
-                <Label>Інгредієнти</Label>
+                <Label>{t('semifinished.ingredients')}</Label>
                 {formData.ingredients.map((ing, idx) => (
                   <div key={idx} className="flex gap-2 items-end">
                     <div className="flex-1">
-                      <Label htmlFor={`ing-${idx}`}>Інгредієнт</Label>
+                      <Label htmlFor={`ing-${idx}`}>{t('recipes.ingredient')}</Label>
                       <Select
                         value={ing.ingredientId}
                         onValueChange={(val) => updateIngredientRow(idx, 'ingredientId', val)}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="Виберіть інгредієнт" />
+                          <SelectValue placeholder={t('semifinished.selectIngredient')} />
                         </SelectTrigger>
                         <SelectContent>
                           {ingredients.map(i => (
@@ -261,7 +261,7 @@ function Semifinished() {
                       </Select>
                     </div>
                     <div className="w-32">
-                      <Label htmlFor={`qty-${idx}`}>Кількість</Label>
+                      <Label htmlFor={`qty-${idx}`}>{t('semifinished.quantity')}</Label>
                       <Input
                         id={`qty-${idx}`}
                         type="number"
@@ -277,20 +277,20 @@ function Semifinished() {
                       size="sm"
                       onClick={() => removeIngredientRow(idx)}
                     >
-                      Видалити
+                      {t('common.delete')}
                     </Button>
                   </div>
                 ))}
                 <Button type="button" variant="outline" onClick={addIngredientRow}>
-                  + Додати інгредієнт
+                  + {t('semifinished.addIngredient')}
                 </Button>
               </div>
 
               <div className="flex justify-end gap-2 pt-4">
                 <Button type="button" variant="outline" onClick={() => setIsDialogOpen(false)}>
-                  Скасувати
+                  {t('common.cancel')}
                 </Button>
-                <Button type="submit">{isEditing ? 'Зберегти' : 'Створити'}</Button>
+                <Button type="submit">{isEditing ? t('common.save') : t('common.create')}</Button>
               </div>
             </form>
           </DialogContent>
