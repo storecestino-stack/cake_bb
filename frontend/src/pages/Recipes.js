@@ -173,7 +173,7 @@ export default function Recipes() {
       };
       
       await axios.post('/recipes', recipeData);
-      toast.success('Рецепт скопійовано');
+      toast.success('Виріб скопійовано');
       fetchData();
     } catch (error) {
       toast.error(error.response?.data?.detail || 'Помилка копіювання');
