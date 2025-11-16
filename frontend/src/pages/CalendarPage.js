@@ -126,36 +126,69 @@ export default function CalendarPage() {
   }
 
   const renderDayView = () => {
-    const dayOrders = getOrdersForDate(currentDate);
+    const dayOrders = getOrdersForDate(currentDate).sort((a, b) => {
+      return new Date(a.dueDate) - new Date(b.dueDate);
+    });
+    
     return (
       <div className="space-y-4">
-        <div className="text-center mb-4">
+        <div className="text-center mb-6">
           <h3 className="text-2xl font-bold">{format(currentDate, 'dd MMMM yyyy', { locale: uk })}</h3>
+          <p className="text-sm text-muted-foreground mt-1">{format(currentDate, 'EEEE', { locale: uk })}</p>
         </div>
+        
         {dayOrders.length > 0 ? (
-          <div className="space-y-3">
-            {dayOrders.map((order) => (
-              <div
-                key={order.id}
-                className="p-4 border border-border rounded-lg hover:bg-muted/50 cursor-pointer transition-colors"
-                onClick={() => handleOrderClick(order)}
-              >
-                <div className="flex items-center justify-between mb-2">
-                  <p className="font-medium text-foreground">{order.item}</p>
-                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColors[order.status]}`}>
-                    {t(`orders.statuses.${order.status}`)}
-                  </span>
-                </div>
-                <div className="flex items-center justify-between text-sm text-muted-foreground">
-                  <span>{order.client?.name}</span>
-                  <span>{format(new Date(order.dueDate), 'HH:mm')}</span>
-                </div>
-              </div>
-            ))}
+          <div className="max-w-3xl mx-auto">
+            {/* Порядок денний / Time schedule */}
+            <div className="space-y-2">
+              {dayOrders.map((order) => {
+                const orderTime = format(new Date(order.dueDate), 'HH:mm');
+                return (
+                  <div
+                    key={order.id}
+                    className="flex gap-4 p-4 border-l-4 border-primary bg-card rounded-r-lg hover:bg-muted/50 cursor-pointer transition-colors"
+                    onClick={() => handleOrderClick(order)}
+                  >
+                    {/* Time column */}
+                    <div className="flex-shrink-0 w-20">
+                      <div className="text-lg font-bold text-primary">{orderTime}</div>
+                    </div>
+                    
+                    {/* Order details column */}
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-start justify-between gap-4 mb-2">
+                        <h4 className="font-semibold text-foreground text-lg">{order.item}</h4>
+                        <span className={`flex-shrink-0 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${statusColors[order.status]}`}>
+                          {t(`orders.statuses.${order.status}`)}
+                        </span>
+                      </div>
+                      
+                      <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                        <span className="flex items-center gap-1">
+                          👤 {order.client?.name}
+                        </span>
+                        {order.total && (
+                          <span className="flex items-center gap-1">
+                            💰 {order.total.toFixed(2)} грн
+                          </span>
+                        )}
+                      </div>
+                      
+                      {order.notes && (
+                        <p className="mt-2 text-sm text-muted-foreground italic">
+                          {order.notes}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         ) : (
-          <div className="text-center py-8 text-muted-foreground">
-            {t('dashboard.noUpcomingOrders')}
+          <div className="text-center py-12">
+            <div className="text-6xl mb-4">📅</div>
+            <p className="text-lg text-muted-foreground">{t('dashboard.noUpcomingOrders')}</p>
           </div>
         )}
       </div>
