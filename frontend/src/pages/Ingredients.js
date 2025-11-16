@@ -97,20 +97,20 @@ export default function Ingredients() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
-            Інгредієнти
+            {t('ingredients.title')}
           </h1>
-          <p className="text-muted-foreground">Керуйте списком інгредієнтів та цінами</p>
+          <p className="text-muted-foreground">{t('ingredients.subtitle')}</p>
         </div>
         <Dialog open={dialogOpen} onOpenChange={(open) => { setDialogOpen(open); if (!open) resetForm(); }}>
           <DialogTrigger asChild>
             <Button data-testid="create-ingredient-button">
               <Plus className="mr-2 h-4 w-4" />
-              Новий інгредієнт
+              {t('ingredients.newIngredient')}
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>{isEditing ? 'Редагувати інгредієнт' : 'Новий інгредієнт'}</DialogTitle>
+              <DialogTitle>{isEditing ? t('ingredients.editIngredient') : '{t('ingredients.newIngredient')}'}</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
@@ -202,10 +202,10 @@ export default function Ingredients() {
             </div>
           ) : (
             <div className="text-center py-12">
-              <p className="text-muted-foreground mb-4">Ще немає інгредієнтів</p>
+              <p className="text-muted-foreground mb-4">{t('ingredients.noIngredients')}</p>
               <Button onClick={() => setDialogOpen(true)}>
                 <Plus className="mr-2 h-4 w-4" />
-                Додати перший інгредієнт
+                {t('ingredients.addFirst')}
               </Button>
             </div>
           )}
