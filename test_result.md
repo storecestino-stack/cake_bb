@@ -319,15 +319,18 @@ test_plan:
 
   - task: "Semifinished Page CRUD Operations"
     implemented: true
-    working: "NA"
+    working: false
     file: "/app/frontend/src/pages/Semifinished.js"
-    stuck_count: 0
+    stuck_count: 1
     priority: "high"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         - working: "NA"
           agent: "testing"
           comment: "Need to test Semifinished page (/semifinished) CRUD operations: Navigate to page, verify UI elements, test Create (form with Назва, Одиниця виміру, Інгредієнти list with add/remove rows), test Edit (ingredients list loads correctly), test Delete, verify cost calculation accuracy, check for console errors."
+        - working: false
+          agent: "testing"
+          comment: "TESTED: ❌ CRITICAL UI BUG FOUND - Semifinished page loads successfully and shows empty state 'Ще немає напівфабрикатів' but the 'Новий напівфабрикат' (New Semifinished) button is MISSING from the UI. Same structural issue as Ingredients page - nested Dialog components and improper DialogTrigger structure preventing create button from rendering. Backend API working fine. Cannot test CRUD operations without create button."
 
   - task: "Recipes Page CRUD Operations"
     implemented: true
