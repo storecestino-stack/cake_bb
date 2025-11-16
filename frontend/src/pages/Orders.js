@@ -12,12 +12,9 @@ import { Plus, MoreVertical, Eye, X } from 'lucide-react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { uk } from 'date-fns/locale';
+import { useTranslation } from 'react-i18next';
 
 const statusOptions = ['New', 'In Progress', 'Ready', 'Delivered', 'Cancelled'];
-const statusLabels = {
-  'New': 'Нове',
-  'In Progress': 'В роботі',
-  'Ready': 'Готово',
   'Delivered': 'Доставлено',
   'Cancelled': 'Скасовано'
 };
