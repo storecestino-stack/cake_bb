@@ -10,6 +10,7 @@ import { ChefHat, Eye, EyeOff } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 export default function AuthPage({ onLogin }) {
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const [loginData, setLoginData] = useState({ email: '', password: '' });
   const [signupData, setSignupData] = useState({ name: '', email: '', password: '' });
