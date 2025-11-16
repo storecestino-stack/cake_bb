@@ -169,20 +169,20 @@ export default function Semifinished() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-2" style={{ fontFamily: 'Space Grotesk, sans-serif' }}>
-            Напівфабрикати
+            {t('semifinished.title')}
           </h1>
-          <p className="text-muted-foreground">Створюйте та керуйте напівфабрикатами</p>
+          <p className="text-muted-foreground">{t('semifinished.subtitle')}</p>
         </div>
         <Dialog open={dialogOpen} onOpenChange={(open) => { setDialogOpen(open); if (!open) resetForm(); }}>
           <DialogTrigger asChild>
             <Button data-testid="create-semifinished-button">
               <Plus className="mr-2 h-4 w-4" />
-              Новий напівфабрикат
+              {t('semifinished.newSemifinished')}
             </Button>
           </DialogTrigger>
           <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
-              <DialogTitle>{isEditing ? 'Редагувати напівфабрикат' : 'Новий напівфабрикат'}</DialogTitle>
+              <DialogTitle>{isEditing ? t('semifinished.editSemifinished') : '{t('semifinished.newSemifinished')}'}</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
@@ -342,10 +342,10 @@ export default function Semifinished() {
             </div>
           ) : (
             <div className="text-center py-12">
-              <p className="text-muted-foreground mb-4">Ще немає напівфабрикатів</p>
+              <p className="text-muted-foreground mb-4">{t('semifinished.noSemifinished')}</p>
               <Button onClick={() => setDialogOpen(true)}>
                 <Plus className="mr-2 h-4 w-4" />
-                Створити перший напівфабрикат
+                {t('semifinished.createFirst')}
               </Button>
             </div>
           )}
