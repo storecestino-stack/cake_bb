@@ -131,7 +131,7 @@ export default function DashboardLayout({ children, user, onLogout }) {
           </Button>
           <div className="flex items-center gap-2">
             <ChefHat className="h-5 w-5 text-primary" />
-            <span className="font-bold text-foreground">Кондитерський Помічник</span>
+            <span className="font-bold text-foreground">{t('auth.appTitle')}</span>
           </div>
           <div className="w-10" /> {/* Spacer */}
         </header>
