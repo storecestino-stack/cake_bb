@@ -71,6 +71,7 @@ class UserLogin(BaseModel):
 class UserUpdate(BaseModel):
     name: Optional[str] = None
     theme: Optional[str] = None
+    language: Optional[str] = None
     customColors: Optional[dict] = None
 
 class PasswordChange(BaseModel):
