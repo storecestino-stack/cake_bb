@@ -17,12 +17,18 @@ export default function Recipes() {
   const [recipes, setRecipes] = useState([]);
   const [ingredients, setIngredients] = useState([]);
   const [semiProducts, setSemiProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('all');
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [categoryDialogOpen, setCategoryDialogOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editingId, setEditingId] = useState(null);
+  const [categoryFormData, setCategoryFormData] = useState({ name: '', color: '#3B82F6' });
+  const [editingCategoryId, setEditingCategoryId] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
+    categoryId: '',
     description: '',
     laborCost: 0,
     components: [{ type: 'ingredient', id: '', quantity: 0 }]
