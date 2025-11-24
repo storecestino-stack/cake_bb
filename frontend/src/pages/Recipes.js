@@ -118,6 +118,7 @@ export default function Recipes() {
   const resetForm = () => {
     setFormData({
       name: '',
+      categoryId: '',
       description: '',
       laborCost: 0,
       components: [{ type: 'ingredient', id: '', quantity: 0 }]
@@ -125,6 +126,54 @@ export default function Recipes() {
     setIsEditing(false);
     setEditingId(null);
   };
+
+  const openCategoryDialog = (category = null) => {
+    if (category) {
+      setCategoryFormData({ name: category.name, color: category.color });
+      setEditingCategoryId(category.id);
+    } else {
+      setCategoryFormData({ name: '', color: '#3B82F6' });
+      setEditingCategoryId(null);
+    }
+    setCategoryDialogOpen(true);
+  };
+
+  const handleCategorySubmit = async (e) => {
+    e.preventDefault();
+    try {
+      if (editingCategoryId) {
+        await axios.put(`/categories/${editingCategoryId}`, categoryFormData);
+        toast.success(t('recipes.categoryUpdated'));
+      } else {
+        await axios.post('/categories', categoryFormData);
+        toast.success(t('recipes.categoryCreated'));
+      }
+      setCategoryDialogOpen(false);
+      fetchData();
+    } catch (err) {
+      toast.error(t('common.error'));
+    }
+  };
+
+  const handleCategoryDelete = async (categoryId) => {
+    try {
+      await axios.delete(`/categories/${categoryId}`);
+      toast.success(t('recipes.categoryDeleted'));
+      fetchData();
+    } catch (err) {
+      if (err.response?.status === 400) {
+        toast.error(t('recipes.categoryDeleteError'));
+      } else {
+        toast.error(t('common.error'));
+      }
+    }
+  };
+
+  const filteredRecipes = selectedCategory === 'all' 
+    ? recipes 
+    : selectedCategory === 'uncategorized'
+    ? recipes.filter(r => !r.categoryId)
+    : recipes.filter(r => r.categoryId === selectedCategory);
 
   const addComponentRow = () => {
     setFormData(prev => ({
