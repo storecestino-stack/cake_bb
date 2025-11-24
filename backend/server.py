@@ -531,6 +531,40 @@ async def calculate_recipe_cost(recipe_id: str, current_user: User = Depends(get
         "finalPrice": final_price
     }
 
+# Category routes
+@api_router.get("/categories", response_model=List[Category])
+async def get_categories(current_user: User = Depends(get_current_user)):
+    categories = await db.categories.find({"userId": current_user.id}, {"_id": 0}).to_list(1000)
+    return categories
+
+@api_router.post("/categories", response_model=Category)
+async def create_category(category_data: CategoryCreate, current_user: User = Depends(get_current_user)):
+    category = Category(userId=current_user.id, **category_data.model_dump())
+    await db.categories.insert_one(category.model_dump())
+    return category
+
+@api_router.put("/categories/{category_id}", response_model=Category)
+async def update_category(category_id: str, category_data: CategoryCreate, current_user: User = Depends(get_current_user)):
+    category = await db.categories.find_one({"id": category_id, "userId": current_user.id}, {"_id": 0})
+    if not category:
+        raise HTTPException(status_code=404, detail="Category not found")
+    
+    updated_category = {**category, **category_data.model_dump()}
+    await db.categories.update_one({"id": category_id}, {"$set": updated_category})
+    return Category(**updated_category)
+
+@api_router.delete("/categories/{category_id}")
+async def delete_category(category_id: str, current_user: User = Depends(get_current_user)):
+    # Check if category has recipes
+    recipes_count = await db.recipes.count_documents({"categoryId": category_id, "userId": current_user.id})
+    if recipes_count > 0:
+        raise HTTPException(status_code=400, detail=f"Cannot delete category. It has {recipes_count} recipes assigned to it.")
+    
+    result = await db.categories.delete_one({"id": category_id, "userId": current_user.id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Category not found")
+    return {"message": "Category deleted"}
+
 # Semifinished routes
 @api_router.get("/semifinished", response_model=List[Semifinished])
 async def get_semifinished(current_user: User = Depends(get_current_user)):
