@@ -289,12 +289,13 @@ export default function Recipes() {
 
       <Card>
         <CardContent className="p-0">
-          {recipes.length > 0 ? (
+          {filteredRecipes.length > 0 ? (
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead className="bg-muted/50 border-b">
                   <tr>
                     <th className="text-left p-4 font-semibold">{t('recipes.name')}</th>
+                    <th className="text-left p-4 font-semibold">{t('recipes.category')}</th>
                     <th className="text-left p-4 font-semibold">{t('orders.notes')}</th>
                     <th className="text-left p-4 font-semibold">{t('recipes.costPrice')}</th>
                     <th className="text-left p-4 font-semibold">{t('recipes.laborCost')}</th>
@@ -303,7 +304,8 @@ export default function Recipes() {
                   </tr>
                 </thead>
                 <tbody className="divide-y">
-                  {recipes.map((recipe) => {
+                  {filteredRecipes.map((recipe) => {
+                    const category = categories.find(c => c.id === recipe.categoryId);
                     const cost = parseFloat(computeCost(recipe.components || []));
                     const labor = recipe.laborCost || 0;
                     const total = (cost + labor).toFixed(2);
