@@ -190,6 +190,17 @@ class PasswordReset(BaseModel):
     reset_code: str
     new_password: str
 
+class Category(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    userId: str
+    name: str
+    color: Optional[str] = "#3B82F6"  # default blue color
+
+class CategoryCreate(BaseModel):
+    name: str
+    color: Optional[str] = "#3B82F6"
+
 # Helper functions
 def hash_password(password: str) -> str:
     return pwd_context.hash(password)
