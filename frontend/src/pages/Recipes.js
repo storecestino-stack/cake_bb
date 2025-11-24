@@ -491,6 +491,96 @@ export default function Recipes() {
             </form>
           </DialogContent>
         </Dialog>
+
+      {/* Category Management Dialog */}
+      <Dialog open={categoryDialogOpen} onOpenChange={setCategoryDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>
+              {editingCategoryId ? t('recipes.editCategory') : t('recipes.newCategory')}
+            </DialogTitle>
+          </DialogHeader>
+          <form onSubmit={handleCategorySubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="categoryName">{t('recipes.categoryName')}</Label>
+              <Input
+                id="categoryName"
+                value={categoryFormData.name}
+                onChange={(e) => setCategoryFormData({ ...categoryFormData, name: e.target.value })}
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="categoryColor">{t('recipes.categoryColor')}</Label>
+              <div className="flex gap-2">
+                <Input
+                  id="categoryColor"
+                  type="color"
+                  value={categoryFormData.color}
+                  onChange={(e) => setCategoryFormData({ ...categoryFormData, color: e.target.value })}
+                  className="w-20 h-10"
+                />
+                <Input
+                  type="text"
+                  value={categoryFormData.color}
+                  onChange={(e) => setCategoryFormData({ ...categoryFormData, color: e.target.value })}
+                  className="flex-1"
+                />
+              </div>
+            </div>
+            <DialogFooter className={editingCategoryId ? "flex justify-between" : ""}>
+              {editingCategoryId && (
+                <Button
+                  type="button"
+                  variant="destructive"
+                  onClick={() => {
+                    handleCategoryDelete(editingCategoryId);
+                    setCategoryDialogOpen(false);
+                  }}
+                >
+                  {t('common.delete')}
+                </Button>
+              )}
+              <Button type="submit">
+                {editingCategoryId ? t('common.save') : t('common.create')}
+              </Button>
+            </DialogFooter>
+          </form>
+
+          {/* Existing Categories List */}
+          {!editingCategoryId && categories.length > 0 && (
+            <div className="mt-4 pt-4 border-t">
+              <h4 className="font-semibold mb-3">{t('recipes.manageCategories')}</h4>
+              <div className="space-y-2">
+                {categories.map((cat) => {
+                  const recipesInCategory = recipes.filter(r => r.categoryId === cat.id).length;
+                  return (
+                    <div key={cat.id} className="flex items-center justify-between p-2 rounded hover:bg-muted">
+                      <div className="flex items-center gap-2">
+                        <div 
+                          className="w-4 h-4 rounded"
+                          style={{ backgroundColor: cat.color }}
+                        />
+                        <span>{cat.name}</span>
+                        <span className="text-xs text-muted-foreground">
+                          ({recipesInCategory} {recipesInCategory === 1 ? 'виріб' : 'виробів'})
+                        </span>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => openCategoryDialog(cat)}
+                      >
+                        {t('common.edit')}
+                      </Button>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
