@@ -124,6 +124,7 @@ class Recipe(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     userId: str
     name: str
+    categoryId: Optional[str] = None
     imageUrl: Optional[str] = None
     description: str = ""
     laborCost: float = 0
@@ -133,6 +134,7 @@ class Recipe(BaseModel):
 
 class RecipeCreate(BaseModel):
     name: str
+    categoryId: Optional[str] = None
     description: Optional[str] = ""
     laborCost: float = 0
     markup: float = 0
