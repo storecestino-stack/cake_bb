@@ -379,12 +379,12 @@ export default function Recipes() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="category">{t('recipes.category')}</Label>
-                <Select value={formData.categoryId} onValueChange={(val) => setFormData({ ...formData, categoryId: val })}>
+                <Select value={formData.categoryId || 'uncategorized'} onValueChange={(val) => setFormData({ ...formData, categoryId: val === 'uncategorized' ? '' : val })}>
                   <SelectTrigger>
                     <SelectValue placeholder={t('recipes.selectCategory')} />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">{t('recipes.uncategorized')}</SelectItem>
+                    <SelectItem value="uncategorized">{t('recipes.uncategorized')}</SelectItem>
                     {categories.map((cat) => (
                       <SelectItem key={cat.id} value={cat.id}>{cat.name}</SelectItem>
                     ))}
