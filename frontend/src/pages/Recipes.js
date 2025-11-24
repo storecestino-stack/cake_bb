@@ -62,6 +62,7 @@ export default function Recipes() {
     setEditingId(recipe._id);
     setFormData({
       name: recipe.name,
+      categoryId: recipe.categoryId || '',
       description: recipe.description || '',
       laborCost: recipe.laborCost || 0,
       components: recipe.components || [{ type: 'ingredient', id: '', quantity: 0 }]
