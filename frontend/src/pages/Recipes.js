@@ -312,6 +312,18 @@ export default function Recipes() {
                     return (
                       <tr key={recipe._id} className="hover:bg-muted/50 transition-colors">
                         <td className="p-4">{recipe.name}</td>
+                        <td className="p-4">
+                          {category ? (
+                            <span 
+                              className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium text-white"
+                              style={{ backgroundColor: category.color }}
+                            >
+                              {category.name}
+                            </span>
+                          ) : (
+                            <span className="text-muted-foreground text-sm">—</span>
+                          )}
+                        </td>
                         <td className="p-4">{recipe.description || '—'}</td>
                         <td className="p-4">{cost} грн</td>
                         <td className="p-4">{labor} грн</td>
