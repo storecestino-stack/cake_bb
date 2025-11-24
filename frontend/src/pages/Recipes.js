@@ -40,14 +40,16 @@ export default function Recipes() {
 
   const fetchData = async () => {
     try {
-      const [recipesRes, ingRes, semiRes] = await Promise.all([
+      const [recipesRes, ingRes, semiRes, catRes] = await Promise.all([
         axios.get('/recipes'),
         axios.get('/ingredients'),
-        axios.get('/semifinished')
+        axios.get('/semifinished'),
+        axios.get('/categories')
       ]);
       setRecipes(recipesRes.data);
       setIngredients(ingRes.data);
       setSemiProducts(semiRes.data);
+      setCategories(catRes.data);
     } catch (err) {
       toast.error(t('common.error'));
     } finally {
