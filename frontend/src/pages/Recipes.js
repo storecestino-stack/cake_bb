@@ -242,11 +242,50 @@ export default function Recipes() {
           </h1>
           <p className="text-muted-foreground">{t('recipes.subtitle')}</p>
         </div>
-        <Button onClick={() => { resetForm(); setDialogOpen(true); }}>
-          <Plus className="mr-2 h-4 w-4" />
-          {t('recipes.newRecipe')}
-        </Button>
+        <div className="flex gap-2">
+          <Button variant="outline" onClick={() => openCategoryDialog()}>
+            {t('recipes.manageCategories')}
+          </Button>
+          <Button onClick={() => { resetForm(); setDialogOpen(true); }}>
+            <Plus className="mr-2 h-4 w-4" />
+            {t('recipes.newRecipe')}
+          </Button>
+        </div>
       </div>
+
+      {/* Category filters */}
+      {categories.length > 0 && (
+        <div className="flex gap-2 flex-wrap">
+          <Button
+            variant={selectedCategory === 'all' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setSelectedCategory('all')}
+          >
+            {t('recipes.allCategories')}
+          </Button>
+          <Button
+            variant={selectedCategory === 'uncategorized' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setSelectedCategory('uncategorized')}
+          >
+            {t('recipes.uncategorized')}
+          </Button>
+          {categories.map((cat) => (
+            <Button
+              key={cat.id}
+              variant={selectedCategory === cat.id ? 'default' : 'outline'}
+              size="sm"
+              onClick={() => setSelectedCategory(cat.id)}
+              style={{ 
+                borderColor: selectedCategory === cat.id ? cat.color : undefined,
+                backgroundColor: selectedCategory === cat.id ? cat.color : undefined
+              }}
+            >
+              {cat.name}
+            </Button>
+          ))}
+        </div>
+      )}
 
       <Card>
         <CardContent className="p-0">
